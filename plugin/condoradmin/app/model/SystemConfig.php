@@ -61,6 +61,8 @@ class SystemConfig extends Model
     // 添加或更新之前，校验group_id和group_code是否匹配
     protected static function booted()
     {
+        parent::boot();
+        
         static::saving(function ($model) {
             if ($model->group_code != \plugin\condoradmin\app\model\SystemConfigGroup::where('id', $model->group_id)->value('code')) {
                 throw new \Exception('分组标识和分组ID不匹配');

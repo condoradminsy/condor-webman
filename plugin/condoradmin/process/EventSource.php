@@ -254,15 +254,23 @@ class EventSource
         try {
             $data = is_array($data) ? $data : json_decode($data, true);
             $uid = $data['user_id'] ?? 0;
+            if($uid === -1){
+                // 广播
+                foreach (self::$uidConnections as $connections) {
+                    foreach ($connections as $connection) {
+                        self::sendEvent($connection, 'message', $data);
+                    }
+                }
+                return;
+            }
             $app = $data['app'] ?? 'default';
-            $message = $data['data'] ?? '';
             $key = "{$app}_{$uid}";
             if (!isset(self::$uidConnections[$key])) {
                 return;
             }
             foreach (self::$uidConnections[$key] as $connection) {
                 if ($connection->getStatus() === TcpConnection::STATUS_ESTABLISHED) {
-                    self::sendEvent($connection, 'message', $message);
+                    self::sendEvent($connection, 'message', $data);
                 } else {
                     unset(self::$uidConnections[$key][$connection->id]);
                 }

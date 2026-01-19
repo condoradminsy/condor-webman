@@ -59,4 +59,20 @@ class SystemMenuRule extends Model
             'status' => v::in([1, 2])->setName('状态'),
         ];
     }
+
+    // 菜单改变时，新增，更新，删除都要清除缓存
+    public static function boot()
+    {
+        parent::boot();
+
+        static::saved(function ($model) {
+            \plugin\condoradmin\app\library\Breadcrumb::clearCache();
+            \plugin\condoradmin\app\library\Auth::clearCacheByRuleId($model->id);
+        });
+
+        static::deleted(function ($model) {
+            \plugin\condoradmin\app\library\Breadcrumb::clearCache();
+            \plugin\condoradmin\app\library\Auth::clearCacheByRuleId($model->id);
+        });
+    }
 }

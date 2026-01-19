@@ -3,15 +3,16 @@
 namespace plugin\condoradmin\app\model;
 
 use support\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Respect\Validation\Validator as v;
 
-class SystemLoginLog extends Model
+
+class SystemTest extends Model
 {
-    use SoftDeletes;
+    
     /**
      * @var string
      */
-    protected $table = 'system_login_log';
+    protected $table = 'system_test';
 
     /**
      * @var string
@@ -37,5 +38,15 @@ class SystemLoginLog extends Model
     protected function serializeDate(\DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
+    }
+
+    public function rules()
+    {
+        return [
+            'name' => v::optional(v::notEmpty())->setName('名称'),
+            'target' => v::optional(v::notEmpty())->setName('目标'),
+            'image' => v::optional(v::notEmpty())->setName('图片'),
+            'createtime' => v::optional(v::notEmpty())->setName('创建时间'),
+        ];
     }
 }

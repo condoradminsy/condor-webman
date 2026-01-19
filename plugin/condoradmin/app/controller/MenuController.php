@@ -18,7 +18,7 @@ class MenuController extends Backend
 
     public function index(Request $request)
     {
-        $menu_type = $request->input('menu_type', 1);
+        $menu_type = $request->input('menu_type');
         $status = $request->input('status');
         // 读取用户规则节点
         $ids = $this->auth->getRuleIds();

@@ -26,5 +26,7 @@ class SystemRole extends BaseService
                 'role_id' => $role_id
             ]);
         }
+        // 清除缓存
+        \plugin\condoradmin\app\library\Auth::clearRoleCacheByUid($uid);
     }
 }

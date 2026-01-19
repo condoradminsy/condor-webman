@@ -48,7 +48,24 @@ class SystemRole extends Model
             'pid' => v::optional(v::number())->setName('父级ID'),
             // 字母、数字、下划线
             'code' => v::optional(v::alnum('_')->noWhitespace())->setName('角色标识'),
-            'status' => v::in([1,2])->setName('状态'),
+            'status' => v::in([1, 2])->setName('状态'),
         ];
+    }
+
+
+    // 添加，更新和删除，更新缓存
+    public static function boot()
+    {
+        parent::boot();
+
+        static::saved(function ($model) {
+            // 清除缓存
+            \plugin\condoradmin\app\library\Auth::clearCacheByRoleId($model->id);
+        });
+
+        static::deleted(function ($model) {
+            // 清除缓存
+            \plugin\condoradmin\app\library\Auth::clearCacheByRoleId($model->id);
+        });
     }
 }

@@ -1,17 +1,18 @@
 <?php
 
-namespace plugin\condoradmin\app\model;
+namespace {module}model;
 
 use support\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Respect\Validation\Validator as v;
+{useSoftDeletes}
 
-class SystemLoginLog extends Model
+class {modelName} extends Model
 {
-    use SoftDeletes;
+    {softDeletes}
     /**
      * @var string
      */
-    protected $table = 'system_login_log';
+    protected $table = '{tableName}';
 
     /**
      * @var string
@@ -28,8 +29,8 @@ class SystemLoginLog extends Model
     protected $dateFormat = 'U';
 
     // 定义时间戳字段名
-    const CREATED_AT = 'createtime';
-    const UPDATED_AT = null;
+    const CREATED_AT = {createtime};
+    const UPDATED_AT = {updatetime};
 
     // 让所有属性都可以批量分配
     protected $guarded = [];
@@ -37,5 +38,10 @@ class SystemLoginLog extends Model
     protected function serializeDate(\DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
+    }
+
+    public function rules()
+    {
+        return {rules};
     }
 }

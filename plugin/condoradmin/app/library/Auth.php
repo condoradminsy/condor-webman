@@ -5,10 +5,17 @@ namespace plugin\condoradmin\app\library;
 use support\Db;
 use plugin\condoradmin\app\model\SystemAdmin;
 use plugin\condoradmin\exception\ApiException;
+use support\Redis;
 
 class Auth
 {
     protected $adminInfo = [];
+
+    // 角色组缓存
+    const ROLE_GROUP_CACHE = 'role:group:uid:';
+    // 权限规则
+    const RULE_LIST_CACHE_KEY = 'rulelist:key:uid:';
+    const RULE_LIST_CACHE = 'rulelist:uid:';
 
     public function __get($name)
     {
@@ -78,32 +85,32 @@ class Auth
     }
 
     /**
-     * 根据用户id获取用户组,返回值为数组
+     * 根据用户id获取用户角色组,返回值为数组
      * @param int $admin_id  用户id
      */
-    public function getGroups($uid, $isTree = false)
+    public function getRoleGroups($uid, $isTree = false)
     {
-        // 放内存当中
-        static $groups = [];
-        if (!isset($groups[$uid . 'expire']) || $groups[$uid . 'expire'] < time() || !isset($groups[$uid]) || empty($groups[$uid])) {
-            // 执行查询
-            $user_groups = Db::table('system_role_group as srg')
+        $key = self::ROLE_GROUP_CACHE . $uid;
+        $roleGroup = Redis::get($key);
+        // 缓存 -> 角色组改变的时候，需要清除缓存，角色状态改变，删除的时候，需要清除缓存
+        if (empty($roleGroup)) {
+            $roleGroup = Db::table('system_role_group as srg')
                 ->select('srg.uid', 'srg.role_id', 'sr.id', 'sr.pid', 'sr.name', 'sr.rules', 'sr.code')
-                ->leftJoin('system_role as sr', 'srg.role_id', '=', 'sr.id')
+                ->join('system_role as sr', 'srg.role_id', '=', 'sr.id')
                 ->where('srg.uid', '=', $uid)
                 ->where('sr.status', '=', 1)
-                ->get()->map(function ($value) {
-                    return (array)$value;
-                })->toArray();
-            $groups[$uid] = $user_groups ?: [];
-            // 角色权限会改变，所以需要定时更新，不然需要重启服务
-            $groups[$uid . 'expire'] = time() + 300;
+                ->get()
+                ->map(fn($v) => (array)$v)
+                ->toArray();
+            Redis::set($key, json_encode($roleGroup));
+        } else {
+            $roleGroup = json_decode($roleGroup, true);
         }
         if ($isTree) {
             $tree = new Tree();
-            return $tree->makeTree($groups[$uid]);
+            return $tree->makeTree($roleGroup);
         }
-        return $groups[$uid];
+        return $roleGroup;
     }
 
     /**
@@ -111,7 +118,7 @@ class Auth
      * @param int $uid 用户id
      * @return array
      */
-    public function getRuleList($uid, $menu_type = 0)
+    public function getRuleList(int $uid, int $menu_type = 0)
     {
         // 读取用户规则节点 ===> 得到的是菜单id
         $ids = $this->getRuleIds($uid);
@@ -121,19 +128,26 @@ class Auth
         if (in_array('*', $ids)) {
             return ['*'];
         }
-        // 0 接口，1 菜单，2 按钮
-        $rules = Db::table('system_menu_rule')
-            ->where('status', 1)
-            ->where(function ($query) use ($menu_type) {
-                if (is_array($menu_type) && !empty($menu_type)) {
-                    $query->whereIn('menu_type', $menu_type);
-                } else {
-                    $query->where('menu_type', $menu_type);
-                }
-            })
-            ->whereIn('id', $ids)
-            ->pluck('path')->toArray();
-        return array_unique($rules);
+        // 有权限的菜单IDs,清缓存要用到 =》 规则状态变了，删除了，需要清除缓存
+        $value = md5(implode('_', $ids));
+        Redis::set(self::RULE_LIST_CACHE_KEY . $uid, $value);
+        // 菜单变了重新获取
+        $key = self::RULE_LIST_CACHE . $uid . ':' . $value . ':' . $menu_type;
+        $rulelist = Redis::get($key);
+        if (empty($rulelist)) {
+            // 0 接口，1 菜单，2 按钮
+            $rulelist = Db::table('system_menu_rule')
+                ->select('path')
+                ->where('status', 1)
+                ->where('menu_type', $menu_type)
+                ->whereIn('id', $ids)
+                ->pluck('path')->toArray();
+            $rulelist = array_unique($rulelist);
+            Redis::set($key, json_encode($rulelist));
+        } else {
+            $rulelist = json_decode($rulelist, true);
+        }
+        return $rulelist;
     }
 
     /**
@@ -201,7 +215,7 @@ class Auth
     public function getRuleIds($uid = null)
     {
         //读取用户所属用户组
-        $groups = $this->getGroups($uid ?: $this->id);
+        $groups = $this->getRoleGroups($uid ?: $this->id);
         $ids = []; //保存用户所属用户组设置的所有权限规则id
         foreach ($groups as $item) {
             // 超级管理员拥有所有权限
@@ -283,7 +297,7 @@ class Auth
      */
     public function getGroupIds($uid = null)
     {
-        $groups = $this->getGroups($uid);
+        $groups = $this->getRoleGroups($uid);
         $groupIds = [];
         foreach ($groups as $v) {
             $groupIds[] = (int)$v['role_id'];
@@ -299,7 +313,7 @@ class Auth
     public function getChildrenGroupIds($withself = false)
     {
         //取出当前管理员所有的分组
-        $groups = $this->getGroups($this->id);
+        $groups = $this->getRoleGroups($this->id);
         $groupIds = array_column($groups, 'id');
         $originGroupIds = $groupIds;
         foreach ($groups as $k => $v) {
@@ -349,11 +363,16 @@ class Auth
         if (!$this->isSuperAdmin()) {
             $groupIds = $this->getChildrenGroupIds(false);
             if (!empty($groupIds)) {
-                $childrenAdminIds = \plugin\condoradmin\app\model\SystemRoleGroup::whereIn('role_id', $groupIds)->pluck('uid')->toArray();
+                $childrenAdminIds = \plugin\condoradmin\app\model\SystemRoleGroup::select('system_role_group.uid')
+                    ->where('system_admin.status', 1)
+                    ->whereIn('role_id', $groupIds)
+                    ->join('system_admin', 'system_role_group.uid', '=', 'system_admin.id')
+                    ->pluck('uid')
+                    ->toArray();
             }
         } else {
             //超级管理员拥有所有人的权限
-            $childrenAdminIds = \plugin\condoradmin\app\model\SystemAdmin::pluck('id')->toArray();
+            $childrenAdminIds = \plugin\condoradmin\app\model\SystemAdmin::select('id')->where('status', 1)->pluck('id')->toArray();
         }
         if ($withself) {
             if (!in_array($this->id, $childrenAdminIds)) {
@@ -363,5 +382,44 @@ class Auth
             $childrenAdminIds = array_diff($childrenAdminIds, [$this->id]);
         }
         return $childrenAdminIds;
+    }
+
+    /**
+     * 清除角色缓存
+     * @param [type] $uid
+     * @return void
+     */
+    public static function clearRoleCacheByUid($uid)
+    {
+        Redis::del(self::ROLE_GROUP_CACHE . $uid);
+    }
+
+    /**
+     * 清除角色缓存
+     * @param [type] $role_id
+     * @return void
+     */
+    public static function clearCacheByRoleId($role_id)
+    {
+        $uids = Db::table('system_role_group')->where('role_id', $role_id)->pluck('uid')->toArray();
+        foreach ($uids as $uid) {
+            self::clearRoleCacheByUid($uid);
+        }
+    }
+
+    // 清除规则缓存
+    public static function clearCacheByRuleId($rule_id)
+    {
+        $menuTypes = [0, 1, 2];
+        $admin_ids = Db::table('system_role')->select('admin_id')->whereRaw('FIND_IN_SET(?,rules)', [$rule_id])->pluck('admin_id')->toArray();
+        $admin_ids = array_unique($admin_ids);
+        foreach ($admin_ids as $admin_id) {
+            $value = Redis::get(self::RULE_LIST_CACHE_KEY . $admin_id);
+            if ($value) {
+                foreach ($menuTypes as $menuType) {
+                    Redis::del(self::RULE_LIST_CACHE . $admin_id . ':' . $value . ':' . $menuType);
+                }
+            }
+        }
     }
 }

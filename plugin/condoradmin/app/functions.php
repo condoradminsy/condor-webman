@@ -146,7 +146,15 @@ if (!function_exists('getPublicKeyValue')) {
 if (!function_exists('sendSseMessage')) {
     function sendSseMessage($data, $event = 'condor_sse_broadcast')
     {
-        Client::connect('127.0.0.1', 2206);
+        Client::connect();
         Client::publish($event, $data);
+    }
+}
+
+// 驼峰转下划线
+if (!function_exists('camelToUnderline')) {
+    function camelToUnderline($str)
+    {
+        return strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $str));
     }
 }

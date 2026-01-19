@@ -5,13 +5,13 @@ namespace plugin\condoradmin\app\model;
 use support\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class SystemLoginLog extends Model
+class SystemAdminLog extends Model
 {
     use SoftDeletes;
     /**
      * @var string
      */
-    protected $table = 'system_login_log';
+    protected $table = 'system_admin_log';
 
     /**
      * @var string

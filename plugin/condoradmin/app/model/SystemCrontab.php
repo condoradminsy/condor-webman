@@ -56,6 +56,8 @@ class SystemCrontab extends Model
     // 添加或更新，生成 cron
     protected static function booted()
     {
+        parent::boot();
+        
         static::saving(function ($model) {
             // 规则处理
             $cron_value = json_decode($model->cron_value, true);
