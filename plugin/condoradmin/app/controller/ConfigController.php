@@ -24,7 +24,7 @@ class ConfigController extends Backend
                 $query->where('group_id', $group_id);
             }
         })->orderBy('weigh', 'asc')->get();
-        return $this->success('获取成功', $list);
+        return $this->success(trans('condoradmin.ok'), $list);
     }
 
     // 保存配置项
@@ -33,10 +33,10 @@ class ConfigController extends Backend
         $group_code = $request->input('group_code', 0);
         $configs = $request->input('configs', []);
         if (empty($group_code) || empty($configs)) {
-            return $this->fail('参数错误');
+            return $this->fail(trans('condoradmin.invalid.parameters'));
         }
         $service = new ConfigService();
         $service->saveConfig($configs, $group_code);
-        return $this->success('保存成功');
+        return $this->success(trans('condoradmin.saved.successfully'));
     }
 }

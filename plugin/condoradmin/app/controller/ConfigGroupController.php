@@ -20,6 +20,6 @@ class ConfigGroupController extends Backend
     public function index(Request $request)
     {
         $list = $this->model->orderBy('id', 'asc')->get();
-        return $this->success('获取成功', $list);
+        return $this->success(trans('condoradmin.ok'), $list);
     }
 }

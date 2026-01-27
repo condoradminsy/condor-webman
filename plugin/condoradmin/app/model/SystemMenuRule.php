@@ -43,20 +43,20 @@ class SystemMenuRule extends Model
     public function rules()
     {
         return [
-            'title' => v::NotEmpty()->setName('标题'),
-            'name' => v::NotEmpty()->alnum('_-')->noWhitespace()->setName('名称'),
-            'path' => v::NotEmpty()->setName('路径'),
-            'hidden' => v::optional(v::in([0, 1]))->setName('是否隐藏'),
-            'menu_type' => v::optional(v::in([0, 1, 2]))->setName('菜单类型'),
-            'active_menu' => v::optional(v::NotEmpty())->setName('激活菜单'),
-            'component' => v::optional(v::NotEmpty())->setName('组件'),
-            'i18nkey' => v::optional(v::NotEmpty())->setName('国际化key'),
-            'icon' => v::optional(v::NotEmpty())->setName('图标'),
-            'is_keep' => v::optional(v::in([0, 1]))->setName('是否缓存'),
-            'pid' => v::optional(v::number())->setName('父级ID'),
-            'weigh' => v::optional(v::number())->setName('权重'),
-            'redirect' => v::optional(v::NotEmpty())->setName('重定向'),
-            'status' => v::in([1, 2])->setName('状态'),
+            'title' => v::NotEmpty()->setName(trans('fields.title', [], 'menu'))->setTemplate(trans('condoradmin.validation.required')),
+            'name' => v::NotEmpty()->alnum('_-')->noWhitespace()->setName(trans('fields.name', [], 'menu'))->setTemplate(trans('condoradmin.validation.required')),
+            'path' => v::NotEmpty()->setName(trans('fields.path', [], 'menu'))->setTemplate(trans('condoradmin.validation.required')),
+            'hidden' => v::optional(v::in([0, 1]))->setName(trans('fields.hidden', [], 'menu'))->setTemplate(trans('condoradmin.validation.in')),
+            'menu_type' => v::optional(v::in([0, 1, 2]))->setName(trans('fields.menu.type', [], 'menu'))->setTemplate(trans('condoradmin.validation.in')),
+            'active_menu' => v::optional(v::NotEmpty())->setName(trans('fields.active.menu', [], 'menu')),
+            'component' => v::optional(v::NotEmpty())->setName(trans('fields.component', [], 'menu')),
+            'i18nkey' => v::optional(v::NotEmpty())->setName(trans('fields.i18nkey', [], 'menu')),
+            'icon' => v::optional(v::NotEmpty())->setName(trans('fields.icon', [], 'menu')),
+            'is_keep' => v::optional(v::in([0, 1]))->setName(trans('fields.is.keep', [], 'menu')),
+            'pid' => v::optional(v::number())->setName(trans('fields.pid', [], 'menu')),
+            'weigh' => v::optional(v::number())->setName(trans('fields.weigh', [], 'menu')),
+            'redirect' => v::optional(v::NotEmpty())->setName(trans('fields.redirect', [], 'menu')),
+            'status' => v::in([1, 2])->setName(trans('fields.status', [], 'menu'))->setTemplate(trans('condoradmin.validation.in')),
         ];
     }
 

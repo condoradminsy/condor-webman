@@ -10,8 +10,8 @@ class CrontabController extends Backend
 {
 
     protected array $searchable = [
-        'status' => ['type','int'],
-        'name' => ['type','string']
+        'status' => ['type', 'int'],
+        'name' => ['type', 'string']
     ];
 
     protected $createdByField = 'created_by';
@@ -28,13 +28,13 @@ class CrontabController extends Backend
     {
         $crontab_id = $request->input('id');
         if (empty($crontab_id)) {
-            return $this->fail('缺少参数');
+            return $this->fail(trans('condoradmin.invalid.parameters'));
         }
         $crontabService = new \plugin\condoradmin\app\service\SystemCrontab();
         $status = $crontabService->run($crontab_id);
         if ($status) {
-            return $this->success('执行成功');
+            return $this->success(trans('condoradmin.executed.successfully'));
         }
-        return $this->fail('执行失败');
+        return $this->fail(trans('condoradmin.execution.failed'));
     }
 }

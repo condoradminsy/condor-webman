@@ -43,9 +43,9 @@ class SystemConfigGroup extends Model
     public function rules()
     {
         return [
-            'name' => v::NotEmpty()->setName('分组名称'),
-            'code' => v::regex('/^[a-zA-Z_][a-zA-Z0-9_]*$/')->setName('标识'),
-            'remark' => v::optional(v::NotEmpty())->setName('备注'),
+            'name' => v::NotEmpty()->setName(trans('fields.name', [], 'config'))->setTemplate(trans('condoradmin.validation.required')),
+            'code' => v::regex('/^[a-zA-Z_][a-zA-Z0-9_]*$/')->setName(trans('fields.code', [], 'config'))->setTemplate(trans('fields.code.regex', [], 'config')),
+            'remark' => v::optional(v::NotEmpty())->setName(trans('fields.remark', [], 'config')),
         ];
     }
 }

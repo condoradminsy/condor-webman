@@ -12,6 +12,7 @@ class RoleController extends Backend
 
     protected $dataLimit = true;
 
+
     public function __construct()
     {
         parent::__construct();
@@ -20,16 +21,28 @@ class RoleController extends Backend
 
     public function index(Request $request)
     {
+        $name = $request->input('name');
+        $code = $request->input('code');
+        $status = $request->input('status');
         // 非超级管理员只能看到自己管理的角色
         $adminIds = $this->getDataLimitAdminIds();
-        $list = $this->model->where(function ($query) use ($adminIds) {
+        $list = $this->model->where(function ($query) use ($adminIds, $name, $code, $status) {
+            if ($name) {
+                $query->where('name', 'like', '%' . $name . '%');
+            }
+            if ($code) {
+                $query->where('code', 'like', '%' . $code . '%');
+            }
+            if ($status) {
+                $query->where('status', $status);
+            }
             if (!empty($adminIds)) {
                 $query->whereIn('admin_id', $adminIds);
             }
         })->get()->toArray();
         $tree = new Tree();
         $list = $tree->makeTree($list);
-        return $this->success(trans('ok'), $list);
+        return $this->success(trans('condoradmin.ok'), $list);
     }
 
     public function selectpage(Request $request)
@@ -37,16 +50,17 @@ class RoleController extends Backend
         $is_tree = $request->input('is_tree', 1);
         // 非超级管理员只能看到自己管理的角色
         $adminIds = $this->getDataLimitAdminIds();
-        $list = $this->model->where('status', 1)->where(function ($query) use ($adminIds) {
-            if (!empty($adminIds)) {
-                $query->whereIn('admin_id', $adminIds);
-            }
-        })->get(['id', 'name', 'pid'])->toArray();
+        $list = $this->model->where('status', 1)
+            ->where(function ($query) use ($adminIds) {
+                if (!empty($adminIds)) {
+                    $query->whereIn('admin_id', $adminIds);
+                }
+            })->get(['id', 'name', 'pid'])->toArray();
         if ($is_tree) {
             $tree = new Tree();
             $list = $tree->makeTree($list);
         }
-        return $this->success(trans('ok'), $list);
+        return $this->success(trans('condoradmin.ok'), $list);
     }
 
     public function add(Request $request)

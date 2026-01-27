@@ -12,9 +12,11 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
 use plugin\condoradmin\app\middleware\CrossDomain;
+use plugin\condoradmin\app\middleware\Lang;
 
 return [
     '@' => [
         CrossDomain::class,
-    ]
+        Lang::class,
+    ],
 ];

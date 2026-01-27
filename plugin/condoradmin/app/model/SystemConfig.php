@@ -43,18 +43,18 @@ class SystemConfig extends Model
     public function rules()
     {
         return [
-            'key' => v::regex('/^[a-zA-Z0-9_]+$/')->setName('变量名'),
-            'value' => v::optional(v::NotEmpty())->setName('变量值'),
-            'title' => v::NotEmpty()->setName('变量标题'),
-            'group_code' => v::NotEmpty()->setName('分组标识'),
-            'group_id' => v::number()->setName('分组ID'),
-            'tips' => v::optional(v::NotEmpty())->setName('变量提示'),
-            'type' => v::in(['number', 'string', 'textarea', 'switch', 'array', 'editor', 'date', 'image', 'images', 'datetime', 'daterange', 'dict'])->setName('类型'),
-            'is_visible' => v::in([0, 1])->setName('可见条件'),
-            'weigh' => v::optional(v::number())->setName('权重'),
-            'dict_code' => v::optional(v::NotEmpty())->setName('字典'),
-            'dict_type' => v::optional(v::NotEmpty())->setName('字典类型'),
-            'status' => v::in([0, 1])->setName('状态'),
+            'key' => v::regex('/^[a-zA-Z0-9_]+$/')->setName(trans('fields.key', [], 'config'))->setTemplate(trans('fields.code.regex', [], 'config')),
+            'value' => v::optional(v::NotEmpty())->setName(trans('fields.value', [], 'config')),
+            'title' => v::NotEmpty()->setName(trans('fields.title', [], 'config'))->setTemplate(trans('condoradmin.validation.required')),
+            'group_code' => v::NotEmpty()->setName(trans('fields.group.code', [], 'config'))->setTemplate(trans('condoradmin.validation.required')),
+            'group_id' => v::number()->setName(trans('fields.group.id', [], 'config')),
+            'tips' => v::optional(v::NotEmpty())->setName(trans('fields.tips', [], 'config')),
+            'type' => v::in(['number', 'string', 'textarea', 'switch', 'array', 'editor', 'date', 'image', 'images', 'datetime', 'daterange', 'dict'])->setName(trans('fields.type', [], 'config')),
+            'is_visible' => v::in([0, 1])->setName(trans('fields.is.visible', [], 'config'))->setTemplate(trans('condoradmin.validation.in')),
+            'weigh' => v::optional(v::number())->setName(trans('fields.weigh', [], 'config')),
+            'dict_code' => v::optional(v::NotEmpty())->setName(trans('fields.dict.code', [], 'config')),
+            'dict_type' => v::optional(v::NotEmpty())->setName(trans('fields.dict.type', [], 'config')),
+            'status' => v::in([0, 1])->setName(trans('fields.status', [], 'config'))->setTemplate(trans('condoradmin.validation.in')),
         ];
     }
 
@@ -62,10 +62,10 @@ class SystemConfig extends Model
     protected static function booted()
     {
         parent::boot();
-        
+
         static::saving(function ($model) {
             if ($model->group_code != \plugin\condoradmin\app\model\SystemConfigGroup::where('id', $model->group_id)->value('code')) {
-                throw new \Exception('分组标识和分组ID不匹配');
+                throw new \Exception(trans('mismatch.between.the.group.identifier.and.the.group.id', [], 'config'));
             };
         });
     }

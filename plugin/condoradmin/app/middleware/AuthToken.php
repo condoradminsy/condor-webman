@@ -36,7 +36,7 @@ class AuthToken implements MiddlewareInterface
         $tokenInfo = getCurrentInfo();
         if ($tokenInfo === false) {
             $code = 401;
-            $msg = trans('Please log in first.');
+            $msg = trans('condoradmin.please.log.in.first');
             if ($request->expectsJson()) {
                 $response = json(['code' => $code, 'message' => $msg, 'data' => []]);
             } else {
@@ -45,14 +45,14 @@ class AuthToken implements MiddlewareInterface
             return $response;
         } else {
             if (!isset($tokenInfo['app']) || $request->plugin !== $tokenInfo['app']) {
-                return json(['code' => 403, 'message' => 'Application mismatch', 'data' => []]);
+                return json(['code' => 403, 'message' => trans('condoradmin.access.denied'), 'data' => []]);
             }
             $token = $request->header('authorization');
             $token = str_replace('Bearer ', '', $token);
             // 验证token是否有效，可操作token 失效
             $admin_id = Redis::get('admin:token:' . $token);
             if (!$admin_id) {
-                return json(['code' => 401, 'message' => 'Token expired', 'data' => []]);
+                return json(['code' => 401, 'message' => trans('condoradmin.invalid.token'), 'data' => []]);
             }
             return $handler($request);
         }

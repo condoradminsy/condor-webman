@@ -72,7 +72,7 @@ class CrudController extends Backend
             if (!is_dir($start)) continue;
             $scan($start);
         }
-        return $this->success('获取成功', [
+        return $this->success(trans('condoradmin.ok'), [
             'tables' => $tables,
             'prefix' => config('database.connections.mysql.prefix'),
             'modules' => $modules,
@@ -84,7 +84,7 @@ class CrudController extends Backend
     {
         $table = $request->input('table');
         if (!$table) {
-            return $this->fail('参数错误');
+            return $this->fail(trans('condoradmin.invalid.parameters'));
         }
         $sql = "SELECT * FROM `information_schema`.`columns` "
             . "WHERE TABLE_SCHEMA = ? AND table_name = ? "
@@ -104,7 +104,7 @@ class CrudController extends Backend
                 'id' => $key,
             ];
         }
-        return $this->success('获取成功', $fieldlist);
+        return $this->success(trans('condoradmin.ok'), $fieldlist);
     }
 
     /**
@@ -127,6 +127,6 @@ class CrudController extends Backend
         } catch (\Exception $e) {
             return $this->fail($e->getMessage());
         }
-        return $this->fail('创建成功');
+        return $this->fail(trans('condoradmin.operation.successful'));
     }
 }

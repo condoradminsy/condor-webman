@@ -43,13 +43,13 @@ class SystemCrontab extends Model
     public function rules()
     {
         return [
-            'name' => v::NotEmpty()->setName('名称'),
-            'target' => v::optional(v::notEmpty())->setName('调用任务'),
-            'params' => v::optional(v::notEmpty())->setName('参数'),
-            'cron_value' => v::notEmpty()->setName('表达式值'),
-            'type' => v::NotEmpty()->number()->setName('类型'),
-            'remark' => v::optional(v::NotEmpty())->setName('备注'),
-            'status' => v::in([1, 2])->setName('状态'),
+            'name' => v::NotEmpty()->setName(trans('fields.name', [], 'crontab'))->setTemplate(trans('condoradmin.validation.required')),
+            'target' => v::optional(v::notEmpty())->setName(trans('fields.target', [], 'crontab')),
+            'params' => v::optional(v::notEmpty())->setName(trans('fields.params', [], 'crontab')),
+            'cron_value' => v::notEmpty()->setName(trans('fields.cron_value', [], 'crontab'))->setTemplate(trans('condoradmin.validation.required')),
+            'type' => v::NotEmpty()->number()->setName(trans('fields.type', [], 'crontab'))->setTemplate(trans('condoradmin.validation.required')),
+            'remark' => v::optional(v::NotEmpty())->setName(trans('fields.remark', [], 'crontab')),
+            'status' => v::in([1, 2])->setName(trans('fields.status', [], 'crontab'))->setTemplate(trans('condoradmin.validation.in')),
         ];
     }
 
@@ -57,7 +57,7 @@ class SystemCrontab extends Model
     protected static function booted()
     {
         parent::boot();
-        
+
         static::saving(function ($model) {
             // 规则处理
             $cron_value = json_decode($model->cron_value, true);
@@ -77,7 +77,7 @@ class SystemCrontab extends Model
                 6 => "0 {$minute} {$hour} * * {$week}",
                 7 => "0 {$minute} {$hour} {$day} * *",
                 8 => "0 {$minute} {$hour} {$day} {$month} *",
-                default => throw new \plugin\condoradmin\exception\ApiException("任务定时规则异常"),
+                default => throw new \plugin\condoradmin\exception\ApiException(trans('exception.in.task.scheduling.rules')),
             };
             $model->cron = $rule;
         });

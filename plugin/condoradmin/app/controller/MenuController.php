@@ -20,16 +20,24 @@ class MenuController extends Backend
     {
         $menu_type = $request->input('menu_type');
         $status = $request->input('status');
+        $name = $request->input('name');
+        $title = $request->input('title');
         // 读取用户规则节点
         $ids = $this->auth->getRuleIds();
         if (empty($ids)) {
-            return [];
+            return $this->fail(trans('condoradmin.you.have.no.permission'));
         }
         //读取用户组所有权限规则
         $rules = $this->model
-            ->where(function ($query) use ($menu_type, $ids, $status) {
+            ->where(function ($query) use ($menu_type, $ids, $status, $name, $title) {
                 if ($status) {
                     $query->where('status', $status);
+                }
+                if ($name) {
+                    $query->where('name', 'like', "%{$name}%");
+                }
+                if ($title) {
+                    $query->where('title', 'like', "%{$title}%");
                 }
                 if (!in_array('*', $ids)) {
                     $query->whereIn('id', $ids);
@@ -45,7 +53,7 @@ class MenuController extends Backend
             ->get()
             ->toArray();
         $tree = new Tree();;
-        return $this->success('success', $tree->makeTree($rules));
+        return $this->success(trans('condoradmin.ok'), $tree->makeTree($rules));
     }
 
     public function selectpage(Request $request)
@@ -54,7 +62,7 @@ class MenuController extends Backend
         // 读取用户规则节点
         $ids = $this->auth->getRuleIds();
         if (empty($ids)) {
-            return [];
+            return $this->fail(trans('condoradmin.you.have.no.permission'));
         }
         $list = $this->model->where('status', 1)->where(function ($query) use ($ids) {
             if (!in_array('*', $ids)) {
@@ -65,6 +73,6 @@ class MenuController extends Backend
             $tree = new Tree();
             $list = $tree->makeTree($list);
         }
-        return $this->success(trans('ok'), $list);
+        return $this->success(trans('condoradmin.ok'), $list);
     }
 }

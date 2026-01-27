@@ -16,6 +16,9 @@ class DictTypeController extends Backend
 
     protected array $searchable = [
         'title' => ['type' => 'string'],
+        'name' => ['type' => 'string'],
+        'scope' => ['type' => 'int'],
+        'status' => ['type' => 'int'],
     ];
 
     public function __construct()

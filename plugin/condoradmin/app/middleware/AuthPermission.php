@@ -47,7 +47,7 @@ class AuthPermission implements MiddlewareInterface
         }
         // 检测权限
         if ($auth->check($request->path(), $auth->id) !== true) {
-            return json(['code' => 403, 'message' => '无权限访问', 'data' => []]);
+            return json(['code' => 403, 'message' => trans('condoradmin.access.denied'), 'data' => []]);
         };
         // 设置当前请求的auth
         Context::set('auth', $auth);

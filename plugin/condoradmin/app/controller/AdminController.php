@@ -9,6 +9,7 @@ use support\Log;
 use support\Exception;
 use support\Db;
 use Respect\Validation\Validator;
+use Respect\Validation\Exceptions\ValidationException;
 
 class AdminController extends Backend
 {
@@ -80,13 +81,13 @@ class AdminController extends Backend
                 unset($item['role_group']);
             }
 
-            return $this->success(trans('ok'), [
+            return $this->success(trans('condoradmin.ok'), [
                 'total' => $total,
                 'list' => $list
             ]);
         } catch (\Exception $e) {
             Log::error('index', ['error' => $e->getMessage()]);
-            return $this->fail(config('app.debug') ? $e->getMessage() : trans('Server error'));
+            return $this->fail(config('app.debug') ? $e->getMessage() : trans('condoradmin.system.error'));
         }
     }
 
@@ -99,22 +100,28 @@ class AdminController extends Backend
     public function add(Request $request)
     {
         if (false === $request->isPost()) {
-            return $this->fail(trans('Request method incorrect'));
+            return $this->fail(trans('condoradmin.request.method.incorrect'));
         }
         $params = $request->post();
         if (empty($params)) {
-            return $this->fail('Parameter can not be empty');
+            return $this->fail('condoradmin.parameter.can.not.be.empty');
         }
         $role_ids = $params['role_ids'] ?? [];
         $role_ids = is_array($role_ids) ? $role_ids : explode(',', $role_ids);
         try {
-            Db::beginTransaction();
             //是否采用模型验证
             if ($this->modelValidate && method_exists($this->model, 'rules')) {
-                $data = Validator::input($params, $this->model->rules());
+                try {
+                    $data = Validator::input($params, $this->model->rules());
+                } catch (ValidationException $e) {
+                    return $this->fail($e->getMessage());
+                } catch (\Exception $e) {
+                    return $this->fail($e->getMessage());
+                }
             } else {
                 $data = $params;
             }
+            Db::beginTransaction();
             if ($this->dataLimit) {
                 $data[$this->dataLimitField] = $this->auth->id;
             }
@@ -130,11 +137,11 @@ class AdminController extends Backend
             $row = $this->model->create($data);
             Db::commit();
             if (!$row) {
-                return $this->fail(trans('No rows were inserted'));
+                return $this->fail(trans('condoradmin.no.rows.were.inserted'));
             }
         } catch (\Throwable $e) {
             Db::rollBack();
-            return $this->fail(config('app.debug') ? $e->getMessage() : trans('Add error'));
+            return $this->fail(config('app.debug') ? $e->getMessage() : trans('condoradmin.system.error'));
         }
         //  成功
         if (!$this->auth->isSuperAdmin()) {
@@ -143,7 +150,7 @@ class AdminController extends Backend
         }
         $roleService = new \plugin\condoradmin\app\service\SystemRole();
         $roleService->addRole($row->getKey(), $role_ids);
-        return $this->success(trans('ok'), ['id' => $row->getKey()]);
+        return $this->success(trans('condoradmin.ok'), ['id' => $row->getKey()]);
     }
 
     /**
@@ -156,36 +163,42 @@ class AdminController extends Backend
     public function edit(Request $request)
     {
         if (false === $request->isPost()) {
-            return $this->fail(trans('Request method incorrect'));
+            return $this->fail(trans('condoradmin.request.method.incorrect'));
         }
         $id = $request->post('id');
         if (empty($id)) {
-            return $this->fail('参数不能为空');
+            return $this->fail(trans('condoradmin.parameter.can.not.be.empty'));
         }
         $row = $this->model->find($id);
         if (empty($row)) {
-            return $this->fail(trans('No Results were found'));
+            return $this->fail(trans('condoradmin.no.results.were.found'));
         }
         if ($this->dataLimit && $this->dataLimitField !== '') {
             $adminIds = $this->getDataLimitAdminIds();
             if (!empty($adminIds) && !in_array($row[$this->dataLimitField], $adminIds)) {
-                return $this->fail(trans('You have no permission'));
+                return $this->fail(trans('condoradmin.you.have.no.permission'));
             }
         }
         $params = $request->post();
         if (empty($params)) {
-            return $this->fail(trans('Parameter can not be empty'));
+            return $this->fail(trans('condoradmin.parameter.can.not.be.empty'));
         }
         $role_ids = $params['role_ids'] ?? [];
         $role_ids = is_array($role_ids) ? $role_ids : explode(',', $role_ids);
         try {
-            Db::beginTransaction();
             //是否采用模型验证
             if ($this->modelValidate && method_exists($this->model, 'rules')) {
-                $data = Validator::input($params, $this->model->rules());
+                try {
+                    $data = Validator::input($params, $this->model->rules());
+                } catch (ValidationException $e) {
+                    return $this->fail($e->getMessage());
+                } catch (\Exception $e) {
+                    return $this->fail($e->getMessage());
+                }
             } else {
                 $data = $params;
             }
+            Db::beginTransaction();
             $data = $this->preExcludeFields($data);
             if ($this->updatedByField) {
                 $data[$this->updatedByField] = $this->auth->id;
@@ -198,11 +211,11 @@ class AdminController extends Backend
             $result = $row->forceFill($data)->save();
             Db::commit();
             if (false === $result) {
-                return $this->fail(trans('No rows were updated'));
+                return $this->fail(trans('condoradmin.no.rows.were.updated'));
             }
         } catch (\Throwable $e) {
             Db::rollback();
-            return $this->fail(config('app.debug') ? $e->getMessage() : trans('Edit error'));
+            return $this->fail(config('app.debug') ? $e->getMessage() : trans('condoradmin.update.failed'));
         }
         //  成功
         if (!$this->auth->isSuperAdmin()) {
@@ -211,6 +224,6 @@ class AdminController extends Backend
         }
         $roleService = new \plugin\condoradmin\app\service\SystemRole();
         $roleService->addRole($id, $role_ids);
-        return $this->success(trans('ok'), ['id' => $id]);
+        return $this->success(trans('condoradmin.ok'), ['id' => $id]);
     }
 }

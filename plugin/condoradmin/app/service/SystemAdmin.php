@@ -28,30 +28,31 @@ class SystemAdmin extends BaseService
     {
         $adminInfo = $this->model->where('username', $username)->first();
         $status = 1;
-        $message = '登录成功';
+        $msg = '';
         if (empty($adminInfo)) {
-            $message = '账号或密码错误，请重新输入!';
-            throw new ApiException($message);
-        }
-        if ($adminInfo->status === 2) {
+            $msg = 'condoradmin.incorrect.username.or.password.please.try.again';
             $status = 2;
-            $message = '您已被禁止登录!';
         }
-        if (!verifyPassword($password, $adminInfo->password)) {
+        if ($status === 1 && $adminInfo->status === 2) {
             $status = 2;
-            $message = '密码错误，请重新输入!';
+            $msg = 'condoradmin.access.denied.you.are.not.permitted.to.log.in';
+        }
+        if ($status === 1 && !verifyPassword($password, $adminInfo->password)) {
+            $status = 2;
+            $msg = 'condoradmin.incorrect.password.please.try.again';
         }
         if ($status === 2) {
+            $message = trans($msg, [], null, 'zh_cn');
             // 登录事件
             Event::emit('admin.login', compact('username', 'status', 'message'));
             $adminInfo->loginfailure = $adminInfo->loginfailure + 1;
             $adminInfo->save();
-            throw new ApiException($message);
+            throw new ApiException(trans($msg));
         }
         $adminInfo->logintime = time();
         $adminInfo->loginip = request()->getRealIp();
         $adminInfo->save();
-
+        // 生成token
         $token = JwtToken::generateToken([
             'id' => $adminInfo->id,
             'username' => $adminInfo->username,
@@ -60,6 +61,7 @@ class SystemAdmin extends BaseService
         // 登录事件
         $admin_id = $adminInfo->id;
         Redis::set('admin:token:' . $token['access_token'], $admin_id, $token["expires_in"]);
+        $message = '登录成功';
         Event::emit('admin.login', compact('username', 'status', 'message', 'admin_id'));
         return $token;
     }

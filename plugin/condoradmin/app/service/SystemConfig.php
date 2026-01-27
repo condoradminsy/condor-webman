@@ -41,8 +41,11 @@ class SystemConfig extends BaseService
             Db::commit();
         } catch (\Throwable $e) {
             Db::rollback();
-            Log::error('保存系统配置失败：' . $e->getMessage());
-            throw new ApiException('保存配置失败');
+            Log::error('保存系统配置失败：', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            throw new ApiException(trans('condoradmin.configuration.saving.failed'));
         }
     }
 

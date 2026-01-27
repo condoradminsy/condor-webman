@@ -48,12 +48,12 @@ class SystemAdmin extends Model
     public function rules()
     {
         return [
-            'nickname' => v::NotEmpty()->setName('昵称'),
-            'username' => v::NotEmpty()->setName('用户名'),
-            'password' => v::optional(v::NotEmpty())->setName('密码'),
-            'email' => v::optional(v::email())->setName('邮箱'),
-            'mobile' => v::optional(v::NotEmpty())->setName('手机号'),
-            'status' => v::in([1, 2])->setName('状态'),
+            'nickname' => v::NotEmpty()->setName(trans('fields.nickname', [], 'admin'))->setTemplate(trans('condoradmin.validation.required')),
+            'username' => v::NotEmpty()->setName(trans('fields.username', [], 'admin'))->setTemplate(trans('condoradmin.validation.required')),
+            'password' => v::optional(v::length(6, 64))->setName(trans('fields.password', [], 'admin'))->setTemplate(trans('condoradmin.validation.length.both')),
+            'email' => v::optional(v::email())->setName(trans('fields.email', [], 'admin'))->setTemplate(trans('condoradmin.validation.email')),
+            'mobile' => v::optional(v::regex('/^1[3456789]\d{9}$/'))->setName(trans('fields.mobile', [], 'admin'))->setTemplate(trans('condoradmin.validation.mobile')),
+            'status' => v::in([1, 2])->setName(trans('fields.status', [], 'admin'))->setTemplate(trans('condoradmin.validation.in')),
         ];
     }
 }

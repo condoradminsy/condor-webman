@@ -40,7 +40,7 @@ class SystemAttachmentType extends Model
     public function rules()
     {
         return [
-            'name' => v::NotEmpty()->setName('名称'),
+            'name' => v::NotEmpty()->setName(trans('fields.name', [], 'config'))->setTemplate(trans('condoradmin.validation.required')),
         ];
     }
 }

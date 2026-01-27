@@ -28,6 +28,18 @@ class AttachmentController extends Backend
                     ['a.type_id', '=', 't.id']
                 ],
             ]
+        ],
+        'createtime' => [
+            'type' => 'string',
+            'as' => 'a.createtime'
+        ],
+        'filename' => [
+            'type' => 'string',
+            'as' => 'a.filename'
+        ],
+        'storage' => [
+            'type' => 'string',
+            'as' => 'a.storage'
         ]
     ];
 
@@ -46,19 +58,19 @@ class AttachmentController extends Backend
     {
         $file = $request->file('file');
         if (empty($file)) {
-            return $this->fail(trans('no file uploaded'));
+            return $this->fail(trans('condoradmin.no.file.uploaded'));
         }
         $file = is_array($file) ? $file[0] : $file;
         if (!$file->isValid()) {
-            return $this->fail(trans('invalid file'));
+            return $this->fail(trans('condoradmin.invalid.file'));
         }
         if (!$this->model->validFileMimeType($file->getUploadMimeType())) {
-            return $this->fail('上传文件类型错误');
+            return $this->fail(trans('condoradmin.invalid.file.type.uploaded'));
         }
         $row = $this->model->upload($file, [
             'admin_id' => $this->auth->id,
             'type_id' => $request->post('type_id', 0),
         ]);
-        return $this->success(trans('ok'), $row);
+        return $this->success(trans('condoradmin.ok'), $row);
     }
 }

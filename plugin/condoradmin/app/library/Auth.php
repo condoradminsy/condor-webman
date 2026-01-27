@@ -30,7 +30,7 @@ class Auth
     {
         $tokenInfo = getCurrentInfo();
         if ($tokenInfo === false) {
-            throw new ApiException('token无效', 401);
+            throw new ApiException(trans('condoradmin.invalid.token'), 401);
         }
         $adminInfo = SystemAdmin::select(
             'id',
@@ -43,10 +43,10 @@ class Auth
             'logintime'
         )->find($tokenInfo['id']);
         if (empty($adminInfo)) {
-            throw new ApiException('用户不存在');
+            throw new ApiException(trans('condoradmin.user.does.not.exist'));
         }
         if ($adminInfo->status !== 1) {
-            throw new ApiException('用户已被禁用');
+            throw new ApiException(trans('condoradmin.user.is.disabled'));
         }
         $this->adminInfo = $adminInfo->toArray();
     }
@@ -148,6 +148,20 @@ class Auth
             $rulelist = json_decode($rulelist, true);
         }
         return $rulelist;
+    }
+
+    /**
+     * 检查路由是否存在
+     * @param string $routeName 路由名称
+     * @return bool
+     */
+    public function isRouteExist($routeName)
+    {
+        $count = Db::table('system_menu_rule')
+            ->where('status', 1)
+            ->where('path', $routeName)
+            ->count();
+        return $count > 0;
     }
 
     /**

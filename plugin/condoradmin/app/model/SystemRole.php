@@ -43,12 +43,12 @@ class SystemRole extends Model
     public function rules()
     {
         return [
-            'name' => v::NotEmpty()->setName('名称'),
-            'rules' => v::optional(v::NotEmpty())->setName('权限规则'),
-            'pid' => v::optional(v::number())->setName('父级ID'),
+            'name' => v::NotEmpty()->setName(trans('fields.name', [], 'role'))->setTemplate(trans('condoradmin.validation.required')),
+            'rules' => v::optional(v::NotEmpty())->setName(trans('fields.rules', [], 'role')),
+            'pid' => v::optional(v::number())->setName(trans('fields.pid', [], 'role')),
             // 字母、数字、下划线
-            'code' => v::optional(v::alnum('_')->noWhitespace())->setName('角色标识'),
-            'status' => v::in([1, 2])->setName('状态'),
+            'code' => v::optional(v::alnum('_')->noWhitespace())->setName(trans('fields.code', [], 'role')),
+            'status' => v::in([1, 2])->setName(trans('fields.status', [], 'role'))->setTemplate(trans('condoradmin.validation.in')),
         ];
     }
 

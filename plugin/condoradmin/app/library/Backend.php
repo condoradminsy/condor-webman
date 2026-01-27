@@ -8,6 +8,7 @@ use support\Request;
 use support\Log;
 use support\Db;
 use Respect\Validation\Validator;
+use Respect\Validation\Exceptions\ValidationException;
 
 class Backend
 {
@@ -456,15 +457,16 @@ class Backend
     protected function applyWhere($query, $params)
     {
         // 构建查询条件闭包
-        foreach ($params as $field => $value) {
+        foreach ($params as $key => $value) {
             // 字段名安全校验
-            if (!isset($this->searchable[$field]) || !$this->isValidFieldName($field) || $value === '') {
+            if (!isset($this->searchable[$key]) || !$this->isValidFieldName($key) || $value === '') {
                 continue;
             }
-            $config = $this->searchable[$field];
+            $config = $this->searchable[$key];
             [$sym, $v] = $this->buildCondition($value, $config);
             // 释放内存
             unset($value);
+            $field = $config['as'] ?? $key;
             // 关联表
             if (isset($config['relation']) && $config['relation'] != '') {
                 $query->whereHas($config['relation'], function ($q) use ($field, $sym, $v) {
@@ -560,13 +562,13 @@ class Backend
                     ->limit($limit)
                     ->get();
             }
-            return $this->success(trans('ok'), [
+            return $this->success(trans('condoradmin.ok'), [
                 'total' => $total,
                 'list' => $list->toArray()
             ]);
         } catch (\Exception $e) {
             Log::error('selectpage', ['error' => $e->getMessage()]);
-            return $this->fail(config('app.debug') ? $e->getMessage() : trans('Server error'));
+            return $this->fail(config('app.debug') ? $e->getMessage() : trans('condoradmin.system.error'));
         }
     }
 
@@ -607,13 +609,13 @@ class Backend
                 ->limit($limit)
                 ->get();
 
-            return $this->success(trans('ok'), [
+            return $this->success(trans('condoradmin.ok'), [
                 'total' => $total,
                 'list' => $list->toArray()
             ]);
         } catch (\Exception $e) {
             Log::error('index', ['error' => $e->getMessage()]);
-            return $this->fail(config('app.debug') ? $e->getMessage() : trans('Server error'));
+            return $this->fail(config('app.debug') ? $e->getMessage() : trans('condoradmin.system.error'));
         }
     }
 
@@ -627,7 +629,7 @@ class Backend
     {
         //设置过滤方法
         if (false === $request->isAjax()) {
-            return $this->fail(trans('Request method incorrect'));
+            return $this->fail(trans('condoradmin.request.method.incorrect'));
         }
         try {
             [$params, $sort, $order, $offset, $limit] = $this->buildparams($request);
@@ -650,10 +652,10 @@ class Backend
                 ->limit($limit)
                 ->get();
 
-            return $this->success(trans('ok'), ['total' => $total, 'rows' => $list]);
+            return $this->success(trans('condoradmin.ok'), ['total' => $total, 'rows' => $list]);
         } catch (\Exception $e) {
             Log::error('recyclebin', ['error' => $e->getMessage()]);
-            return $this->fail(config('app.debug') ? $e->getMessage() : trans('Server error'));
+            return $this->fail(config('app.debug') ? $e->getMessage() : trans('condoradmin.system.error'));
         }
     }
 
@@ -666,20 +668,26 @@ class Backend
     public function add(Request $request)
     {
         if (false === $request->isPost()) {
-            return $this->fail(trans('Request method incorrect'));
+            return $this->fail(trans('condoradmin.request.method.incorrect'));
         }
         $params = $request->post();
         if (empty($params)) {
-            return $this->fail('Parameter can not be empty');
+            return $this->fail(trans('condoradmin.parameter.can.not.be.empty'));
         }
         try {
-            Db::beginTransaction();
             //是否采用模型验证
             if ($this->modelValidate && method_exists($this->model, 'rules')) {
-                $data = Validator::input($params, $this->model->rules());
+                try {
+                    $data = Validator::input($params, $this->model->rules());
+                } catch (ValidationException $e) {
+                    return $this->fail($e->getMessage());
+                } catch (\Exception $e) {
+                    return $this->fail($e->getMessage());
+                }
             } else {
                 $data = $params;
             }
+            Db::beginTransaction();
             if ($this->dataLimit) {
                 $data[$this->dataLimitField] = $this->auth->id;
             }
@@ -690,13 +698,13 @@ class Backend
             $row = $this->model->create($data);
             Db::commit();
             if (!$row) {
-                return $this->fail(trans('No rows were inserted'));
+                return $this->fail(trans('condoradmin.no.rows.were.inserted'));
             }
         } catch (\Throwable $e) {
             Db::rollBack();
-            return $this->fail(config('app.debug') ? $e->getMessage() : trans('Add error'));
+            return $this->fail(config('app.debug') ? $e->getMessage() : trans('condoradmin.system.error'));
         }
-        return $this->success(trans('ok'), ['id' => $row->getKey()]);
+        return $this->success(trans('condoradmin.ok'), ['id' => $row->getKey()]);
     }
 
     /**
@@ -709,34 +717,40 @@ class Backend
     public function edit(Request $request)
     {
         if (false === $request->isPost()) {
-            return $this->fail(trans('Request method incorrect'));
+            return $this->fail(trans('condoradmin.request.method.incorrect'));
         }
         $id = $request->post('id');
         if (empty($id)) {
-            return $this->fail('参数不能为空');
+            return $this->fail(trans('condoradmin.parameter.can.not.be.empty'));
         }
         $row = $this->model->find($id);
         if (empty($row)) {
-            return $this->fail(trans('No Results were found'));
+            return $this->fail(trans('condoradmin.no.results.were.found'));
         }
         if ($this->dataLimit && $this->dataLimitField !== '') {
             $adminIds = $this->getDataLimitAdminIds();
             if (!empty($adminIds) && !in_array($row[$this->dataLimitField], $adminIds)) {
-                return $this->fail(trans('You have no permission'));
+                return $this->fail(trans('condoradmin.you.have.no.permission'));
             }
         }
         $params = $request->post();
         if (empty($params)) {
-            return $this->fail(trans('Parameter can not be empty'));
+            return $this->fail(trans('condoradmin.parameter.can.not.be.empty'));
         }
         try {
-            Db::beginTransaction();
             //是否采用模型验证
             if ($this->modelValidate && method_exists($this->model, 'rules')) {
-                $data = Validator::input($params, $this->model->rules());
+                try {
+                    $data = Validator::input($params, $this->model->rules());
+                } catch (ValidationException $e) {
+                    return $this->fail($e->getMessage());
+                } catch (\Exception $e) {
+                    return $this->fail($e->getMessage());
+                }
             } else {
                 $data = $params;
             }
+            Db::beginTransaction();
             $data = $this->preExcludeFields($data);
             if ($this->updatedByField) {
                 $data[$this->updatedByField] = $this->auth->id;
@@ -744,13 +758,13 @@ class Backend
             $result = $row->forceFill($data)->save();
             Db::commit();
             if (false === $result) {
-                return $this->fail(trans('No rows were updated'));
+                return $this->fail(trans('condoradmin.no.rows.were.updated'));
             }
         } catch (\Throwable $e) {
             Db::rollback();
-            return $this->fail(config('app.debug') ? $e->getMessage() : trans('Edit error'));
+            return $this->fail(config('app.debug') ? $e->getMessage() : trans('condoradmin.system.error'));
         }
-        return $this->success(trans('ok'), ['id' => $id]);
+        return $this->success(trans('condoradmin.ok'), ['id' => $id]);
     }
 
     /**
@@ -762,11 +776,11 @@ class Backend
     public function del(Request $request)
     {
         if (false === $request->isPost()) {
-            return $this->fail(trans('Request method incorrect'));
+            return $this->fail(trans('condoradmin.request.method.incorrect'));
         }
         $ids = $request->post("ids") ?: $request->post("id");
         if (empty($ids)) {
-            return $this->fail(trans('Parameter can not be empty'));
+            return $this->fail(trans('condoradmin.parameter.can.not.be.empty'));
         }
         $pk = $this->model->getKeyName();
         if (!is_array($ids)) {
@@ -794,12 +808,12 @@ class Backend
             Db::commit();
         } catch (\Throwable $e) {
             Db::rollback();
-            return $this->fail(config('app.debug') ? $e->getMessage() : trans('Delete failed'));
+            return $this->fail(config('app.debug') ? $e->getMessage() : trans('condoradmin.delete.failed'));
         }
         if ($count) {
             return $this->success();
         }
-        return $this->fail(trans('No rows were deleted'));
+        return $this->fail(trans('condoradmin.no.rows.were.deleted'));
     }
 
     /**
@@ -811,11 +825,11 @@ class Backend
     public function destroy(Request $request)
     {
         if (false === $request->isPost()) {
-            return $this->fail(trans("Invalid parameters"));
+            return $this->fail(trans("condoradmin.invalid.parameters"));
         }
         $ids = $request->post('ids') ?: $request->post('id');
         if (empty($ids)) {
-            return $this->fail(trans('Parameter can not be empty'));
+            return $this->fail(trans('condoradmin.parameter.can.not.be.empty'));
         }
         if (!is_array($ids)) {
             // 是否有,号
@@ -843,12 +857,12 @@ class Backend
             Db::commit();
         } catch (\Throwable $e) {
             Db::rollback();
-            return $this->fail(config('app.debug') ? $e->getMessage() : trans('Delete failed'));
+            return $this->fail(config('app.debug') ? $e->getMessage() : trans('condoradmin.delete.failed'));
         }
         if ($count) {
             return $this->success();
         }
-        return $this->fail(trans('No rows were deleted'));
+        return $this->fail(trans('condoradmin.no.rows.were.deleted'));
     }
 
     /**
@@ -860,11 +874,11 @@ class Backend
     public function restore(Request $request, $ids = null)
     {
         if (false === $request->isPost()) {
-            return $this->fail(trans('Invalid parameters'));
+            return $this->fail(trans('condoradmin.invalid.parameters'));
         }
         $ids = $request->post('ids') ?: $request->post('id');
         if (empty($ids)) {
-            return $this->fail(trans('Parameter can not be empty'));
+            return $this->fail(trans('condoradmin.parameter.can.not.be.empty'));
         }
         if (!is_array($ids)) {
             // 是否有,号
@@ -892,12 +906,12 @@ class Backend
             Db::commit();
         } catch (\Throwable $e) {
             Db::rollback();
-            return $this->fail(config('app.debug') ? $e->getMessage() : trans('Restore failed'));
+            return $this->fail(config('app.debug') ? $e->getMessage() : trans('condoradmin.restore.failed'));
         }
         if ($count) {
             return $this->success();
         }
-        return $this->fail(trans('No rows were updated'));
+        return $this->fail(trans('condoradmin.no.rows.were.updated'));
     }
 
     /**
@@ -909,11 +923,11 @@ class Backend
     public function multi(Request $request)
     {
         if (false === $request->isPost()) {
-            return $this->fail(trans('Invalid parameters'));
+            return $this->fail(trans('condoradmin.invalid.parameters'));
         }
         $ids = $request->post('ids') ?: $request->post('id');
         if (empty($ids)) {
-            return $this->fail(trans('Parameter can not be empty'));
+            return $this->fail(trans('condoradmin.parameter.can.not.be.empty'));
         }
         if (!is_array($ids)) {
             // 是否有,号
@@ -929,14 +943,14 @@ class Backend
         if (!empty($field)) {
             $values = [$field => $value];
         } elseif (empty($values)) {
-            return $this->fail(trans('Parameter can not be empty'));
+            return $this->fail(trans('condoradmin.parameter.can.not.be.empty'));
         }
         if (!is_array($values)) {
-            return $this->fail(trans('Parameter type error'));
+            return $this->fail(trans('condoradmin.parameter.type.error'));
         }
         $values = $this->auth->isSuperAdmin() ? $values : array_intersect_key($values, array_flip(is_array($this->multiFields) ? $this->multiFields : explode(',', $this->multiFields)));
         if (empty($values)) {
-            return $this->fail(trans('You have no permission'));
+            return $this->fail(trans('condoradmin.you.have.no.permission'));
         }
         $query = $this->model->whereIn($this->model->getKeyName(), $ids);
         if ($this->dataLimit && $this->dataLimitField !== '') {
@@ -958,11 +972,11 @@ class Backend
             Db::commit();
         } catch (\Throwable $e) {
             Db::rollback();
-            return $this->fail(config('app.debug') ? $e->getMessage() : trans('Update failed'));
+            return $this->fail(config('app.debug') ? $e->getMessage() : trans('condoradmin.update.failed'));
         }
         if ($count) {
-            return $this->success(trans('ok'));
+            return $this->success(trans('condoradmin.ok'));
         }
-        return $this->fail(trans('No rows were updated'));
+        return $this->fail(trans('condoradmin.no.rows.were.updated'));
     }
 }

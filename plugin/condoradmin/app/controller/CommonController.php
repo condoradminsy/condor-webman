@@ -24,7 +24,7 @@ class CommonController extends Backend
      */
     public function getRoutes()
     {
-        return $this->success('获取成功', [
+        return $this->success(trans('condoradmin.ok'), [
             'routes' => $this->auth->getRuleMenu($this->auth->id),
             'home' => 'home'
         ]);
@@ -37,8 +37,12 @@ class CommonController extends Backend
     {
         $routeName = $request->get('routeName', '');
         if (empty($routeName)) {
-            return $this->fail('路由名称不能为空');
+            return $this->fail(trans('condoradmin.invalid.parameters'));
         }
+        if ($this->auth->isRouteExist($routeName)) {
+            return $this->success(trans('condoradmin.ok'), ['isExist' => true]);
+        }
+        return $this->success(trans('condoradmin.ok'), ['isExist' => false]);
     }
 
     /**
@@ -46,7 +50,7 @@ class CommonController extends Backend
      */
     public function getPublicKey()
     {
-        return $this->success('获取成功', [
+        return $this->success(trans('condoradmin.ok'), [
             'publicKey' => getPublicKeyValue(config('plugin.condoradmin.condor.public_key'))
         ]);
     }
@@ -58,6 +62,6 @@ class CommonController extends Backend
             ->where('status', 1)
             ->where('scope', '<>', 1)
             ->get(['id', 'name', 'title']);
-        return $this->success('获取成功', $list);
+        return $this->success(trans('condoradmin.ok'), $list);
     }
 }

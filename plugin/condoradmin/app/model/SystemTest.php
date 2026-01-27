@@ -8,7 +8,7 @@ use Respect\Validation\Validator as v;
 
 class SystemTest extends Model
 {
-    
+
     /**
      * @var string
      */
@@ -43,7 +43,7 @@ class SystemTest extends Model
     public function rules()
     {
         return [
-            'name' => v::optional(v::notEmpty())->setName('名称'),
+            'name' => v::notEmpty()->setName(trans('fields.name', [], 'test'))->setTemplate(trans('condoradmin.validation.required')),
             'target' => v::optional(v::notEmpty())->setName('目标'),
             'image' => v::optional(v::notEmpty())->setName('图片'),
             'createtime' => v::optional(v::notEmpty())->setName('创建时间'),

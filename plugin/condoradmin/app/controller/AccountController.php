@@ -35,13 +35,13 @@ class AccountController extends Backend
                 Redis::expire($limitKey, 30);
             }
             if ($count > 5) {
-                return $this->fail(trans('请求过于频繁，请稍后再试'));
+                return $this->fail(trans('condoradmin.too.many.requests.please.try.again.later'));
             }
         } catch (\Throwable $e) {
             // Redis 出错时降级处理：允许请求，但记录日志以便排查
             Log::error('Redis error: ' . $e->getMessage());
         }
-        return $this->success(trans('ok'), [
+        return $this->success(trans('condoradmin.ok'), [
             'captcha' => Captcha::imageCaptcha('login')
         ]);
     }
@@ -56,18 +56,18 @@ class AccountController extends Backend
         $password = $request->post('password');
         $captcha = $request->post('captcha');
         if (empty($username) || empty($password) || empty($captcha)) {
-            return $this->fail(trans('请输入完整信息'));
+            return $this->fail(trans('condoradmin.invalid.parameters'));
         }
         if (Captcha::checkCaptcha('login', $captcha) === false) {
-            return $this->fail(trans('验证码错误'));
+            return $this->fail(trans('condoradmin.incorrect.verification.code'));
         }
         $privateKey = getPrivateKeyValue(config('plugin.condoradmin.condor.private_key'));
         $password = openssl_private_decrypt(base64_decode($password), $decryptedData, $privateKey) ? $decryptedData : '';
         if (empty($password)) {
-            return $this->fail(trans('密码错误'));
+            return $this->fail(trans('condoradmin.incorrect.password.please.try.again'));
         }
         $admin = new SystemAdmin();
-        return $this->success('登录成功', $admin->login(trim($username), trim($password)));
+        return $this->success(trans('condoradmin.ok'), $admin->login(trim($username), trim($password)));
     }
 
     /**
@@ -82,6 +82,6 @@ class AccountController extends Backend
         $adminInfo['is_super'] = $this->auth->isSuperAdmin();
         $adminInfo['roles'] =  $this->auth->getRuleList($this->auth->id);
         $adminInfo['buttons'] =  $this->auth->getRuleList($this->auth->id, 2);
-        return $this->success('获取成功', $adminInfo);
+        return $this->success(trans('condoradmin.ok'), $adminInfo);
     }
 }
