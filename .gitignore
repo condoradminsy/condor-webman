@@ -10,3 +10,4 @@ app/command/Test.php
 /public/uploads/*
 /plugin/condormental
 /plugin/condorlawyer
+composer.lock
