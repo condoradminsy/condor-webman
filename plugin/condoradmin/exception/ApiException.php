@@ -13,6 +13,6 @@ class ApiException extends BusinessException
 {
     public function render(Request $request): ?Response
     {
-        return json(['code' => $this->getCode() ?: 500, 'message' => $this->getMessage()]);
+        return json(['code' => $this->getCode() ?: 500, 'msg' => $this->getMessage(), 'data' => null]);
     }
 }

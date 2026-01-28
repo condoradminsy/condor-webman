@@ -35,6 +35,7 @@ Route::group('/core', function () {
     Route::post('/login-log/del', [\plugin\condoradmin\app\controller\LoginLogController::class, 'del']);
     Route::post('/admin-log/index', [\plugin\condoradmin\app\controller\AdminLogController::class, 'index']);
     Route::post('/admin-log/del', [\plugin\condoradmin\app\controller\AdminLogController::class, 'del']);
+    // crud
     Route::get('/crud/config', [\plugin\condoradmin\app\controller\CrudController::class, 'config']);
     Route::post('/crud/fields', [\plugin\condoradmin\app\controller\CrudController::class, 'fields']);
     Route::post('/crud/create', [\plugin\condoradmin\app\controller\CrudController::class, 'create']);

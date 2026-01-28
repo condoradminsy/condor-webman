@@ -41,7 +41,10 @@ class Breadcrumb
         $tree = new Tree();
         $tree->init($menus, 'pid');
 
-        $map = [];
+        $map = [
+            '/core/common/getRoutes' => ['获取菜单路由'],
+            '/core/common/getUserInfo' => ['获取用户信息'],
+        ];
         foreach ($menus as $menu) {
             // 接口才生成，写入日志取值
             if (!empty($menu['path']) && $menu['menu_type'] !== 1) {

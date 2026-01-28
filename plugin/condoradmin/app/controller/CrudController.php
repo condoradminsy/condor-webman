@@ -127,6 +127,6 @@ class CrudController extends Backend
         } catch (\Exception $e) {
             return $this->fail($e->getMessage());
         }
-        return $this->fail(trans('condoradmin.operation.successful'));
+        return $this->success(trans('condoradmin.operation.successful'));
     }
 }

@@ -9,12 +9,13 @@ class SystemTestController extends Backend
 {
 
     protected array $searchable = [
-        'id' => ['type' => 'int'],
         'name' => ['type' => 'string'],
-        'target' => ['type' => 'string'],
-        'image' => ['type' => 'string'],
-        'createtime' => ['type' => 'string'],
-        'updatetime' => ['type' => 'int'],
+        'title' => ['type' => 'string'],
+        'price' => ['type' => 'int'],
+        'views' => ['type' => 'int'],
+        'activitytime' => ['type' => 'int'],
+        'refreshtime' => ['type' => 'int'],
+        'createtime' => ['type' => 'int'],
     ];
 
     public function __construct()
