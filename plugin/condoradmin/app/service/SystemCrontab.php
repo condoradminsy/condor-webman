@@ -30,7 +30,7 @@ class SystemCrontab extends BaseService
     public function run($id)
     {
         $info = $this->model->find($id);
-        if (empty($info)) {
+        if (empty($info) || $info->status != 1) {
             return false;
         }
         $data['crontab_id'] = $id;

@@ -12,12 +12,12 @@ class CommonController extends Backend
     /**
      * 不需要登录的方法
      */
-    protected $noNeedLogin = ['getPublicKey', 'getDict'];
+    protected $noNeedLogin = ['getPublicKey'];
 
     /**
      * 不需要鉴权的方法
      */
-    protected $noNeedRight = ['getRoutes'];
+    protected $noNeedRight = ['getRoutes', 'getDict'];
 
     /**
      * 获取路由列表

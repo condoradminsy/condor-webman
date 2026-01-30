@@ -59,14 +59,20 @@ class MenuController extends Backend
     public function selectpage(Request $request)
     {
         $is_tree = $request->input('is_tree', 1);
+        $menu_type = $request->input('menu_type');
         // 读取用户规则节点
         $ids = $this->auth->getRuleIds();
         if (empty($ids)) {
             return $this->fail(trans('condoradmin.you.have.no.permission'));
         }
-        $list = $this->model->where('status', 1)->where(function ($query) use ($ids) {
+        $list = $this->model->where('status', 1)->where(function ($query) use ($ids,$menu_type) {
             if (!in_array('*', $ids)) {
                 $query->whereIn('id', $ids);
+            }
+            if (is_array($menu_type) && !empty($menu_type)) {
+                $query->whereIn('menu_type', $menu_type);
+            } else if (is_numeric($menu_type)) {
+                $query->where('menu_type', $menu_type);
             }
         })->get(['id', 'title', 'pid'])->toArray();
         if ($is_tree) {
