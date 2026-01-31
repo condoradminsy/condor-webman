@@ -449,8 +449,19 @@ EOF;
     },
 EOF;
         }
-        // 去掉最后一个逗号
-        $columns = substr($columns, 0, -1);
+    //操作列
+        $columns .= <<<EOF
+
+    {
+      type: 'operate',
+      title() {
+        return $t('common.operate');
+      },
+      width: 120,
+      key: 'operation',
+      buttons: ['edit', 'del']
+    }
+EOF;
         $columns .= "\r\n  ]";
         $tpl = str_replace(['{urls}', '{columns}'], [$urls, $columns], $tpl);
         // 

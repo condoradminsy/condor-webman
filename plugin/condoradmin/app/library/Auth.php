@@ -406,6 +406,7 @@ class Auth
     public static function clearRoleCacheByUid($uid)
     {
         Redis::del(self::ROLE_GROUP_CACHE . $uid);
+        self::clearRuleListCacheByUid($uid);
     }
 
     /**
@@ -422,18 +423,25 @@ class Auth
     }
 
     // 清除规则缓存
+    public static function clearRuleListCacheByUid($uid)
+    {
+        $value = Redis::get(self::RULE_LIST_CACHE_KEY . $uid);
+        if ($value) {
+            $menuTypes = [0, 1, 2];
+            foreach ($menuTypes as $menuType) {
+                Redis::del(self::RULE_LIST_CACHE . $uid . ':' . $value . ':' . $menuType);
+            }
+            Redis::del(self::RULE_LIST_CACHE_KEY . $uid);
+        }
+    }
+
+    // 清除规则缓存
     public static function clearCacheByRuleId($rule_id)
     {
-        $menuTypes = [0, 1, 2];
         $admin_ids = Db::table('system_role')->select('admin_id')->whereRaw('FIND_IN_SET(?,rules)', [$rule_id])->pluck('admin_id')->toArray();
         $admin_ids = array_unique($admin_ids);
         foreach ($admin_ids as $admin_id) {
-            $value = Redis::get(self::RULE_LIST_CACHE_KEY . $admin_id);
-            if ($value) {
-                foreach ($menuTypes as $menuType) {
-                    Redis::del(self::RULE_LIST_CACHE . $admin_id . ':' . $value . ':' . $menuType);
-                }
-            }
+            self::clearRuleListCacheByUid($admin_id);
         }
     }
 }
