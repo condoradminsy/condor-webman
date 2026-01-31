@@ -45,8 +45,10 @@ class SystemAdmin extends BaseService
             $message = trans($msg, [], null, 'zh_cn');
             // 登录事件
             Event::emit('admin.login', compact('username', 'status', 'message'));
-            $adminInfo->loginfailure = $adminInfo->loginfailure + 1;
-            $adminInfo->save();
+            if ($adminInfo) {
+                $adminInfo->loginfailure = $adminInfo->loginfailure + 1;
+                $adminInfo->save();
+            }
             throw new ApiException(trans($msg));
         }
         $adminInfo->logintime = time();
