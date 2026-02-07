@@ -49,6 +49,7 @@ class SystemConfig extends BaseService
         }
     }
 
+    // 获取配置
     public function getConfig(string $key, string $group_code = 'base')
     {
         // 使用单独变量保存 Redis 键，避免与 DB 中的 key 字段混淆
@@ -65,5 +66,11 @@ class SystemConfig extends BaseService
             }
         }
         return $value;
+    }
+
+    // 获取配置列表
+    public static function config(string $key, string $group_code = 'base')
+    {
+        return (new self())->getConfig($key, $group_code);
     }
 }

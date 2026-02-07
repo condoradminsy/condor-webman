@@ -43,4 +43,5 @@ return [
     'condoradmin.validation.length.exact' => '{{name}} must have a length of {{maxValue}}',
     'condoradmin.validation.email' => '{{name}} must be a valid email',
     'condoradmin.validation.mobile' => '{{name}} must be a valid mobile',
+    'condoradmin.send.failed' => 'Send failed',
 ];

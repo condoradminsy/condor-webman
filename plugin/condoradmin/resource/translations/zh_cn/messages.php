@@ -43,4 +43,5 @@ return [
     'condoradmin.validation.length.exact' => '{{name}} 长度必须是 {{maxValue}}',
     'condoradmin.validation.email' => '{{name}} 必须是有效的电子邮件',
     'condoradmin.validation.mobile' => '{{name}} 必须是有效的手机号码',
+    'condoradmin.send.failed' => '发送失败',
 ];

@@ -89,4 +89,17 @@ class ConfigController extends Backend
         }
         return $this->fail(trans('condoradmin.no.rows.were.deleted'));
     }
+
+    // 发送测试邮件
+    public function sendTestEmail(Request $request){
+        $email = $request->input('email', '');
+        if(empty($email)){
+            return $this->fail(trans('condoradmin.parameter.can.not.be.empty'));
+        }
+       $emailer = new \plugin\condoradmin\app\library\Email();
+       if($emailer->send($email, '测试主题', '测试内容')){
+           return $this->success(trans('condoradmin.operation.successful'));
+       }
+       return $this->fail(trans('condoradmin.send.failed'));
+    }
 }

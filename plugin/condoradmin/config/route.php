@@ -23,6 +23,7 @@ Route::group('/core', function () {
     createRoutes('/config-group', \plugin\condoradmin\app\controller\ConfigGroupController::class);
     createRoutes('/config', \plugin\condoradmin\app\controller\ConfigController::class);
     Route::post("/config/save", [\plugin\condoradmin\app\controller\ConfigController::class, 'save']);
+    Route::post("/config/send-test-email", [\plugin\condoradmin\app\controller\ConfigController::class, 'sendTestEmail']);
     createRoutes('/attachment-type', \plugin\condoradmin\app\controller\AttachmentTypeController::class);
     Route::post('/attachment/index', [\plugin\condoradmin\app\controller\AttachmentController::class, 'index']);
     Route::post('/attachment/del', [\plugin\condoradmin\app\controller\AttachmentController::class, 'del']);
