@@ -43,13 +43,19 @@ class SystemDictData extends Model
     public function rules()
     {
         return [
-            'label' => v::NotEmpty()->setName(trans('fields.label', [], 'dict'))->setTemplate(trans('condoradmin.validation.required')),
             'value' => v::optional(v::anyOf(v::equals(0), v::equals('0'), v::notEmpty()))->setName(trans('fields.value', [], 'dict')),
             'type_id' => v::NotEmpty()->number()->setName(trans('fields.type_id', [], 'dict'))->setTemplate(trans('condoradmin.validation.required')),
             'color' => v::optional(v::NotEmpty())->setName(trans('fields.color', [], 'dict')),
             'weigh' => v::optional(v::number())->setName(trans('fields.weigh', [], 'dict')),
-            'remark' => v::optional(v::NotEmpty())->setName(trans('fields.remark', [], 'dict')),
             'status' => v::in([1, 2])->setName(trans('fields.status', [], 'dict'))->setTemplate(trans('condoradmin.validation.in')),
         ];
+    }
+
+    /**
+     * 关联翻译
+     */
+    public function translations()
+    {
+        return $this->hasMany(SystemDictDataTranslations::class, 'main_id', 'id');
     }
 }

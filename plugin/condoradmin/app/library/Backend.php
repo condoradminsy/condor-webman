@@ -68,7 +68,7 @@ class Backend
     /**
      * 批量操作字段
      */
-    protected $multiFields = 'status';
+    protected array|string $multiFields = ['status'];
 
     /**
      * 别名
@@ -160,7 +160,7 @@ class Backend
     /**
      * 验证字段名是否安全
      */
-    private function isValidFieldName(string $field): bool
+    protected function isValidFieldName(string $field): bool
     {
         // 允许字母、数字、下划线、连字符和点（用于表别名）
         return preg_match('/^[a-zA-Z0-9_\-\.]+$/', $field) === 1;
@@ -169,7 +169,7 @@ class Backend
     /**
      * 判断操作符是否合法
      */
-    private function isOperator(string $operator): bool
+    protected function isOperator(string $operator): bool
     {
         return in_array(strtoupper($operator), ['=', '!=', '<>', '>', '<', '>=', '<=', 'IN', 'NOT IN', 'LIKE', 'NOT LIKE', 'BETWEEN', 'NOT BETWEEN', 'NULL', 'NOT NULL', 'IS NULL', 'IS NOT NULL', 'FIND_IN_SET', 'FINDINSET', 'FINDIN']);
     }
@@ -190,7 +190,7 @@ class Backend
     /**
      * 构建排序参数
      */
-    private function buildOrder(Request $request): array
+    protected function buildOrder(Request $request): array
     {
         $defaultOrder = 'id';
         if (!empty($this->model) && method_exists($this->model, 'getKeyName')) {
@@ -210,7 +210,7 @@ class Backend
     /**
      * 处理查询参数，排除不需要的字段
      */
-    private function processParams(Request $request): array
+    protected function processParams(Request $request): array
     {
         $params = $request->except(['page', 'limit', 'order', 'orderBy']);
 
@@ -232,7 +232,7 @@ class Backend
     /**
      * 格式化查询值
      */
-    private function formatValue($value, $type, &$operator = null)
+    protected function formatValue($value, $type, &$operator = null)
     {
         if (is_string($value)) {
             $value = trim($value);
@@ -254,7 +254,7 @@ class Backend
     /**
      * 构建查询条件
      */
-    private function buildCondition($value, $config): ?array
+    protected function buildCondition($value, $config): ?array
     {
         $operator = '=';
         $type = $config['type'] ?? 'string';

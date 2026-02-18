@@ -43,19 +43,23 @@ class SystemTest extends Model
     public function rules()
     {
         return [
-            'name' => v::optional(v::notEmpty())->setName(trans('fields.name', [], 'test')),
-            'target' => v::optional(v::notEmpty())->setName(trans('fields.target', [], 'test')),
-            'title' => v::optional(v::notEmpty())->setName(trans('fields.title', [], 'test')),
-            'content' => v::optional(v::notEmpty())->setName(trans('fields.content', [], 'test')),
-            'image' => v::optional(v::notEmpty())->setName(trans('fields.image', [], 'test')),
-            'images' => v::optional(v::notEmpty())->setName(trans('fields.images', [], 'test')),
-            'attachfile' => v::optional(v::notEmpty())->setName(trans('fields.attachfile', [], 'test')),
-            'keywords' => v::optional(v::notEmpty())->setName(trans('fields.keywords', [], 'test')),
-            'description' => v::optional(v::notEmpty())->setName(trans('fields.description', [], 'test')),
             'price' => v::optional(v::notEmpty())->setName(trans('fields.price', [], 'test')),
             'views' => v::optional(v::notEmpty())->setName(trans('fields.views', [], 'test')),
             'activitytime' => v::optional(v::notEmpty())->setName(trans('fields.activitytime', [], 'test')),
             'refreshtime' => v::optional(v::notEmpty())->setName(trans('fields.refreshtime', [], 'test')),
         ];
+    }
+
+    public function getPriceAttribute($value)
+    {
+        return floatval($value);
+    }
+
+    /**
+     * 关联翻译
+     */
+    public function translations()
+    {
+        return $this->hasMany(SystemTestTranslations::class, 'main_id', 'id');
     }
 }

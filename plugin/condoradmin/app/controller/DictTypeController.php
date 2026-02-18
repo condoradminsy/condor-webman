@@ -2,10 +2,11 @@
 
 namespace plugin\condoradmin\app\controller;
 
-use plugin\condoradmin\app\library\Backend;
+use plugin\condoradmin\app\library\TranslatableBackend;
 use plugin\condoradmin\app\model\SystemDictType;
+use plugin\condoradmin\app\model\SystemDictTypeTranslations;
 
-class DictTypeController extends Backend
+class DictTypeController extends TranslatableBackend
 {
 
     protected $createdByField = 'created_by';
@@ -13,6 +14,9 @@ class DictTypeController extends Backend
     protected $updatedByField = 'updated_by';
 
     protected $selectpageFields = ['id', 'name', 'title'];
+
+    // 多语言字段
+    protected array $multilingualFields = ['remark', 'title'];
 
     protected array $searchable = [
         'title' => ['type' => 'string'],
@@ -25,5 +29,7 @@ class DictTypeController extends Backend
     {
         parent::__construct();
         $this->model = new SystemDictType();
+        // 多语言表模型
+        $this->translationModel = new SystemDictTypeTranslations();
     }
 }

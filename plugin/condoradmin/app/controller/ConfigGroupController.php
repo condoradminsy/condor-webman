@@ -3,25 +3,30 @@
 namespace plugin\condoradmin\app\controller;
 
 use support\Request;
-use plugin\condoradmin\app\library\Backend;
+use plugin\condoradmin\app\library\TranslatableBackend;
 use plugin\condoradmin\app\model\SystemConfigGroup;
+use plugin\condoradmin\app\model\SystemConfigGroupTranslations;
 use support\Db;
 
-class ConfigGroupController extends Backend
+class ConfigGroupController extends TranslatableBackend
 {
     protected $createdByField = 'created_by';
     protected $updatedByField = 'updated_by';
+
+    protected array $multilingualFields = ['name', 'remark'];
 
     public function __construct()
     {
         parent::__construct();
         $this->model = new SystemConfigGroup();
+        // 多语言表模型
+        $this->translationModel = new SystemConfigGroupTranslations();
     }
 
     public function index(Request $request)
     {
-        $list = $this->model->orderBy('id', 'asc')->get();
-        return $this->success(trans('condoradmin.ok'), $list);
+        $list = $this->model->with(['translations'])->orderBy('id', 'asc')->get()->toArray();
+        return $this->success(trans('condoradmin.ok'), $this->renderTranslations($list));
     }
 
     /**
@@ -61,6 +66,8 @@ class ConfigGroupController extends Backend
         try {
             foreach ($list as $item) {
                 $count += $item->delete();
+                // 多语言处理
+                $item->translations()->delete();
             }
             Db::commit();
         } catch (\Throwable $e) {

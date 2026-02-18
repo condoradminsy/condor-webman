@@ -45,10 +45,8 @@ class SystemConfig extends Model
         return [
             'key' => v::regex('/^[a-zA-Z0-9_]+$/')->setName(trans('fields.key', [], 'config'))->setTemplate(trans('fields.code.regex', [], 'config')),
             'value' => v::optional(v::NotEmpty())->setName(trans('fields.value', [], 'config')),
-            'title' => v::NotEmpty()->setName(trans('fields.title', [], 'config'))->setTemplate(trans('condoradmin.validation.required')),
             'group_code' => v::NotEmpty()->setName(trans('fields.group.code', [], 'config'))->setTemplate(trans('condoradmin.validation.required')),
             'group_id' => v::number()->setName(trans('fields.group.id', [], 'config')),
-            'tips' => v::optional(v::NotEmpty())->setName(trans('fields.tips', [], 'config')),
             'type' => v::in(['number', 'string', 'textarea', 'switch', 'array', 'editor', 'date', 'image', 'images', 'datetime', 'daterange', 'dict'])->setName(trans('fields.type', [], 'config')),
             'is_visible' => v::in([0, 1])->setName(trans('fields.is.visible', [], 'config'))->setTemplate(trans('condoradmin.validation.in')),
             'weigh' => v::optional(v::number())->setName(trans('fields.weigh', [], 'config')),
@@ -68,5 +66,13 @@ class SystemConfig extends Model
                 throw new \Exception(trans('mismatch.between.the.group.identifier.and.the.group.id', [], 'config'));
             };
         });
+    }
+
+    /**
+     * 关联翻译
+     */
+    public function translations()
+    {
+        return $this->hasMany(SystemConfigTranslations::class, 'main_id', 'id');
     }
 }

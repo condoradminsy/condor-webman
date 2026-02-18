@@ -58,10 +58,30 @@ class CommonController extends Backend
     // 字典
     public function getDict()
     {
-        $list = \plugin\condoradmin\app\model\SystemDictType::with(['DictData'])
+        $list = \plugin\condoradmin\app\model\SystemDictType::with(['DictData.translations'])
             ->where('status', 1)
             ->where('scope', '<>', 1)
-            ->get(['id', 'name', 'title']);
+            ->get(['id', 'name', 'title'])
+            ->toArray();
+        $multilingualFields = ['label', 'remark'];
+        // 多语言字段处理
+        foreach ($list as &$item) {
+            foreach ($item['dict_data'] as &$dictData) {
+                foreach ($multilingualFields as $field) {
+                    $rows = $dictData['translations'];
+                    $dictData[$field] =  [];
+                    foreach ($rows as $row) {
+                        $dictData[$field][$row['locale']] = $row[$field] ?? '';
+                    }
+                    if (empty($dictData[$field])) {
+                        $dictData[$field] =  null;
+                    }
+                }
+                unset($dictData['translations']);
+                unset($dictData);
+            }
+        }
+        unset($item);
         return $this->success(trans('condoradmin.ok'), $list);
     }
 }

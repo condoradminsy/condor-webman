@@ -42,7 +42,7 @@ class SystemAdmin extends BaseService
             $msg = 'condoradmin.incorrect.password.please.try.again';
         }
         if ($status === 2) {
-            $message = trans($msg, [], null, 'zh_cn');
+            $message = trans($msg, [], null, 'zh-cn');
             // 登录事件
             Event::emit('admin.login', compact('username', 'status', 'message'));
             if ($adminInfo) {

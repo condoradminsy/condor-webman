@@ -44,4 +44,6 @@ return [
     'condoradmin.validation.email' => '{{name}} must be a valid email',
     'condoradmin.validation.mobile' => '{{name}} must be a valid mobile',
     'condoradmin.send.failed' => 'Send failed',
+    'condoradmin.system.translation_locale_key_empty' => 'System translation locale key empty',
+    'condoradmin.system.translation_key_empty' => 'System translation main key empty',
 ];

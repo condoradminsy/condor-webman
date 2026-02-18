@@ -43,10 +43,8 @@ class SystemDictType extends Model
     public function rules()
     {
         return [
-            'title' => v::NotEmpty()->setName(trans('fields.type.title', [], 'dict'))->setTemplate(trans('condoradmin.validation.required')),
             'scope' => v::in([0, 1, 2])->setName(trans('fields.type.scope', [], 'dict'))->setTemplate(trans('condoradmin.validation.in')),
             'name' => v::optional(v::alnum('_')->noWhitespace())->setName(trans('fields.type.name', [], 'dict')),
-            'remark' => v::optional(v::NotEmpty())->setName(trans('fields.type.remark', [], 'dict')),
             'status' => v::in([1, 2])->setName(trans('fields.type.status', [], 'dict'))->setTemplate(trans('condoradmin.validation.in')),
         ];
     }
@@ -58,5 +56,13 @@ class SystemDictType extends Model
             ->select(['id', 'type_id', 'label', 'value', 'color'])
             ->where('status', 1)
             ->orderBy('weigh', 'asc');
+    }
+
+    /**
+     * 关联翻译
+     */
+    public function translations()
+    {
+        return $this->hasMany(SystemDictTypeTranslations::class, 'main_id', 'id');
     }
 }

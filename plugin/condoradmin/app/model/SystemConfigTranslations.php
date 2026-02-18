@@ -6,13 +6,13 @@ use support\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Respect\Validation\Validator as v;
 
-class SystemConfigGroup extends Model
+class SystemConfigTranslations extends Model
 {
     use SoftDeletes;
     /**
      * @var string
      */
-    protected $table = 'system_config_group';
+    protected $table = 'system_config_translations';
 
     /**
      * @var string
@@ -43,15 +43,9 @@ class SystemConfigGroup extends Model
     public function rules()
     {
         return [
-            'code' => v::regex('/^[a-zA-Z_][a-zA-Z0-9_]*$/')->setName(trans('fields.code', [], 'config'))->setTemplate(trans('fields.code.regex', [], 'config')),
+            'title' => v::NotEmpty()->setName(trans('fields.title', [], 'config'))->setTemplate(trans('condoradmin.validation.required')),
+            'tips' => v::optional(v::NotEmpty())->setName(trans('fields.tips', [], 'config')),
         ];
     }
 
-    /**
-     * 关联翻译
-     */
-    public function translations()
-    {
-        return $this->hasMany(SystemConfigGroupTranslations::class, 'main_id', 'id');
-    }
 }

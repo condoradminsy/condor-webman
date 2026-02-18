@@ -10,4 +10,7 @@ app/command/Test.php
 /public/uploads/*
 /plugin/condormental
 /plugin/condorlawyer
+/plugin/condorshop
+/plugin/condorsms
+/plugin/condorsupport
 composer.lock

@@ -3,18 +3,22 @@
 namespace plugin\condoradmin\app\controller;
 
 use support\Request;
-use plugin\condoradmin\app\library\Backend;
+use plugin\condoradmin\app\library\TranslatableBackend;
 use plugin\condoradmin\app\model\SystemConfig;
+use plugin\condoradmin\app\model\SystemConfigTranslations;
 use plugin\condoradmin\app\service\SystemConfig as ConfigService;
 use support\Db;
 
-class ConfigController extends Backend
+class ConfigController extends TranslatableBackend
 {
+    protected array $multilingualFields = ['title', 'tips'];
 
     public function __construct()
     {
         parent::__construct();
         $this->model = new SystemConfig();
+        // 多语言表模型
+        $this->translationModel = new SystemConfigTranslations();
     }
 
     public function index(Request $request)
@@ -24,8 +28,8 @@ class ConfigController extends Backend
             if ($group_id) {
                 $query->where('group_id', $group_id);
             }
-        })->orderBy('weigh', 'asc')->get();
-        return $this->success(trans('condoradmin.ok'), $list);
+        })->with(['translations'])->orderBy('weigh', 'asc')->get();
+        return $this->success(trans('condoradmin.ok'), $this->renderTranslations($list));
     }
 
     // 保存配置项
@@ -78,6 +82,8 @@ class ConfigController extends Backend
         try {
             foreach ($list as $item) {
                 $count += $item->delete();
+                // 多语言处理
+                $item->translations()->delete();
             }
             Db::commit();
         } catch (\Throwable $e) {
@@ -91,15 +97,16 @@ class ConfigController extends Backend
     }
 
     // 发送测试邮件
-    public function sendTestEmail(Request $request){
+    public function sendTestEmail(Request $request)
+    {
         $email = $request->input('email', '');
-        if(empty($email)){
+        if (empty($email)) {
             return $this->fail(trans('condoradmin.parameter.can.not.be.empty'));
         }
-       $emailer = new \plugin\condoradmin\app\library\Email();
-       if($emailer->send($email, '测试主题', '测试内容')){
-           return $this->success(trans('condoradmin.operation.successful'));
-       }
-       return $this->fail(trans('condoradmin.send.failed'));
+        $emailer = new \plugin\condoradmin\app\library\Email();
+        if ($emailer->send($email, '测试主题', '测试内容')) {
+            return $this->success(trans('condoradmin.operation.successful'));
+        }
+        return $this->fail(trans('condoradmin.send.failed'));
     }
 }
