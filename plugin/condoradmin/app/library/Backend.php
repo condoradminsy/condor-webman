@@ -123,6 +123,8 @@ class Backend
      */
     protected $excludeFields = [];
 
+    protected array $hidden = [];
+
     /**
      * join关联key
      */
@@ -607,11 +609,20 @@ class Backend
                 ->orderBy($order, $sort)
                 ->offset($offset)
                 ->limit($limit)
-                ->get();
-
+                ->get()
+                ->toArray();
+            // 隐藏字段
+            if (!empty($this->hidden)) {
+                foreach ($list as &$item) {
+                    foreach ($this->hidden as $field) {
+                        unset($item[$field]);
+                    }
+                }
+                unset($item);
+            }
             return $this->success(trans('condoradmin.ok'), [
                 'total' => $total,
-                'list' => $list->toArray()
+                'list' => $list
             ]);
         } catch (\Exception $e) {
             Log::error('index', ['error' => $e->getMessage()]);
@@ -675,10 +686,13 @@ class Backend
             return $this->fail(trans('condoradmin.parameter.can.not.be.empty'));
         }
         try {
-            //是否采用模型验证
+            $fields = array_keys($params);
+            // 是否采用模型验证
             if ($this->modelValidate && method_exists($this->model, 'rules')) {
                 try {
                     $data = Validator::input($params, $this->model->rules());
+                    // 仅保留$data中在$fields列表里的键，避免无用的循环变量
+                    $data = array_intersect_key($data, array_flip($fields));
                 } catch (ValidationException $e) {
                     return $this->fail($e->getMessage());
                 } catch (\Exception $e) {
@@ -738,10 +752,13 @@ class Backend
             return $this->fail(trans('condoradmin.parameter.can.not.be.empty'));
         }
         try {
-            //是否采用模型验证
+            $fields = array_keys($params);
+            // 是否采用模型验证
             if ($this->modelValidate && method_exists($this->model, 'rules')) {
                 try {
                     $data = Validator::input($params, $this->model->rules());
+                    // 仅保留$data中在$fields列表里的键，避免无用的循环变量
+                    $data = array_intersect_key($data, array_flip($fields));
                 } catch (ValidationException $e) {
                     return $this->fail($e->getMessage());
                 } catch (\Exception $e) {

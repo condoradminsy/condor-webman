@@ -51,6 +51,8 @@ class TranslatableBackend extends Backend
     public function __construct()
     {
         parent::__construct();
+        // 设置多语言
+        $this->supportedLocales = array_column(config('plugin.condoradmin.translation.languages'), 'key');
         // 设置多语言字段
         if (empty($this->translationLocaleKey)) {
             return $this->fail(trans('condoradmin.system.translation_locale_key_empty'));
@@ -158,6 +160,12 @@ class TranslatableBackend extends Backend
                 }
                 if (empty($item[$field])) {
                     $item[$field] =  null;
+                }
+            }
+            // 隐藏字段
+            if (!empty($this->hidden)) {
+                foreach ($this->hidden as $field) {
+                    unset($item[$field]);
                 }
             }
             unset($item[$this->translationForeignMethod]);
@@ -397,6 +405,7 @@ class TranslatableBackend extends Backend
         try {
             // 提取多语言数据
             [$masterData, $translations] = $this->extractMultilingualData($params);
+            $fields = array_keys($masterData);
             //是否采用模型验证
             if ($this->modelValidate) {
                 // 主表模型验证
@@ -404,6 +413,7 @@ class TranslatableBackend extends Backend
                 try {
                     if (method_exists($this->model, 'rules')) {
                         $masterData = Validator::input($masterData, $this->model->rules());
+                        $masterData = array_intersect_key($masterData, array_flip($fields));
                     }
                     // 翻译模型验证
                     if (method_exists($this->translationModel, 'rules')) {
@@ -477,6 +487,7 @@ class TranslatableBackend extends Backend
         try {
             // 提取多语言数据
             [$masterData, $translations] = $this->extractMultilingualData($params);
+            $fields = array_keys($masterData);
             //是否采用模型验证
             if ($this->modelValidate) {
                 // 主表模型验证
@@ -484,6 +495,7 @@ class TranslatableBackend extends Backend
                 try {
                     if (method_exists($this->model, 'rules')) {
                         $masterData = Validator::input($masterData, $this->model->rules());
+                        $masterData = array_intersect_key($masterData, array_flip($fields));
                     }
                     // 翻译模型验证
                     if (method_exists($this->translationModel, 'rules')) {

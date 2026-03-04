@@ -13,6 +13,7 @@ Route::group('/core', function () {
         Route::get('/isRouteExist', [\plugin\condoradmin\app\controller\CommonController::class, 'isRouteExist']);
         Route::get('/getPublicKey', [\plugin\condoradmin\app\controller\CommonController::class, 'getPublicKey']);
         Route::get('/getDict', [\plugin\condoradmin\app\controller\CommonController::class, 'getDict']);
+        Route::get('/getConfig', [\plugin\condoradmin\app\controller\CommonController::class, 'getConfig']);
         // 
     });
     createRoutes('/menu', \plugin\condoradmin\app\controller\MenuController::class);

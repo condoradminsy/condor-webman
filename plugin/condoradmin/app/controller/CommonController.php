@@ -12,7 +12,7 @@ class CommonController extends Backend
     /**
      * 不需要登录的方法
      */
-    protected $noNeedLogin = ['getPublicKey'];
+    protected $noNeedLogin = ['getPublicKey', 'getConfig'];
 
     /**
      * 不需要鉴权的方法
@@ -52,6 +52,17 @@ class CommonController extends Backend
     {
         return $this->success(trans('condoradmin.ok'), [
             'publicKey' => getPublicKeyValue(config('plugin.condoradmin.condor.public_key'))
+        ]);
+    }
+
+    /**
+     * 获取多语言
+     * @return void
+     */
+    public function getConfig()
+    {
+        return $this->success(trans('condoradmin.ok'), [
+            'languages' => config('plugin.condoradmin.translation.languages')
         ]);
     }
 

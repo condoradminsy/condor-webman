@@ -4,15 +4,16 @@ namespace plugin\condoradmin\app\model;
 
 use support\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-class SystemAttachmentType extends Model
-{
+use Respect\Validation\Validator as v;
 
+class SystemRoleTranslations extends Model
+{
     use SoftDeletes;
 
     /**
      * @var string
      */
-    protected $table = 'system_attachment_type';
+    protected $table = 'system_role_translations';
 
     /**
      * @var string
@@ -35,17 +36,15 @@ class SystemAttachmentType extends Model
     // 让所有属性都可以批量分配
     protected $guarded = [];
 
+    protected function serializeDate(\DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
+
     public function rules()
     {
-        return [];
+        return [
+            'name' => v::NotEmpty()->setName(trans('fields.name', [], 'role'))->setTemplate(trans('condoradmin.validation.required')),
+        ];
     }
-
-    /**
-     * 关联翻译
-     */
-    public function translations()
-    {
-        return $this->hasMany(SystemAttachmentTypeTranslations::class, 'main_id', 'id');
-    }
-
 }

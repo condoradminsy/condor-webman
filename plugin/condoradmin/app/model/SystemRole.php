@@ -43,7 +43,6 @@ class SystemRole extends Model
     public function rules()
     {
         return [
-            'name' => v::NotEmpty()->setName(trans('fields.name', [], 'role'))->setTemplate(trans('condoradmin.validation.required')),
             'rules' => v::optional(v::NotEmpty())->setName(trans('fields.rules', [], 'role')),
             'pid' => v::optional(v::number())->setName(trans('fields.pid', [], 'role')),
             // 字母、数字、下划线
@@ -67,5 +66,13 @@ class SystemRole extends Model
             // 清除缓存
             \plugin\condoradmin\app\library\Auth::clearCacheByRoleId($model->id);
         });
+    }
+
+    /**
+     * 关联翻译
+     */
+    public function translations()
+    {
+        return $this->hasMany(SystemRoleTranslations::class, 'main_id', 'id');
     }
 }

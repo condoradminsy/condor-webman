@@ -65,7 +65,7 @@ class MenuController extends Backend
         if (empty($ids)) {
             return $this->fail(trans('condoradmin.you.have.no.permission'));
         }
-        $list = $this->model->where('status', 1)->where(function ($query) use ($ids,$menu_type) {
+        $list = $this->model->where('status', 1)->where(function ($query) use ($ids, $menu_type) {
             if (!in_array('*', $ids)) {
                 $query->whereIn('id', $ids);
             }
@@ -74,7 +74,7 @@ class MenuController extends Backend
             } else if (is_numeric($menu_type)) {
                 $query->where('menu_type', $menu_type);
             }
-        })->get(['id', 'title', 'pid'])->toArray();
+        })->get(['id', 'title', 'pid', 'i18nkey'])->toArray();
         if ($is_tree) {
             $tree = new Tree();
             $list = $tree->makeTree($list);

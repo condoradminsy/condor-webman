@@ -14,20 +14,16 @@ class AttachmentController extends Backend
 
     protected $excludeSearchValues = ['a.type' => 'all'];
 
+    protected array $with = ['AttachmentType.translations'];
+
+    protected array $hidden = ['attachment_type'];
+
     protected array $searchable = [
         'a.type' => [
             'type' => 'string'
         ],
         'a.type_id' => [
             'type' => 'int',
-            'join' => [
-                'table' => 'system_attachment_type',
-                'alias' => 't',
-                'fields' => ['t.name as type_name'],
-                'on' => [
-                    ['a.type_id', '=', 't.id']
-                ],
-            ]
         ],
         'createtime' => [
             'type' => 'string',

@@ -4,6 +4,7 @@ namespace plugin\condoradmin\app\model;
 
 use Respect\Validation\Validator as v;
 use support\Model;
+use support\Log;
 
 class SystemAttachment extends Model
 {
@@ -25,6 +26,8 @@ class SystemAttachment extends Model
     public $timestamps = true;
 
     protected $dateFormat = 'U';
+
+    protected $appends = ['type_name'];
 
     // 定义时间戳字段名
     const CREATED_AT = 'createtime';
@@ -149,7 +152,7 @@ class SystemAttachment extends Model
         $attachment->sha1 = $sha1;
         $attachment->type = $this->getFileType($mimetype);
         $attachment->save();
-        
+
         return [
             'id' => $attachment->id,
             'url' => $url,
@@ -157,5 +160,29 @@ class SystemAttachment extends Model
             'filesize' => $filesize,
             'full_url' => '//' . request()->host() . $url,
         ];
+    }
+
+    public function AttachmentType()
+    {
+        return $this->belongsTo(SystemAttachmentType::class, 'type_id');
+    }
+
+    /**
+     * 获取名称属性，根据当前语言
+     */
+    public function getTypeNameAttribute()
+    {
+        $rows = $this->AttachmentType?->translations;
+        if (empty($rows)) {
+            return [
+                'zh-cn' => '默认',
+                'en-us' => 'Default'
+            ];
+        }
+        $data = [];
+        foreach ($rows as $row) {
+            $data[$row->locale] = $row->name;
+        }
+        return !empty($data) ? $data : null;
     }
 }
