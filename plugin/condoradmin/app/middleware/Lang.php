@@ -11,11 +11,13 @@ class Lang implements MiddlewareInterface
     public function process(Request $request, callable $handler): Response
     {
         $lang = $request->header('locale') ?: $request->header('accept-language') ?: $request->cookie('locale');
-        // 大写转小写
-        $lang = strtolower($lang);
-        $fallback_locale = config('plugin.condoradmin.translation.fallback_locale');
-        if (in_array($lang, $fallback_locale)) {
-            locale($lang);
+        if ($lang) {
+            // 大写转小写
+            $lang = strtolower($lang);
+            $fallback_locale = config('plugin.condoradmin.translation.fallback_locale');
+            if (in_array($lang, $fallback_locale)) {
+                locale($lang);
+            }
         }
         return $handler($request);
     }

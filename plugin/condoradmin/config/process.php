@@ -1,7 +1,7 @@
 <?php
 return [
     'condor-sse' => [
-        'listen' => 'http://0.0.0.0:5567',
+        'listen' => env('CONDOR_SSE_LISTEN', 'http://0.0.0.0:5567'),
         'handler' => plugin\condoradmin\process\EventSource::class,
     ],
     'condor-crontab' => [

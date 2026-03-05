@@ -7,13 +7,13 @@ return [
         'algorithms' => 'HS256',
 
         /** access令牌秘钥 */
-        'access_secret_key' => '2022d3d3LmJq',
+        'access_secret_key' => env('JWT_ACCESS_SECRET_KEY'),
 
         /** access令牌过期时间，单位：秒。默认 2 小时 */
         'access_exp' => 604800,
 
         /** refresh令牌秘钥 */
-        'refresh_secret_key' => '2022KTxigxc9o50c',
+        'refresh_secret_key' => env('JWT_REFRESH_SECRET_KEY'),
 
         /** refresh令牌过期时间，单位：秒。默认 7 天 */
         'refresh_exp' => 604800,
