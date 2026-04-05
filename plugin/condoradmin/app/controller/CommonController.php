@@ -72,7 +72,7 @@ class CommonController extends Backend
         $list = \plugin\condoradmin\app\model\SystemDictType::with(['DictData.translations'])
             ->where('status', 1)
             ->where('scope', '<>', 1)
-            ->get(['id', 'name', 'title'])
+            ->get(['id', 'name'])
             ->toArray();
         $multilingualFields = ['label', 'remark'];
         // 多语言字段处理

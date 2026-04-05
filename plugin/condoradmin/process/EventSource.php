@@ -202,8 +202,6 @@ class EventSource
         }
         $connection->app_key = $key;
         $conn_id = $connection->id;
-        self::$uidConnections[$key][$conn_id] = $connection;
-
         $max = self::$maxConnectionsPerUser;
         try {
             if (function_exists('config')) {
@@ -220,6 +218,7 @@ class EventSource
             $this->sendError($connection, 429, 'Too Many Connections');
             return false;
         }
+        self::$uidConnections[$key][$conn_id] = $connection;
         return true;
     }
 
@@ -254,7 +253,7 @@ class EventSource
         try {
             $data = is_array($data) ? $data : json_decode($data, true);
             $uid = $data['user_id'] ?? 0;
-            if($uid === -1){
+            if ($uid === -1) {
                 // 广播
                 foreach (self::$uidConnections as $connections) {
                     foreach ($connections as $connection) {
