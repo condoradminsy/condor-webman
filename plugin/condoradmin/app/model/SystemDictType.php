@@ -53,7 +53,7 @@ class SystemDictType extends Model
     public function DictData()
     {
         return $this->hasMany(SystemDictData::class, 'type_id', 'id')
-            ->select(['id', 'type_id', 'label', 'value', 'color'])
+            ->select(['id', 'type_id', 'value', 'color'])
             ->where('status', 1)
             ->orderBy('weigh', 'asc');
     }
