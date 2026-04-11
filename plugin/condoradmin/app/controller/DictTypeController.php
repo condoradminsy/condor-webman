@@ -13,7 +13,7 @@ class DictTypeController extends TranslatableBackend
 
     protected $updatedByField = 'updated_by';
 
-    protected $selectpageFields = ['id', 'name', 'title'];
+    protected $selectpageFields = ['id', 'name'];
 
     // 多语言字段
     protected array $multilingualFields = ['remark', 'title'];

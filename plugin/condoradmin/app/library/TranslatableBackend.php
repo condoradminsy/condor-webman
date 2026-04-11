@@ -199,7 +199,7 @@ class TranslatableBackend extends Backend
                 $selectpageFields = $this->alias . '.' . $selectpageFields;
             }
             // 构建主查询
-            $query = $this->model->select($selectpageFields);
+            $query = $this->model->select($selectpageFields)->whereRaw('1=1');
             $translateWithStr = '';
             if (!empty($this->translationForeignMethod)) {
                 $translateWithStr = $this->translationForeignMethod . ':' . $this->translationLocaleKey . ',' . $this->translationForeignKey;
@@ -221,44 +221,26 @@ class TranslatableBackend extends Backend
             }
             // 如果有id参数，使用UNION ALL
             if (!empty($idArray)) {
-                // 查询id对应的数据
-                $idQuery = $this->model->clone()
-                    ->select($selectpageFields)
-                    ->addSelect(DB::raw('1 as condor_is_special'))
-                    ->whereIn($this->alias ? "{$this->alias}.{$selectpageKey}" : $selectpageKey, $idArray);
-                // 查询其他数据
-                $otherQuery = $this->model->clone()
-                    ->select($selectpageFields)
-                    ->addSelect(DB::raw('2 as condor_is_special'))
-                    ->whereNotIn($this->alias ? "{$this->alias}.{$selectpageKey}" : $selectpageKey, $idArray);
-                // 构建查询条件
-                $this->applyWhere($otherQuery, $params);
-                // 使用UNION ALL合并
-                $query = $idQuery->unionAll($otherQuery);
-                // 使用子查询进行分页
-                $subQuery = DB::table(DB::raw("({$query->toSql()}) as sub"))
-                    ->mergeBindings($query->getQuery());
-                // 获取总数
-                $countQuery = DB::table(DB::raw("({$query->toSql()}) as count_table"))
-                    ->mergeBindings($query->getQuery());
-                $total = $countQuery->count();
-                // 获取分页数据
-                $list = $subQuery->orderBy('condor_is_special', 'asc')
-                    ->orderBy($order, $sort)
-                    ->offset($offset)
-                    ->limit($limit)
-                    ->get()
-                    ->toArray();
-            } else {
-                // 没有id参数，普通查询
-                $this->applyWhere($query, $params);
-                $total = $query->count();
-                $list = $query->orderBy($order, $sort)
-                    ->offset($offset)
-                    ->limit($limit)
-                    ->get()
-                    ->toArray();
+                unset($params[$selectpageKey]);
             }
+            // 没有id参数，普通查询
+            $this->applyWhere($query, $params);
+            if (!empty($idArray)) {
+                $query->orWhereIn($this->alias ? "{$this->alias}.{$selectpageKey}" : $selectpageKey, $idArray);
+            }
+            $total = $query->count();
+            if (!empty($idArray)) {
+                $idArray = array_slice(array_values(array_unique($idArray)), 0, $this->selectpageMaxIds);
+                $pk = $this->alias ? "{$this->alias}.{$selectpageKey}" : $selectpageKey;
+                $placeholders = implode(',', array_fill(0, count($idArray), '?'));
+                $query->orderByRaw("(FIELD($pk, $placeholders) = 0) asc", $idArray);
+                $query->orderByRaw("FIELD($pk, $placeholders) asc", $idArray);
+            }
+            $list = $query->orderBy($order, $sort)
+                ->offset($offset)
+                ->limit($limit)
+                ->get()
+                ->toArray();
             // 多语言字段处理
             foreach ($list as &$item) {
                 foreach ($this->multilingualFields as $field) {
@@ -517,8 +499,21 @@ class TranslatableBackend extends Backend
             }
             $result = $row->forceFill($masterData)->save();
             // 多语言字段处理
+            // 优化后的翻译数据保存
+            $translationData = [];
             foreach ($translations as $locale => $translation) {
-                $row->translations()->updateOrCreate(['locale' => $locale], $translation);
+                $translationData[] = array_merge($translation, [
+                    $this->translationForeignKey => $id,
+                    $this->translationLocaleKey  => $locale
+                ]);
+            }
+            // translationModel 定义了唯一索引 [main_id, locale]
+            if (!empty($translationData)) {
+                $this->translationModel->upsert(
+                    $translationData,
+                    [$this->translationForeignKey, $this->translationLocaleKey], // 约束字段
+                    $this->multilingualFields // 更新字段
+                );
             }
             Db::commit();
             if (false === $result) {

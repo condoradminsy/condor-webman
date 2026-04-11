@@ -118,6 +118,11 @@ class Backend
      */
     protected array $searchable = [];
 
+    // 子类覆盖
+    protected array $sortable = ['id']; 
+
+    protected int $selectpageMaxIds = 200;
+
     /**
      * 添加/编辑时排除字段
      */
@@ -194,19 +199,20 @@ class Backend
      */
     protected function buildOrder(Request $request): array
     {
-        $defaultOrder = 'id';
-        if (!empty($this->model) && method_exists($this->model, 'getKeyName')) {
-            $defaultOrder = $this->model->getKeyName() ?: 'id';
+        $defaultOrder = $this->model?->getKeyName() ?: 'id';
+        $orderBy = $request->post('orderBy', $defaultOrder);
+        $order = strtolower($request->post('order', 'desc'));
+        if (!$this->isValidFieldName($orderBy) || (!empty($this->sortable) && !in_array($orderBy, $this->sortable, true))) {
+            $orderBy = $defaultOrder;
         }
         if ($this->alias) {
-            $defaultOrder = $this->alias . '.' . $defaultOrder;
+            // 如果 orderBy 没带表前缀，补上
+            if (!str_contains($orderBy, '.')) {
+                $orderBy = $this->alias . '.' . $orderBy;
+            }
         }
-        return [
-            'orderBy' => $request->post("orderBy", $defaultOrder),
-            'order' => in_array(strtolower($request->post("order", 'desc')), ['asc', 'desc'])
-                ? strtolower($request->post("order", 'desc'))
-                : 'desc'
-        ];
+        $order = in_array($order, ['asc','desc'], true) ? $order : 'desc';
+        return ['orderBy' => $orderBy, 'order' => $order];
     }
 
     /**
@@ -519,51 +525,27 @@ class Backend
                 $selectpageFields = $this->alias . '.' . $selectpageFields;
             }
             // 构建主查询
-            $query = $this->model->select($selectpageFields);
-
-            // 如果有id参数，使用UNION ALL
+            $query = $this->model->select($selectpageFields)->whereRaw('1=1');
+            // 如果有id参数
             if (!empty($idArray)) {
-                // 查询id对应的数据
-                $idQuery = $this->model->clone()
-                    ->select($selectpageFields)
-                    ->addSelect(DB::raw('1 as is_special'))
-                    ->whereIn($this->alias ? "{$this->alias}.{$selectpageKey}" : $selectpageKey, $idArray);
-                // 查询其他数据
-                $otherQuery = $this->model->clone()
-                    ->select($selectpageFields)
-                    ->addSelect(DB::raw('2 as is_special'))
-                    ->whereNotIn($this->alias ? "{$this->alias}.{$selectpageKey}" : $selectpageKey, $idArray);
-                // 构建查询条件
-                $this->applyWhere($otherQuery, $params);
-                // 使用UNION ALL合并
-                $query = $idQuery->unionAll($otherQuery);
-                // 使用子查询进行分页
-                $subQuery = DB::table(DB::raw("({$query->toSql()}) as sub"))
-                    ->mergeBindings($query->getQuery());
-                // 获取总数
-                $countQuery = DB::table(DB::raw("({$query->toSql()}) as count_table"))
-                    ->mergeBindings($query->getQuery());
-                $total = $countQuery->count();
-                // 获取分页数据
-                $list = $subQuery->orderBy('is_special', 'asc')
-                    ->orderBy($order, $sort)
-                    ->offset($offset)
-                    ->limit($limit)
-                    ->get();
-                // 处理数据
-                $list = $list->map(function ($item) {
-                    unset($item->is_special);
-                    return $item;
-                });
-            } else {
-                // 没有id参数，普通查询
-                $this->applyWhere($query, $params);
-                $total = $query->count();
-                $list = $query->orderBy($order, $sort)
-                    ->offset($offset)
-                    ->limit($limit)
-                    ->get();
+                unset($params[$selectpageKey]);
+            } 
+            $this->applyWhere($query, $params);
+            if (!empty($idArray)) {
+                $query->orWhereIn($this->alias ? "{$this->alias}.{$selectpageKey}" : $selectpageKey, $idArray);
             }
+            $total = $query->count();
+            if(!empty($idArray)) {
+                $idArray = array_slice(array_values(array_unique($idArray)), 0, $this->selectpageMaxIds);
+                $pk = $this->alias ? "{$this->alias}.{$selectpageKey}" : $selectpageKey;
+                $placeholders = implode(',', array_fill(0, count($idArray), '?'));
+                $query->orderByRaw("(FIELD($pk, $placeholders) = 0) asc", $idArray);
+                $query->orderByRaw("FIELD($pk, $placeholders) asc", $idArray);
+            }
+            $list = $query->orderBy($order, $sort)
+                ->offset($offset)
+                ->limit($limit)
+                ->get();
             return $this->success(trans('condoradmin.ok'), [
                 'total' => $total,
                 'list' => $list->toArray()
