@@ -8,6 +8,7 @@ Route::group('/core', function () {
         Route::get('/captcha', [\plugin\condoradmin\app\controller\AccountController::class, 'captcha']);
         Route::post('/login', [\plugin\condoradmin\app\controller\AccountController::class, 'login']);
         Route::get('/getUserInfo', [\plugin\condoradmin\app\controller\AccountController::class, 'getUserInfo']);
+        Route::post('/updateProfile', [\plugin\condoradmin\app\controller\AccountController::class, 'updateProfile']);
         // 
         Route::get('/getRoutes', [\plugin\condoradmin\app\controller\CommonController::class, 'getRoutes']);
         Route::get('/isRouteExist', [\plugin\condoradmin\app\controller\CommonController::class, 'isRouteExist']);

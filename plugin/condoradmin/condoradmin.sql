@@ -11,7 +11,7 @@
  Target Server Version : 80403 (8.4.3)
  File Encoding         : 65001
 
- Date: 01/02/2026 13:35:32
+ Date: 11/04/2026 16:27:42
 */
 
 SET NAMES utf8mb4;
@@ -45,7 +45,7 @@ CREATE TABLE `con_system_admin` (
 -- Records of con_system_admin
 -- ----------------------------
 BEGIN;
-INSERT INTO `con_system_admin` (`id`, `admin_id`, `username`, `nickname`, `password`, `avatar`, `email`, `mobile`, `loginfailure`, `logintime`, `loginip`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (1, 0, 'admin', 'admin', '$2y$10$Qu/cSA95pIi6gXW6jJGlPOTPgesy9ERUIsgBS2qYjDDvarySjR6ie', '', '16659230@qq.com', '19175494588', 21, 1769908738, '127.0.0.1', 1, 1762530176, 1769908738, NULL);
+INSERT INTO `con_system_admin` (`id`, `admin_id`, `username`, `nickname`, `password`, `avatar`, `email`, `mobile`, `loginfailure`, `logintime`, `loginip`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (1, 0, 'admin', 'admin', '$2y$10$c7T0Apqpx7KzRMpxHCqI0.EQ900YgzQQRlV07bqt20r70/PYnTXwu', '', '16659230@qq.com', '19175494588', 21, 1775813651, '127.0.0.1', 1, 1762530176, 1775813651, NULL);
 INSERT INTO `con_system_admin` (`id`, `admin_id`, `username`, `nickname`, `password`, `avatar`, `email`, `mobile`, `loginfailure`, `logintime`, `loginip`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (3, 0, 'test', 'test', '$2y$10$c7T0Apqpx7KzRMpxHCqI0.EQ900YgzQQRlV07bqt20r70/PYnTXwu', '', '16659230@qq.com', '19175494588', 6, 1769825131, '127.0.0.1', 1, 1767074249, 1769825131, NULL);
 INSERT INTO `con_system_admin` (`id`, `admin_id`, `username`, `nickname`, `password`, `avatar`, `email`, `mobile`, `loginfailure`, `logintime`, `loginip`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (4, 0, 'condor', 'qwe', '', '', NULL, NULL, 0, NULL, NULL, 1, 1769226913, 1769226926, 1769226926);
 COMMIT;
@@ -98,12 +98,16 @@ CREATE TABLE `con_system_attachment` (
   `type` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '图片类型',
   `sha1` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '文件 sha1编码',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='附件表';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='附件表';
 
 -- ----------------------------
 -- Records of con_system_attachment
 -- ----------------------------
 BEGIN;
+INSERT INTO `con_system_attachment` (`id`, `type_id`, `admin_id`, `user_id`, `url`, `storage`, `filename`, `filesize`, `mimetype`, `extparam`, `createtime`, `updatetime`, `type`, `sha1`) VALUES (1, 1, 1, 0, '/uploads/20260201/20260201152336_697eff78cdcdd.png', 'local', '1-1.png', 14532, 'image/png', '[]', 1769930616, 1769930616, 'image', '9cb3e3fec57e81bd4a91398939c8a6349c464ace');
+INSERT INTO `con_system_attachment` (`id`, `type_id`, `admin_id`, `user_id`, `url`, `storage`, `filename`, `filesize`, `mimetype`, `extparam`, `createtime`, `updatetime`, `type`, `sha1`) VALUES (2, 1, 1, 0, '/uploads/20260201/20260201152346_697eff827d6cf.png', 'local', '144x144.png', 37225, 'image/png', '[]', 1769930626, 1769930626, 'image', '6d1ecea2d0725a68c18b97727f9e47a1d7385a66');
+INSERT INTO `con_system_attachment` (`id`, `type_id`, `admin_id`, `user_id`, `url`, `storage`, `filename`, `filesize`, `mimetype`, `extparam`, `createtime`, `updatetime`, `type`, `sha1`) VALUES (3, 0, 1, 0, '/uploads/20260201/20260201152415_697eff9f2c1db.jpg', 'local', 'logo1.jpg', 43752, 'image/jpeg', '[]', 1769930655, 1769930655, 'image', 'caacb12e6b7017b6457914f88230570d3b766c77');
+INSERT INTO `con_system_attachment` (`id`, `type_id`, `admin_id`, `user_id`, `url`, `storage`, `filename`, `filesize`, `mimetype`, `extparam`, `createtime`, `updatetime`, `type`, `sha1`) VALUES (4, 0, 1, 0, '/uploads/20260201/20260201152450_697effc2058e2.pdf', 'local', 'mysql优化.pdf', 580124, 'application/pdf', '[]', 1769930690, 1769930690, 'pdf', '53e3eaf49c553b0edba6d5537822ba24e11344df');
 COMMIT;
 
 -- ----------------------------
@@ -113,17 +117,40 @@ DROP TABLE IF EXISTS `con_system_attachment_type`;
 CREATE TABLE `con_system_attachment_type` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `admin_id` int DEFAULT '0' COMMENT '管理员ID',
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '名称',
   `createtime` bigint DEFAULT NULL COMMENT '创建时间',
   `updatetime` bigint DEFAULT NULL COMMENT '更新时间',
   `deleted_at` bigint DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='附件类型';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='附件类型';
 
 -- ----------------------------
 -- Records of con_system_attachment_type
 -- ----------------------------
 BEGIN;
+INSERT INTO `con_system_attachment_type` (`id`, `admin_id`, `createtime`, `updatetime`, `deleted_at`) VALUES (1, 1, 1771467329, 1771467329, NULL);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for con_system_attachment_type_translations
+-- ----------------------------
+DROP TABLE IF EXISTS `con_system_attachment_type_translations`;
+CREATE TABLE `con_system_attachment_type_translations` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `main_id` int unsigned NOT NULL DEFAULT '0' COMMENT '主表 ID',
+  `locale` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '语言',
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '名称',
+  `createtime` bigint DEFAULT NULL COMMENT '创建时间',
+  `updatetime` bigint DEFAULT NULL COMMENT '更新时间',
+  `deleted_at` bigint DEFAULT NULL COMMENT '删除时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='附件类型';
+
+-- ----------------------------
+-- Records of con_system_attachment_type_translations
+-- ----------------------------
+BEGIN;
+INSERT INTO `con_system_attachment_type_translations` (`id`, `main_id`, `locale`, `name`, `createtime`, `updatetime`, `deleted_at`) VALUES (1, 1, 'en-us', 'test', 1771467397, 1771467397, NULL);
+INSERT INTO `con_system_attachment_type_translations` (`id`, `main_id`, `locale`, `name`, `createtime`, `updatetime`, `deleted_at`) VALUES (2, 1, 'zh-cn', '测试', 1771467397, 1771467397, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -150,7 +177,7 @@ CREATE TABLE `con_system_config` (
   `deleted_at` bigint DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `key_group_id_active` (`key`,`group_id`,((case when (`deleted_at` is null) then 1 end)))
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='系统参数配置';
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='系统参数配置';
 
 -- ----------------------------
 -- Records of con_system_config
@@ -160,14 +187,15 @@ INSERT INTO `con_system_config` (`id`, `is_sys`, `key`, `value`, `title`, `group
 INSERT INTO `con_system_config` (`id`, `is_sys`, `key`, `value`, `title`, `group_code`, `group_id`, `tips`, `type`, `is_visible`, `weigh`, `dict_code`, `dict_type`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (2, 1, 'site_logo', NULL, '站点Logo', 'base_config', 1, NULL, 'image', 1, 0, NULL, NULL, 1, 1769852962, 1769852962, NULL);
 INSERT INTO `con_system_config` (`id`, `is_sys`, `key`, `value`, `title`, `group_code`, `group_id`, `tips`, `type`, `is_visible`, `weigh`, `dict_code`, `dict_type`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (3, 1, 'site_record_number', NULL, '备案号', 'base_config', 1, '域名备案号', 'string', 1, 0, NULL, NULL, 1, 1769853117, 1769853117, NULL);
 INSERT INTO `con_system_config` (`id`, `is_sys`, `key`, `value`, `title`, `group_code`, `group_id`, `tips`, `type`, `is_visible`, `weigh`, `dict_code`, `dict_type`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (4, 1, 'site_copyright', '', '版权信息', 'base_config', 1, NULL, 'string', 1, 0, NULL, NULL, 1, 1769853701, 1769853701, NULL);
-INSERT INTO `con_system_config` (`id`, `is_sys`, `key`, `value`, `title`, `group_code`, `group_id`, `tips`, `type`, `is_visible`, `weigh`, `dict_code`, `dict_type`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (5, 1, 'host', 'smtp.qq.com', 'SMTP服务器', 'email_config', 2, NULL, 'string', 1, 0, NULL, NULL, 1, 1769853821, 1769854602, NULL);
+INSERT INTO `con_system_config` (`id`, `is_sys`, `key`, `value`, `title`, `group_code`, `group_id`, `tips`, `type`, `is_visible`, `weigh`, `dict_code`, `dict_type`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (5, 1, 'host', 'smtp.share-email.com', 'SMTP服务器', 'email_config', 2, NULL, 'string', 1, 0, NULL, NULL, 1, 1769853821, 1773413649, NULL);
 INSERT INTO `con_system_config` (`id`, `is_sys`, `key`, `value`, `title`, `group_code`, `group_id`, `tips`, `type`, `is_visible`, `weigh`, `dict_code`, `dict_type`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (6, 1, 'port', '465', 'SMTP端口', 'email_config', 2, NULL, 'number', 1, 0, NULL, NULL, 1, 1769853842, 1769854602, NULL);
-INSERT INTO `con_system_config` (`id`, `is_sys`, `key`, `value`, `title`, `group_code`, `group_id`, `tips`, `type`, `is_visible`, `weigh`, `dict_code`, `dict_type`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (7, 1, 'username', NULL, 'SMTP用户名', 'email_config', 2, NULL, 'string', 1, 0, NULL, NULL, 1, 1769854135, 1769854135, NULL);
-INSERT INTO `con_system_config` (`id`, `is_sys`, `key`, `value`, `title`, `group_code`, `group_id`, `tips`, `type`, `is_visible`, `weigh`, `dict_code`, `dict_type`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (8, 1, 'password', NULL, 'SMTP密码', 'email_config', 2, NULL, 'string', 1, 0, NULL, NULL, 1, 1769854166, 1769854166, NULL);
-INSERT INTO `con_system_config` (`id`, `is_sys`, `key`, `value`, `title`, `group_code`, `group_id`, `tips`, `type`, `is_visible`, `weigh`, `dict_code`, `dict_type`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (9, 1, 'smtp_secure', 'tsl', 'SMTP验证方式', 'email_config', 2, NULL, 'dict', 1, 0, 'smtp_secure', 'radio', 1, 1769854350, 1769854602, NULL);
-INSERT INTO `con_system_config` (`id`, `is_sys`, `key`, `value`, `title`, `group_code`, `group_id`, `tips`, `type`, `is_visible`, `weigh`, `dict_code`, `dict_type`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (10, 1, 'from', NULL, '默认发件人', 'email_config', 2, '默认发件的邮箱地址', 'string', 1, 0, NULL, NULL, 1, 1769854493, 1769854493, NULL);
-INSERT INTO `con_system_config` (`id`, `is_sys`, `key`, `value`, `title`, `group_code`, `group_id`, `tips`, `type`, `is_visible`, `weigh`, `dict_code`, `dict_type`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (11, 1, 'from_name', NULL, '默认发件名称', 'email_config', 2, NULL, 'string', 1, 0, NULL, NULL, 1, 1769854533, 1769854533, NULL);
+INSERT INTO `con_system_config` (`id`, `is_sys`, `key`, `value`, `title`, `group_code`, `group_id`, `tips`, `type`, `is_visible`, `weigh`, `dict_code`, `dict_type`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (7, 1, 'username', 'sa45l.com', 'SMTP用户名', 'email_config', 2, NULL, 'string', 1, 0, NULL, NULL, 1, 1769854135, 1773413649, NULL);
+INSERT INTO `con_system_config` (`id`, `is_sys`, `key`, `value`, `title`, `group_code`, `group_id`, `tips`, `type`, `is_visible`, `weigh`, `dict_code`, `dict_type`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (8, 1, 'password', 'sh45t', 'SMTP密码', 'email_config', 2, NULL, 'string', 1, 0, NULL, NULL, 1, 1769854166, 1773413649, NULL);
+INSERT INTO `con_system_config` (`id`, `is_sys`, `key`, `value`, `title`, `group_code`, `group_id`, `tips`, `type`, `is_visible`, `weigh`, `dict_code`, `dict_type`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (9, 1, 'smtp_secure', 'ssl', 'SMTP验证方式', 'email_config', 2, NULL, 'dict', 1, 0, 'smtp_secure', 'radio', 1, 1769854350, 1770431390, NULL);
+INSERT INTO `con_system_config` (`id`, `is_sys`, `key`, `value`, `title`, `group_code`, `group_id`, `tips`, `type`, `is_visible`, `weigh`, `dict_code`, `dict_type`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (10, 1, 'from', 'sa45com', '默认发件人', 'email_config', 2, '默认发件的邮箱地址', 'string', 1, 0, NULL, NULL, 1, 1769854493, 1773413686, NULL);
+INSERT INTO `con_system_config` (`id`, `is_sys`, `key`, `value`, `title`, `group_code`, `group_id`, `tips`, `type`, `is_visible`, `weigh`, `dict_code`, `dict_type`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (11, 1, 'from_name', 'sanrenxing', '默认发件名称', 'email_config', 2, NULL, 'string', 1, 0, NULL, NULL, 1, 1769854533, 1770431683, NULL);
 INSERT INTO `con_system_config` (`id`, `is_sys`, `key`, `value`, `title`, `group_code`, `group_id`, `tips`, `type`, `is_visible`, `weigh`, `dict_code`, `dict_type`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (12, 1, 'char_set', 'UTF-8', '编码', 'email_config', 2, NULL, 'string', 1, 0, NULL, NULL, 1, 1769854577, 1769854602, NULL);
+INSERT INTO `con_system_config` (`id`, `is_sys`, `key`, `value`, `title`, `group_code`, `group_id`, `tips`, `type`, `is_visible`, `weigh`, `dict_code`, `dict_type`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (13, 0, 'test_test', '水电费', '', 'sdfsfdsdf234234', 4, '', 'string', 1, 0, NULL, NULL, 1, 1771409912, 1772342265, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -177,9 +205,7 @@ DROP TABLE IF EXISTS `con_system_config_group`;
 CREATE TABLE `con_system_config_group` (
   `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `is_sys` tinyint unsigned DEFAULT '0' COMMENT '是否系统',
-  `name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '名称',
   `code` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '标识',
-  `remark` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '备注',
   `created_by` int DEFAULT NULL COMMENT '创建人',
   `updated_by` int DEFAULT NULL COMMENT '更新人',
   `createtime` bigint DEFAULT NULL COMMENT '创建时间',
@@ -187,14 +213,93 @@ CREATE TABLE `con_system_config_group` (
   `deleted_at` bigint DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `code` (`code`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='配置分组表';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='配置分组表';
 
 -- ----------------------------
 -- Records of con_system_config_group
 -- ----------------------------
 BEGIN;
-INSERT INTO `con_system_config_group` (`id`, `is_sys`, `name`, `code`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (1, 1, '基本配置', 'base_config', NULL, 1, 1, 1766636482, 1766641935, NULL);
-INSERT INTO `con_system_config_group` (`id`, `is_sys`, `name`, `code`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (2, 1, '邮件配置', 'email_config', NULL, 1, NULL, 1766641925, 1766641925, NULL);
+INSERT INTO `con_system_config_group` (`id`, `is_sys`, `code`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (1, 1, 'base_config', 1, 1, 1766636482, 1766641935, NULL);
+INSERT INTO `con_system_config_group` (`id`, `is_sys`, `code`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (2, 1, 'email_config', 1, NULL, 1766641925, 1766641925, NULL);
+INSERT INTO `con_system_config_group` (`id`, `is_sys`, `code`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (4, 0, 'sdfsfdsdf234234', 1, 1, 1771397627, 1771397823, NULL);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for con_system_config_group_translations
+-- ----------------------------
+DROP TABLE IF EXISTS `con_system_config_group_translations`;
+CREATE TABLE `con_system_config_group_translations` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `main_id` int unsigned NOT NULL DEFAULT '0' COMMENT '主表 ID',
+  `locale` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '语言',
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '名称',
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '备注',
+  `createtime` bigint DEFAULT NULL COMMENT '创建时间',
+  `updatetime` bigint DEFAULT NULL COMMENT '创建时间',
+  `deleted_at` bigint DEFAULT NULL COMMENT '删除时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `locale_main_id` (`locale`,`main_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='配置分组表语言表';
+
+-- ----------------------------
+-- Records of con_system_config_group_translations
+-- ----------------------------
+BEGIN;
+INSERT INTO `con_system_config_group_translations` (`id`, `main_id`, `locale`, `name`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (1, 1, 'zh-cn', '基本配置', NULL, 1766636482, 1766636482, NULL);
+INSERT INTO `con_system_config_group_translations` (`id`, `main_id`, `locale`, `name`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (2, 1, 'en-us', 'Basic Configuration', NULL, 1766636482, 1766636482, NULL);
+INSERT INTO `con_system_config_group_translations` (`id`, `main_id`, `locale`, `name`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (3, 2, 'zh-cn', '邮件配置', NULL, 1766636482, 1766636482, NULL);
+INSERT INTO `con_system_config_group_translations` (`id`, `main_id`, `locale`, `name`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (4, 2, 'en-us', 'Mail Configuration', NULL, 1766636482, 1766636482, NULL);
+INSERT INTO `con_system_config_group_translations` (`id`, `main_id`, `locale`, `name`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (5, 4, 'zh-cn', '测试1', '测试的测试1', 1771397627, 1771397823, NULL);
+INSERT INTO `con_system_config_group_translations` (`id`, `main_id`, `locale`, `name`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (6, 4, 'en-us', 'test1', 'test test1', 1771397627, 1771397823, NULL);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for con_system_config_translations
+-- ----------------------------
+DROP TABLE IF EXISTS `con_system_config_translations`;
+CREATE TABLE `con_system_config_translations` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `main_id` int unsigned NOT NULL DEFAULT '0' COMMENT '主表 ID',
+  `locale` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '语言',
+  `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '变量标题',
+  `tips` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '变量描述',
+  `createtime` bigint DEFAULT NULL COMMENT '创建时间',
+  `updatetime` bigint DEFAULT NULL COMMENT '创建时间',
+  `deleted_at` bigint DEFAULT NULL COMMENT '删除时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `locale_main_id` (`main_id`,`locale`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='系统参数配置';
+
+-- ----------------------------
+-- Records of con_system_config_translations
+-- ----------------------------
+BEGIN;
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (1, 1, 'zh-cn', '站点名称', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (2, 1, 'en-us', 'Site Name', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (3, 2, 'zh-cn', '站点Logo', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (4, 2, 'en-us', 'Site Logo', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (5, 3, 'zh-cn', '备案号', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (6, 3, 'en-us', 'ICP Filing Number', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (7, 4, 'zh-cn', '版权信息', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (8, 4, 'en-us', 'Copyright Notice', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (9, 5, 'zh-cn', 'SMTP服务器', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (10, 5, 'en-us', 'SMTP server', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (11, 6, 'zh-cn', 'SMTP端口', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (12, 6, 'en-us', 'SMTP Port', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (15, 7, 'zh-cn', 'SMTP用户名', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (16, 7, 'en-us', 'SMTP Username', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (17, 8, 'zh-cn', 'SMTP密码', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (18, 8, 'en-us', 'SMTP Password', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (19, 9, 'zh-cn', 'SMTP验证方式', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (20, 9, 'en-us', 'SMTP Secure', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (21, 10, 'zh-cn', '默认发件人', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (22, 10, 'en-us', 'Default Sender', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (23, 11, 'zh-cn', '默认发件名称', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (24, 11, 'en-us', 'Default Sender Name', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (25, 12, 'zh-cn', '编码', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (26, 12, 'en-us', 'Char Set', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (27, 13, 'zh-cn', '测试的 1', '2', 1771409912, 1771409932, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (28, 13, 'en-us', 'tezst1', '1', 1771409912, 1771409932, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -275,12 +380,10 @@ DROP TABLE IF EXISTS `con_system_dict_data`;
 CREATE TABLE `con_system_dict_data` (
   `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `type_id` int unsigned DEFAULT NULL COMMENT '字典类型ID',
-  `label` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '字典标签',
   `value` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '字典值',
   `color` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '字典颜色',
   `weigh` int unsigned DEFAULT '0' COMMENT '排序',
   `status` smallint DEFAULT '1' COMMENT '状态 (1正常 2停用)',
-  `remark` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '备注',
   `created_by` int DEFAULT NULL COMMENT '创建者',
   `updated_by` int DEFAULT NULL COMMENT '更新者',
   `createtime` bigint DEFAULT NULL COMMENT '创建时间',
@@ -294,40 +397,130 @@ CREATE TABLE `con_system_dict_data` (
 -- Records of con_system_dict_data
 -- ----------------------------
 BEGIN;
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (1, 1, '接口', '0', '#656CFF', 0, 1, NULL, 1, 1, 1766570935, 1766657038, NULL);
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (2, 1, '菜单', '1', '#18A058', 0, 1, NULL, 1, 1, 1766571038, 1766657006, NULL);
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (3, 2, '字符串', 'string', NULL, 0, 1, NULL, 1, NULL, 1766657936, 1766657936, NULL);
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (4, 2, '数字', 'number', NULL, 1, 1, NULL, 1, NULL, 1766657956, 1766657956, NULL);
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (5, 2, '文本域', 'textarea', NULL, 2, 1, NULL, 1, NULL, 1766657974, 1766657974, NULL);
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (6, 2, '开关', 'switch', NULL, 3, 1, NULL, 1, NULL, 1766657997, 1766657997, NULL);
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (7, 2, '单图', 'image', NULL, 4, 1, NULL, 1, NULL, 1766658031, 1766658031, NULL);
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (8, 2, '多图', 'images', NULL, 5, 1, NULL, 1, NULL, 1766658048, 1766658048, NULL);
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (9, 2, '数组', 'array', NULL, 6, 1, NULL, 1, NULL, 1766658076, 1766658076, NULL);
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (10, 2, '日期', 'date', NULL, 7, 1, NULL, 1, NULL, 1766658103, 1766658103, NULL);
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (11, 2, '日期时间', 'datetime', NULL, 8, 1, NULL, 1, NULL, 1766658120, 1766658120, NULL);
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (12, 2, '日期范围', 'daterange', NULL, 9, 1, NULL, 1, NULL, 1766658138, 1766658138, NULL);
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (13, 2, '字典', 'dict', NULL, 10, 1, NULL, 1, NULL, 1766658155, 1766658155, NULL);
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (14, 2, '富文本', 'editor', NULL, 11, 1, NULL, 1, NULL, 1766658180, 1766658180, NULL);
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (15, 3, '单选框', 'radio', NULL, 0, 1, NULL, 1, 1, 1766669350, 1766669425, NULL);
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (16, 3, '多选框', 'checkbox', NULL, 1, 1, NULL, 1, 1, 1766669371, 1766669429, NULL);
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (17, 3, '下拉选择', 'select', NULL, 1, 1, NULL, 1, NULL, 1766669413, 1766669413, NULL);
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (18, 4, '全部', 'all', NULL, 0, 1, NULL, 1, 1, 1767357297, 1767357750, NULL);
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (19, 4, '图片', 'image', NULL, 1, 1, NULL, 1, 1, 1767357311, 1767357756, NULL);
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (20, 4, '视频', 'video', NULL, 2, 1, NULL, 1, 1, 1767357321, 1767357760, NULL);
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (21, 4, '音频', 'audio', NULL, 3, 1, NULL, 1, 1, 1767357332, 1767357765, NULL);
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (22, 4, '文本', 'txt', NULL, 4, 1, NULL, 1, 1, 1767357342, 1767357769, NULL);
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (23, 4, '文档', 'word', NULL, 5, 1, NULL, 1, 1, 1767357395, 1767357774, NULL);
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (24, 4, 'Excel', 'excel', NULL, 6, 1, NULL, 1, 1, 1767357408, 1767357779, NULL);
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (25, 4, 'PPT', 'ppt', NULL, 7, 1, NULL, 1, 1, 1767357418, 1767357784, NULL);
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (26, 4, 'PDF', 'pdf', NULL, 8, 1, NULL, 1, 1, 1767357427, 1767357788, NULL);
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (27, 4, '压缩包', 'zip', NULL, 9, 1, NULL, 1, 1, 1767357437, 1767357793, NULL);
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (28, 4, '其他', 'other', NULL, 10, 1, NULL, 1, 1, 1767357447, 1767357798, NULL);
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (29, 5, '两者都有', '0', '#656CFF', 0, 1, NULL, 1, 1, 1767522989, 1767523648, NULL);
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (30, 5, '前台', '1', NULL, 0, 1, NULL, 1, NULL, 1767522997, 1767522997, NULL);
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (31, 5, '后台', '2', '#FFA23E', 0, 1, NULL, 1, 1, 1767523004, 1767523672, NULL);
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (32, 6, '类执行', '1', NULL, 0, 1, NULL, 1, NULL, 1767529393, 1767529393, NULL);
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (33, 7, 'SSL', 'ssl', NULL, 0, 1, NULL, 1, NULL, 1769854304, 1769854304, NULL);
-INSERT INTO `con_system_dict_data` (`id`, `type_id`, `label`, `value`, `color`, `weigh`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (34, 7, 'TSL', 'tsl', NULL, 0, 1, NULL, 1, NULL, 1769854316, 1769854316, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (1, 1, '0', '#656CFF', 0, 1, 1, 1, 1766570935, 1766657038, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (2, 1, '1', '#18A058', 0, 1, 1, 1, 1766571038, 1766657006, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (3, 2, 'string', NULL, 0, 1, 1, NULL, 1766657936, 1766657936, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (4, 2, 'number', NULL, 1, 1, 1, NULL, 1766657956, 1766657956, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (5, 2, 'textarea', NULL, 2, 1, 1, NULL, 1766657974, 1766657974, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (6, 2, 'switch', NULL, 3, 1, 1, NULL, 1766657997, 1766657997, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (7, 2, 'image', NULL, 4, 1, 1, NULL, 1766658031, 1766658031, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (8, 2, 'images', NULL, 5, 1, 1, NULL, 1766658048, 1766658048, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (9, 2, 'array', NULL, 6, 1, 1, NULL, 1766658076, 1766658076, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (10, 2, 'date', NULL, 7, 1, 1, NULL, 1766658103, 1766658103, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (11, 2, 'datetime', NULL, 8, 1, 1, NULL, 1766658120, 1766658120, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (12, 2, 'daterange', NULL, 9, 1, 1, NULL, 1766658138, 1766658138, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (13, 2, 'dict', NULL, 10, 1, 1, NULL, 1766658155, 1766658155, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (14, 2, 'editor', NULL, 11, 1, 1, NULL, 1766658180, 1766658180, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (15, 3, 'radio', NULL, 0, 1, 1, 1, 1766669350, 1766669425, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (16, 3, 'checkbox', NULL, 1, 1, 1, 1, 1766669371, 1766669429, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (17, 3, 'select', NULL, 1, 1, 1, NULL, 1766669413, 1766669413, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (18, 4, 'all', NULL, 0, 1, 1, 1, 1767357297, 1767357750, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (19, 4, 'image', NULL, 1, 1, 1, 1, 1767357311, 1767357756, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (20, 4, 'video', NULL, 2, 1, 1, 1, 1767357321, 1767357760, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (21, 4, 'audio', NULL, 3, 1, 1, 1, 1767357332, 1767357765, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (22, 4, 'txt', NULL, 4, 1, 1, 1, 1767357342, 1767357769, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (23, 4, 'word', NULL, 5, 1, 1, 1, 1767357395, 1767357774, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (24, 4, 'excel', NULL, 6, 1, 1, 1, 1767357408, 1767357779, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (25, 4, 'ppt', NULL, 7, 1, 1, 1, 1767357418, 1767357784, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (26, 4, 'pdf', NULL, 8, 1, 1, 1, 1767357427, 1767357788, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (27, 4, 'zip', NULL, 9, 1, 1, 1, 1767357437, 1767357793, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (28, 4, 'other', NULL, 10, 1, 1, 1, 1767357447, 1767357798, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (29, 5, '0', '#656CFF', 0, 1, 1, 1, 1767522989, 1767523648, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (30, 5, '1', NULL, 0, 1, 1, NULL, 1767522997, 1767522997, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (31, 5, '2', '#FFA23E', 0, 1, 1, 1, 1767523004, 1767523672, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (32, 6, '1', NULL, 0, 1, 1, NULL, 1767529393, 1767529393, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (33, 7, 'ssl', NULL, 0, 1, 1, NULL, 1769854304, 1769854304, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (34, 7, 'tsl', NULL, 0, 1, 1, NULL, 1769854316, 1769854316, NULL);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for con_system_dict_data_translations
+-- ----------------------------
+DROP TABLE IF EXISTS `con_system_dict_data_translations`;
+CREATE TABLE `con_system_dict_data_translations` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `main_id` int unsigned NOT NULL DEFAULT '0' COMMENT '主表 ID',
+  `locale` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '语言',
+  `label` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '字典标签',
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '备注',
+  `createtime` bigint DEFAULT NULL COMMENT '创建时间',
+  `updatetime` bigint DEFAULT NULL COMMENT '更新时间',
+  `deleted_at` bigint DEFAULT NULL COMMENT '删除时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='字典数据表';
+
+-- ----------------------------
+-- Records of con_system_dict_data_translations
+-- ----------------------------
+BEGIN;
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (1, 1, 'zh-cn', '接口', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (2, 1, 'en-us', 'API', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (3, 2, 'zh-cn', '菜单', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (4, 2, 'en-us', 'Menu', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (5, 3, 'zh-cn', '字符串', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (6, 3, 'en-us', 'String', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (7, 4, 'zh-cn', '数字', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (8, 4, 'en-us', 'Number', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (9, 5, 'zh-cn', '文本域', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (10, 5, 'en-us', 'Textarea', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (11, 6, 'zh-cn', '开关', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (12, 6, 'en-us', 'Switch', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (13, 7, 'zh-cn', '单图', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (14, 7, 'en-us', 'Image', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (15, 8, 'zh-cn', '多图', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (16, 8, 'en-us', 'Images', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (17, 9, 'zh-cn', '数组', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (18, 9, 'en-us', 'Array', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (19, 10, 'zh-cn', '日期', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (20, 10, 'en-us', 'Date', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (21, 11, 'zh-cn', '日期时间', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (22, 11, 'en-us', 'Datetime', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (23, 12, 'zh-cn', '日期范围', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (24, 12, 'en-us', 'Daterange', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (25, 13, 'zh-cn', '字典', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (26, 13, 'en-us', 'Dictionary', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (27, 14, 'zh-cn', '富文本', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (28, 14, 'en-us', 'Editor', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (29, 15, 'zh-cn', '单选框', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (30, 15, 'en-us', 'Radio', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (31, 16, 'zh-cn', '多选框', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (32, 16, 'en-us', 'Checkbox', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (33, 17, 'zh-cn', '下拉选择', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (34, 17, 'en-us', 'Select', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (35, 18, 'zh-cn', '全部', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (36, 18, 'en-us', 'All', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (37, 19, 'zh-cn', '图片', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (38, 19, 'en-us', 'Image', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (39, 20, 'zh-cn', '视频', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (40, 20, 'en-us', 'Video', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (41, 21, 'zh-cn', '音频', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (42, 21, 'en-us', 'Audio', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (43, 22, 'zh-cn', '文本', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (44, 22, 'en-us', 'Txt', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (45, 23, 'zh-cn', '文档', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (46, 23, 'en-us', 'Word', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (47, 24, 'zh-cn', 'Excel', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (48, 24, 'en-us', 'Excel', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (49, 25, 'zh-cn', 'PPT', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (50, 25, 'en-us', 'PPT', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (51, 26, 'zh-cn', 'PDF', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (52, 26, 'en-us', 'PDF', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (53, 27, 'zh-cn', '压缩包', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (54, 27, 'en-us', 'Zip', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (55, 28, 'zh-cn', '其他', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (56, 28, 'en-us', 'Other', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (57, 29, 'zh-cn', '两者都有', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (58, 29, 'en-us', 'Both', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (59, 30, 'zh-cn', '前台', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (60, 30, 'en-us', 'Front', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (61, 31, 'zh-cn', '后台', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (62, 31, 'en-us', 'Backend', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (63, 32, 'zh-cn', '类执行', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (64, 32, 'en-us', 'Class execution', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (65, 33, 'zh-cn', 'SSL', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (66, 33, 'en-us', 'SSL', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (67, 34, 'zh-cn', 'TSL', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (68, 34, 'en-us', 'TSL', '', 1769852933, 1769852933, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -336,11 +529,9 @@ COMMIT;
 DROP TABLE IF EXISTS `con_system_dict_type`;
 CREATE TABLE `con_system_dict_type` (
   `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '字典标题',
   `name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '字典名称',
   `scope` tinyint unsigned DEFAULT '0' COMMENT '可见:0=两者都,1=前台,2=后台',
   `status` smallint DEFAULT '1' COMMENT '状态 (1正常 2停用)',
-  `remark` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '备注',
   `created_by` int DEFAULT NULL COMMENT '创建者',
   `updated_by` int DEFAULT NULL COMMENT '更新者',
   `createtime` bigint DEFAULT NULL COMMENT '创建时间',
@@ -354,13 +545,49 @@ CREATE TABLE `con_system_dict_type` (
 -- Records of con_system_dict_type
 -- ----------------------------
 BEGIN;
-INSERT INTO `con_system_dict_type` (`id`, `title`, `name`, `scope`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (1, '菜单类型', 'menu_type', 2, 1, '菜单', 1, 1, 1766565999, 1767523709, NULL);
-INSERT INTO `con_system_dict_type` (`id`, `title`, `name`, `scope`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (2, '表单类型', 'config_form_type', 2, 1, '配置的表单类型', 1, 1, 1766657796, 1767523705, NULL);
-INSERT INTO `con_system_dict_type` (`id`, `title`, `name`, `scope`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (3, '字典组件', 'dict_component', 2, 1, '字典渲染的组件', 1, 1, 1766669327, 1767523700, NULL);
-INSERT INTO `con_system_dict_type` (`id`, `title`, `name`, `scope`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (4, '附件类型', 'attachment_type', 2, 1, '附件', 1, 1, 1767357074, 1767523683, NULL);
-INSERT INTO `con_system_dict_type` (`id`, `title`, `name`, `scope`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (5, '字典可见', 'dict_scope', 2, 1, '前台或后台可见', 1, 1, 1767522966, 1767523723, NULL);
-INSERT INTO `con_system_dict_type` (`id`, `title`, `name`, `scope`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (6, '定时任务类型', 'crontab_type', 2, 1, '定时任务类型', 1, NULL, 1767529330, 1767529330, NULL);
-INSERT INTO `con_system_dict_type` (`id`, `title`, `name`, `scope`, `status`, `remark`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (7, 'SMTP验证方式', 'smtp_secure', 2, 1, NULL, 1, NULL, 1769854270, 1769854270, NULL);
+INSERT INTO `con_system_dict_type` (`id`, `name`, `scope`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (1, 'menu_type', 2, 1, 1, 1, 1766565999, 1767523709, NULL);
+INSERT INTO `con_system_dict_type` (`id`, `name`, `scope`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (2, 'config_form_type', 2, 1, 1, 1, 1766657796, 1767523705, NULL);
+INSERT INTO `con_system_dict_type` (`id`, `name`, `scope`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (3, 'dict_component', 2, 1, 1, 1, 1766669327, 1767523700, NULL);
+INSERT INTO `con_system_dict_type` (`id`, `name`, `scope`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (4, 'attachment_type', 2, 1, 1, 1, 1767357074, 1767523683, NULL);
+INSERT INTO `con_system_dict_type` (`id`, `name`, `scope`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (5, 'dict_scope', 2, 1, 1, 1, 1767522966, 1767523723, NULL);
+INSERT INTO `con_system_dict_type` (`id`, `name`, `scope`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (6, 'crontab_type', 2, 1, 1, NULL, 1767529330, 1767529330, NULL);
+INSERT INTO `con_system_dict_type` (`id`, `name`, `scope`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (7, 'smtp_secure', 2, 1, 1, NULL, 1769854270, 1769854270, NULL);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for con_system_dict_type_translations
+-- ----------------------------
+DROP TABLE IF EXISTS `con_system_dict_type_translations`;
+CREATE TABLE `con_system_dict_type_translations` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `main_id` int unsigned NOT NULL DEFAULT '0' COMMENT '主表 ID',
+  `locale` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '语言',
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '字典标题',
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '备注',
+  `createtime` bigint DEFAULT NULL COMMENT '创建时间',
+  `updatetime` bigint DEFAULT NULL COMMENT '更新时间',
+  `deleted_at` bigint DEFAULT NULL COMMENT '删除时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='字典类型表';
+
+-- ----------------------------
+-- Records of con_system_dict_type_translations
+-- ----------------------------
+BEGIN;
+INSERT INTO `con_system_dict_type_translations` (`id`, `main_id`, `locale`, `title`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (1, 1, 'zh-cn', '菜单类型', '菜单', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_type_translations` (`id`, `main_id`, `locale`, `title`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (2, 1, 'en-us', 'Menu Type', 'Menu', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_type_translations` (`id`, `main_id`, `locale`, `title`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (3, 2, 'zh-cn', '表单类型', '配置的表单类型', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_type_translations` (`id`, `main_id`, `locale`, `title`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (4, 2, 'en-us', 'Form Type', 'The type of form configured', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_type_translations` (`id`, `main_id`, `locale`, `title`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (5, 3, 'zh-cn', '字典组件', '字典渲染的组件', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_type_translations` (`id`, `main_id`, `locale`, `title`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (6, 3, 'en-us', 'Dict component', 'Dictionary-rendered component', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_type_translations` (`id`, `main_id`, `locale`, `title`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (7, 4, 'zh-cn', '附件类型', '附件', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_type_translations` (`id`, `main_id`, `locale`, `title`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (8, 4, 'en-us', 'Attachment Type', 'Attachment', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_type_translations` (`id`, `main_id`, `locale`, `title`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (9, 5, 'zh-cn', '字典可见', '前台或后台可见', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_type_translations` (`id`, `main_id`, `locale`, `title`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (10, 5, 'en-us', 'Dict Scope', 'Scope of dictionary visibility', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_type_translations` (`id`, `main_id`, `locale`, `title`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (11, 6, 'zh-cn', '定时任务类型', '定时任务类型', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_type_translations` (`id`, `main_id`, `locale`, `title`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (12, 6, 'en-us', 'Scheduled Task Type', 'Scheduled Task Type', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_type_translations` (`id`, `main_id`, `locale`, `title`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (13, 7, 'zh-cn', 'SMTP验证方式', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_type_translations` (`id`, `main_id`, `locale`, `title`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (14, 7, 'en-us', 'SMTP Secure Type', '', 1769852933, 1769852933, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -439,78 +666,79 @@ INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `ic
 INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (8, 1, 2, 'system_attachment', '附件管理', 'ic:outline-format-list-bulleted', '/system/attachment', 'view.system_attachment', 'route.system_attachment', '', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, 1, 1, 1766720165, 1769593623, NULL);
 INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (9, 1, 0, 'permission', '权限管理', 'ri:team-line', '/permission', 'layout.base', 'condor.common.permission', '', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, 2, 1, 1767496244, 1769593253, NULL);
 INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (10, 0, 2, 'system_crontab', '定时任务', 'material-symbols:alarm-add-outline', '/system/crontab', 'view.system_crontab', 'route.system_crontab', '', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, 0, 1, 1767529595, 1769593487, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (11, NULL, 6, 'core_config_index', '配置查看', NULL, '/core/config/index', NULL, NULL, '', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1767875509, 1767875509, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (12, NULL, 6, 'core_config_add', '配置添加', NULL, '/core/config/add', NULL, NULL, '', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1767876624, 1767876624, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (13, NULL, 6, 'core_config_edit', '配置编辑', NULL, '/core/config/edit', NULL, NULL, '', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1767876624, 1767876624, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (14, NULL, 6, 'core_config_del', '配置删除', NULL, '/core/config/del', NULL, NULL, '', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1767876624, 1767876624, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (15, NULL, 6, 'core_config_save', '配置保存', NULL, '/core/config/save', NULL, NULL, '', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1767876624, 1767876624, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (11, NULL, 6, 'core_config_index', '配置查看', NULL, '/core/config/index', NULL, 'condor.route.configuration_view', '', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1767875509, 1767875509, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (12, NULL, 6, 'core_config_add', '配置添加', NULL, '/core/config/add', NULL, 'condor.route.configuration_add', '', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1767876624, 1767876624, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (13, NULL, 6, 'core_config_edit', '配置编辑', NULL, '/core/config/edit', NULL, 'condor.route.configuration_edit', '', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1767876624, 1767876624, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (14, NULL, 6, 'core_config_del', '配置删除', NULL, '/core/config/del', NULL, 'condor.route.configuration_delete', '', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1767876624, 1767876624, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (15, NULL, 6, 'core_config_save', '配置保存', NULL, '/core/config/save', NULL, 'condor.route.configuration_save', '', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1767876624, 1767876624, NULL);
 INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (16, 1, 9, 'system_login-log', '登录日志', 'material-symbols:view-list-sharp', '/system/login-log', 'view.system_login-log', 'route.system_login-log', '', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, 0, 1, 1767949196, 1769593736, NULL);
 INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (17, 1, 9, 'system_admin-log', '操作日志', 'lucide:logs', '/system/admin-log', 'view.system_admin-log', 'route.system_admin-log', '', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, 0, 1, 1767949383, 1769593724, NULL);
 INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (18, 1, 2, 'system_crud', '一键CRUD', 'material-symbols-light:add-ad', '/system/crud', 'view.system_crud', 'route.system_crud', '', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, 5, 1, 1767955613, 1769593658, NULL);
 INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (19, 1, 9, 'system_test', 'CRUD 测试', 'mdi:checkbox-multiple-blank-circle-outline', '/system/test', 'view.system_test', 'route.system_test', '', 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1769593676, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (20, 1, 19, 'core_system-test_index', '查看', '', '/core/system-test/index', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (21, 1, 19, 'core_system-test_add', '添加', '', '/core/system-test/add', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (22, 1, 19, 'core_system-test_edit', '编辑', '', '/core/system-test/edit', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (23, 1, 19, 'core_system-test_del', '删除', '', '/core/system-test/del', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (24, 1, 19, 'core_system-test_multi', '批量操作', '', '/core/system-test/multi', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (25, 1, 19, 'core_system-test_selectpage', '选择列表', '', '/core/system-test/selectpage', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (60, 1, 3, 'core_system_menu_index', '查看', '', '/core/menu/index', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (61, 1, 3, 'core_system_menu_add', '添加', '', '/core/menu/add', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (62, 1, 3, 'core_system_menu_edit', '编辑', '', '/core/menu/edit', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (63, 1, 3, 'core_system_menu_del', '删除', '', '/core/menu/del', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (64, 1, 3, 'core_system_menu_multi', '批量操作', '', '/core/menu/multi', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (65, 1, 3, 'core_system_menu_selectpage', '选择列表', '', '/core/menu/selectpage', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (66, 1, 4, 'core_system_role_index', '查看', '', '/core/role/index', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (67, 1, 4, 'core_system_role_add', '添加', '', '/core/role/add', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (68, 1, 4, 'core_system_role_edit', '编辑', '', '/core/role/edit', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (69, 1, 4, 'core_system_role_del', '删除', '', '/core/role/del', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (70, 1, 4, 'core_system_role_multi', '批量操作', '', '/core/role/multi', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (71, 1, 4, 'core_system_role_selectpage', '选择列表', '', '/core/role/selectpage', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (72, 1, 5, 'core_dict-type_index', '类型查看', '', '/core/dict-type/index', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (73, 1, 5, 'core_dict-type_add', '类型添加', '', '/core/dict-type/add', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (74, 1, 5, 'core_dict-type_edit', '类型编辑', '', '/core/dict-type/edit', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (75, 1, 5, 'core_dict-type_del', '类型删除', '', '/core/dict-type/del', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (76, 1, 5, 'core_dict-type_multi', '类型批量操作', '', '/core/dict-type/multi', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (77, 1, 5, 'core_dict-type_selectpage', '类型选择列表', '', '/core/dict-type/selectpage', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (78, 1, 5, 'core_dict-data_index', '数据查看', '', '/core/dict-data/index', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (79, 1, 5, 'core_dict-data_add', '数据添加', '', '/core/dict-data/add', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (80, 1, 5, 'core_dict-data_edit', '数据编辑', '', '/core/dict-data/edit', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (81, 1, 5, 'core_dict-data_del', '数据删除', '', '/core/dict-data/del', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (82, 1, 5, 'core_dict-data_multi', '数据批量操作', '', '/core/dict-data/multi', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (83, 1, 5, 'core_dict-data_selectpage', '数据选择列表', '', '/core/dict-data/selectpage', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (84, 1, 7, 'core_system_admin_index', '查看', '', '/core/admin/index', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (85, 1, 7, 'core_system_admin_add', '添加', '', '/core/admin/add', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (86, 1, 7, 'core_system_admin_edit', '编辑', '', '/core/admin/edit', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (87, 1, 7, 'core_system_admin_del', '删除', '', '/core/admin/del', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (88, 1, 7, 'core_system_admin_multi', '批量操作', '', '/core/admin/multi', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (89, 1, 7, 'core_system_admin_selectpage', '选择列表', '', '/core/admin/selectpage', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (90, 1, 6, 'core_config-group_index', '分组查看', '', '/core/config-group/index', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (91, 1, 6, 'core_config-group_add', '分组添加', '', '/core/config-group/add', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (92, 1, 6, 'core_config-group_edit', '分组编辑', '', '/core/config-group/edit', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (93, 1, 6, 'core_config-group_del', '分组删除', '', '/core/config-group/del', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (94, 1, 6, 'core_config-group_multi', '分组批量操作', '', '/core/config-group/multi', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (95, 1, 8, 'core_attachment-type_index', '类型查看', '', '/core/attachment-type/index', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (96, 1, 8, 'core_attachment-type_add', '类型添加', '', '/core/attachment-type/add', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (97, 1, 8, 'core_attachment-type_edit', '类型编辑', '', '/core/attachment-type/edit', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (98, 1, 8, 'core_attachment-type_del', '类型删除', '', '/core/attachment-type/del', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (99, 1, 8, 'core_attachment-type_multi', '类型批量操作', '', '/core/attachment-type/multi', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (100, 1, 8, 'core_attachment_index', '附件查看', '', '/core/attachment/index', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (101, 1, 8, 'core_attachment_del', '附件删除', '', '/core/attachment/del', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (102, 1, 8, 'core_attachment_upload', '附件上传', '', '/core/attachment/upload', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (103, 1, 10, 'core_crontab_index', '查看', '', '/core/crontab/index', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (104, 1, 10, 'core_crontab_add', '添加', '', '/core/crontab/add', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (105, 1, 10, 'core_crontab_edit', '编辑', '', '/core/crontab/edit', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (106, 1, 10, 'core_crontab_del', '删除', '', '/core/crontab/del', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (107, 1, 10, 'core_crontab_multi', '批量操作', '', '/core/crontab/multi', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (108, 1, 10, 'core_crontab_run-once', '运行一次', '', '/core/crontab/run-once', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (109, 1, 10, 'core_crontab-log_index', '日志查看', '', '/core/crontab-log/index', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (110, 1, 16, 'core_login-log_del', '删除', '', '/core/login-log/del', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (111, 1, 16, 'core_login-log_index', '查看', '', '/core/login-log/index', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (112, 1, 17, 'core_admin-log_del', '删除', '', '/core/admin-log/del', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (113, 1, 17, 'core_admin-log_index', '查看', '', '/core/admin-log/index', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (114, 1, 18, 'core_crud_config', '获取配置', '', '/core/crud/config', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (115, 1, 18, 'core_crud_fields', '表字段', '', '/core/crud/fields', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
-INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (116, 1, 18, 'core_crud_create', '创建', '', '/core/crud/create', NULL, NULL, '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (20, 1, 19, 'core_system-test_index', '查看', '', '/core/system-test/index', NULL, 'condor.route.view', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (21, 1, 19, 'core_system-test_add', '添加', '', '/core/system-test/add', NULL, 'condor.route.add', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (22, 1, 19, 'core_system-test_edit', '编辑', '', '/core/system-test/edit', NULL, 'condor.route.edit', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (23, 1, 19, 'core_system-test_del', '删除', '', '/core/system-test/del', NULL, 'condor.route.delete', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (24, 1, 19, 'core_system-test_multi', '批量操作', '', '/core/system-test/multi', NULL, 'condor.route.bulk_actions', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (25, 1, 19, 'core_system-test_selectpage', '选择列表', '', '/core/system-test/selectpage', NULL, 'condor.route.selection_list', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (26, NULL, 6, 'core_config_send_test_email', '发送测试邮件', NULL, '/core/config/send-test-email', NULL, 'condor.route.send_test_email', '', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1767876624, 1767876624, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (60, 1, 3, 'core_system_menu_index', '查看', '', '/core/menu/index', NULL, 'condor.route.view', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (61, 1, 3, 'core_system_menu_add', '添加', '', '/core/menu/add', NULL, 'condor.route.add', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (62, 1, 3, 'core_system_menu_edit', '编辑', '', '/core/menu/edit', NULL, 'condor.route.edit', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (63, 1, 3, 'core_system_menu_del', '删除', '', '/core/menu/del', NULL, 'condor.route.delete', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (64, 1, 3, 'core_system_menu_multi', '批量操作', '', '/core/menu/multi', NULL, 'condor.route.bulk_actions', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (65, 1, 3, 'core_system_menu_selectpage', '选择列表', '', '/core/menu/selectpage', NULL, 'condor.route.selection_list', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (66, 1, 4, 'core_system_role_index', '查看', '', '/core/role/index', NULL, 'condor.route.view', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (67, 1, 4, 'core_system_role_add', '添加', '', '/core/role/add', NULL, 'condor.route.add', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (68, 1, 4, 'core_system_role_edit', '编辑', '', '/core/role/edit', NULL, 'condor.route.edit', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (69, 1, 4, 'core_system_role_del', '删除', '', '/core/role/del', NULL, 'condor.route.delete', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (70, 1, 4, 'core_system_role_multi', '批量操作', '', '/core/role/multi', NULL, 'condor.route.bulk_actions', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (71, 1, 4, 'core_system_role_selectpage', '选择列表', '', '/core/role/selectpage', NULL, 'condor.route.selection_list', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (72, 1, 5, 'core_dict-type_index', '类型查看', '', '/core/dict-type/index', NULL, 'condor.route.view_type', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (73, 1, 5, 'core_dict-type_add', '类型添加', '', '/core/dict-type/add', NULL, 'condor.route.add_type', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (74, 1, 5, 'core_dict-type_edit', '类型编辑', '', '/core/dict-type/edit', NULL, 'condor.route.edit_type', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (75, 1, 5, 'core_dict-type_del', '类型删除', '', '/core/dict-type/del', NULL, 'condor.route.delete_type', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (76, 1, 5, 'core_dict-type_multi', '类型批量操作', '', '/core/dict-type/multi', NULL, 'condor.route.type_bulk_actions', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (77, 1, 5, 'core_dict-type_selectpage', '类型选择列表', '', '/core/dict-type/selectpage', NULL, 'condor.route.select_type_list', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (78, 1, 5, 'core_dict-data_index', '数据查看', '', '/core/dict-data/index', NULL, 'condor.route.view_data', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (79, 1, 5, 'core_dict-data_add', '数据添加', '', '/core/dict-data/add', NULL, 'condor.route.add_data', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (80, 1, 5, 'core_dict-data_edit', '数据编辑', '', '/core/dict-data/edit', NULL, 'condor.route.edit_data', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (81, 1, 5, 'core_dict-data_del', '数据删除', '', '/core/dict-data/del', NULL, 'condor.route.delete_data', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (82, 1, 5, 'core_dict-data_multi', '数据批量操作', '', '/core/dict-data/multi', NULL, 'condor.route.data_bulk_actions', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (83, 1, 5, 'core_dict-data_selectpage', '数据选择列表', '', '/core/dict-data/selectpage', NULL, 'condor.route.select_data_list', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (84, 1, 7, 'core_system_admin_index', '查看', '', '/core/admin/index', NULL, 'condor.route.view', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (85, 1, 7, 'core_system_admin_add', '添加', '', '/core/admin/add', NULL, 'condor.route.add', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (86, 1, 7, 'core_system_admin_edit', '编辑', '', '/core/admin/edit', NULL, 'condor.route.edit', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (87, 1, 7, 'core_system_admin_del', '删除', '', '/core/admin/del', NULL, 'condor.route.delete', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (88, 1, 7, 'core_system_admin_multi', '批量操作', '', '/core/admin/multi', NULL, 'condor.route.bulk_actions', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (89, 1, 7, 'core_system_admin_selectpage', '选择列表', '', '/core/admin/selectpage', NULL, 'condor.route.selection_list', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (90, 1, 6, 'core_config-group_index', '分组查看', '', '/core/config-group/index', NULL, 'condor.route.group_view', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (91, 1, 6, 'core_config-group_add', '分组添加', '', '/core/config-group/add', NULL, 'condor.route.group_add', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (92, 1, 6, 'core_config-group_edit', '分组编辑', '', '/core/config-group/edit', NULL, 'condor.route.group_edit', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (93, 1, 6, 'core_config-group_del', '分组删除', '', '/core/config-group/del', NULL, 'condor.route.group_delete', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (94, 1, 6, 'core_config-group_multi', '分组批量操作', '', '/core/config-group/multi', NULL, 'condor.route.group_bulk_actions', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (95, 1, 8, 'core_attachment-type_index', '类型查看', '', '/core/attachment-type/index', NULL, 'condor.route.view_type', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (96, 1, 8, 'core_attachment-type_add', '类型添加', '', '/core/attachment-type/add', NULL, 'condor.route.add_type', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (97, 1, 8, 'core_attachment-type_edit', '类型编辑', '', '/core/attachment-type/edit', NULL, 'condor.route.edit_type', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (98, 1, 8, 'core_attachment-type_del', '类型删除', '', '/core/attachment-type/del', NULL, 'condor.route.delete_type', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (99, 1, 8, 'core_attachment-type_multi', '类型批量操作', '', '/core/attachment-type/multi', NULL, 'condor.route.type_bulk_actions', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (100, 1, 8, 'core_attachment_index', '附件查看', '', '/core/attachment/index', NULL, 'condor.route.view_attachment', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (101, 1, 8, 'core_attachment_del', '附件删除', '', '/core/attachment/del', NULL, 'condor.route.delete_attachment', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (102, 1, 8, 'core_attachment_upload', '附件上传', '', '/core/attachment/upload', NULL, 'condor.route.upload_attachment', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (103, 1, 10, 'core_crontab_index', '查看', '', '/core/crontab/index', NULL, 'condor.route.view', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (104, 1, 10, 'core_crontab_add', '添加', '', '/core/crontab/add', NULL, 'condor.route.add', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (105, 1, 10, 'core_crontab_edit', '编辑', '', '/core/crontab/edit', NULL, 'condor.route.edit', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (106, 1, 10, 'core_crontab_del', '删除', '', '/core/crontab/del', NULL, 'condor.route.delete', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (107, 1, 10, 'core_crontab_multi', '批量操作', '', '/core/crontab/multi', NULL, 'condor.route.bulk_actions', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (108, 1, 10, 'core_crontab_run-once', '运行一次', '', '/core/crontab/run-once', NULL, 'condor.route.run_once', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (109, 1, 10, 'core_crontab-log_index', '日志查看', '', '/core/crontab-log/index', NULL, 'condor.route.view_logs', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (110, 1, 16, 'core_login-log_del', '删除', '', '/core/login-log/del', NULL, 'condor.route.delete', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (111, 1, 16, 'core_login-log_index', '查看', '', '/core/login-log/index', NULL, 'condor.route.view', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (112, 1, 17, 'core_admin-log_del', '删除', '', '/core/admin-log/del', NULL, 'condor.route.delete', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (113, 1, 17, 'core_admin-log_index', '查看', '', '/core/admin-log/index', NULL, 'condor.route.view', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (114, 1, 18, 'core_crud_config', '获取配置', '', '/core/crud/config', NULL, 'condor.route.get_configuration', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (115, 1, 18, 'core_crud_fields', '表字段', '', '/core/crud/fields', NULL, 'condor.route.table_fields', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (116, 1, 18, 'core_crud_create', '创建', '', '/core/crud/create', NULL, 'condor.route.create', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -523,7 +751,6 @@ CREATE TABLE `con_system_role` (
   `admin_id` int unsigned NOT NULL DEFAULT '0' COMMENT '管理员ID',
   `pid` int unsigned NOT NULL DEFAULT '0' COMMENT '父组别',
   `code` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '角色标识',
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '角色名称',
   `rules` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '规则ID',
   `status` tinyint DEFAULT '1' COMMENT '状态:1=正常,2=关闭',
   `createtime` bigint DEFAULT NULL COMMENT '创建时间',
@@ -536,9 +763,9 @@ CREATE TABLE `con_system_role` (
 -- Records of con_system_role
 -- ----------------------------
 BEGIN;
-INSERT INTO `con_system_role` (`id`, `is_sys`, `admin_id`, `pid`, `code`, `name`, `rules`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (1, 1, 1, 0, 'superadmin', '超级管理员', '', 1, 1762870065, 1762870065, NULL);
-INSERT INTO `con_system_role` (`id`, `is_sys`, `admin_id`, `pid`, `code`, `name`, `rules`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (2, 0, 1, 0, 'superadmin', '超级管理', NULL, 1, 1766417865, 1766487550, NULL);
-INSERT INTO `con_system_role` (`id`, `is_sys`, `admin_id`, `pid`, `code`, `name`, `rules`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (3, 0, 1, 2, 'test', 'test', '1,9,19,16,111,17,113,20,2,5,77,78,83,6,11,90,8,95,10,103,109,18,114,115,100,72,3,60,65,4,66,71,7,84,89,25,21,24,22,23', 1, 1766546252, 1769827337, NULL);
+INSERT INTO `con_system_role` (`id`, `is_sys`, `admin_id`, `pid`, `code`, `rules`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (1, 1, 1, 0, 'superadmin', '', 1, 1762870065, 1762870065, NULL);
+INSERT INTO `con_system_role` (`id`, `is_sys`, `admin_id`, `pid`, `code`, `rules`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (2, 0, 1, 0, 'superadmin', NULL, 1, 1766417865, 1766487550, NULL);
+INSERT INTO `con_system_role` (`id`, `is_sys`, `admin_id`, `pid`, `code`, `rules`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (3, 0, 1, 2, 'test', '1', 1, 1766546252, 1772641237, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -565,11 +792,64 @@ INSERT INTO `con_system_role_group` (`id`, `uid`, `role_id`, `createtime`) VALUE
 COMMIT;
 
 -- ----------------------------
+-- Table structure for con_system_role_translations
+-- ----------------------------
+DROP TABLE IF EXISTS `con_system_role_translations`;
+CREATE TABLE `con_system_role_translations` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `main_id` int unsigned NOT NULL DEFAULT '0' COMMENT '主表 ID',
+  `locale` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '语言',
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '角色名称',
+  `createtime` bigint DEFAULT NULL COMMENT '创建时间',
+  `updatetime` bigint DEFAULT NULL COMMENT '更新时间',
+  `deleted_at` bigint DEFAULT NULL COMMENT '删除时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='角色语言表';
+
+-- ----------------------------
+-- Records of con_system_role_translations
+-- ----------------------------
+BEGIN;
+INSERT INTO `con_system_role_translations` (`id`, `main_id`, `locale`, `name`, `createtime`, `updatetime`, `deleted_at`) VALUES (1, 1, 'zh-cn', '超级管理员', 1762870065, 1762870065, NULL);
+INSERT INTO `con_system_role_translations` (`id`, `main_id`, `locale`, `name`, `createtime`, `updatetime`, `deleted_at`) VALUES (2, 1, 'en-us', 'super admin', 1762870065, 1762870065, NULL);
+INSERT INTO `con_system_role_translations` (`id`, `main_id`, `locale`, `name`, `createtime`, `updatetime`, `deleted_at`) VALUES (3, 2, 'zh-cn', '超级管理员', 1762870065, 1762870065, NULL);
+INSERT INTO `con_system_role_translations` (`id`, `main_id`, `locale`, `name`, `createtime`, `updatetime`, `deleted_at`) VALUES (4, 2, 'en-us', 'super admin', 1762870065, 1762870065, NULL);
+INSERT INTO `con_system_role_translations` (`id`, `main_id`, `locale`, `name`, `createtime`, `updatetime`, `deleted_at`) VALUES (5, 3, 'zh-cn', '测试', 1762870065, 1772641255, NULL);
+INSERT INTO `con_system_role_translations` (`id`, `main_id`, `locale`, `name`, `createtime`, `updatetime`, `deleted_at`) VALUES (6, 3, 'en-us', 'test', 1762870065, 1772641255, NULL);
+COMMIT;
+
+-- ----------------------------
 -- Table structure for con_system_test
 -- ----------------------------
 DROP TABLE IF EXISTS `con_system_test`;
 CREATE TABLE `con_system_test` (
   `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `price` decimal(10,2) unsigned DEFAULT '0.00' COMMENT '价格',
+  `views` int unsigned DEFAULT '0' COMMENT '点击',
+  `activitytime` bigint DEFAULT NULL COMMENT '活动时间',
+  `refreshtime` bigint DEFAULT NULL COMMENT '刷新时间',
+  `createtime` bigint DEFAULT NULL COMMENT '创建时间',
+  `updatetime` bigint DEFAULT NULL COMMENT '更新时间',
+  `deleted_at` bigint DEFAULT NULL COMMENT '删除时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='测试';
+
+-- ----------------------------
+-- Records of con_system_test
+-- ----------------------------
+BEGIN;
+INSERT INTO `con_system_test` (`id`, `price`, `views`, `activitytime`, `refreshtime`, `createtime`, `updatetime`, `deleted_at`) VALUES (1, 5.00, 4, 1772090868000, 1769758065000, 1769930702, 1771002436, 1771002436);
+INSERT INTO `con_system_test` (`id`, `price`, `views`, `activitytime`, `refreshtime`, `createtime`, `updatetime`, `deleted_at`) VALUES (2, 3.13, 4, 1770968843000, 1770968844000, 1770971546, 1771002273, NULL);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for con_system_test_translations
+-- ----------------------------
+DROP TABLE IF EXISTS `con_system_test_translations`;
+CREATE TABLE `con_system_test_translations` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `main_id` int unsigned NOT NULL DEFAULT '0' COMMENT '主表 ID',
+  `locale` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '语言',
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '名称',
   `target` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '目标',
   `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '标题',
@@ -579,20 +859,18 @@ CREATE TABLE `con_system_test` (
   `attachfile` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '附件',
   `keywords` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '关键字',
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '描述',
-  `price` decimal(10,2) unsigned DEFAULT '0.00' COMMENT '价格',
-  `views` int unsigned DEFAULT '0' COMMENT '点击',
-  `activitytime` bigint DEFAULT NULL COMMENT '活动时间',
-  `refreshtime` bigint DEFAULT NULL COMMENT '刷新时间',
   `createtime` bigint DEFAULT NULL COMMENT '创建时间',
   `updatetime` bigint DEFAULT NULL COMMENT '更新时间',
-  `deleted_at` bigint DEFAULT NULL COMMENT '删除时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='测试';
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `locale_main_id` (`main_id`,`locale`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='测试';
 
 -- ----------------------------
--- Records of con_system_test
+-- Records of con_system_test_translations
 -- ----------------------------
 BEGIN;
+INSERT INTO `con_system_test_translations` (`id`, `main_id`, `locale`, `name`, `target`, `title`, `content`, `image`, `images`, `attachfile`, `keywords`, `description`, `createtime`, `updatetime`) VALUES (5, 2, 'zh-cn', '测试12', '收到老师12', '罗伟12', '<p>奥丝蓝黛减肥了12</p>', '/uploads/20260201/20260201152415_697eff9f2c1db.jpg', '/uploads/20260201/20260201152336_697eff78cdcdd.png', '/uploads/20260201/20260201152346_697eff827d6cf.png', '水电费12', '味道发生的发12', 1771002273, 1771002273);
+INSERT INTO `con_system_test_translations` (`id`, `main_id`, `locale`, `name`, `target`, `title`, `content`, `image`, `images`, `attachfile`, `keywords`, `description`, `createtime`, `updatetime`) VALUES (6, 2, 'en-us', 'werwer12', 'sghstwert12', 'ersdgertweg12', '<p>sdfgwertdfg12</p>', '/uploads/20260201/20260201152336_697eff78cdcdd.png', '/uploads/20260201/20260201152346_697eff827d6cf.png', '/uploads/20260201/20260201152415_697eff9f2c1db.jpg', 'ergsdf12', 'ergsdfgsd12', 1771002273, 1771002273);
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;

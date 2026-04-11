@@ -67,4 +67,24 @@ class SystemAdmin extends BaseService
         Event::emit('admin.login', compact('username', 'status', 'message', 'admin_id'));
         return $token;
     }
+
+    /**
+     * 更新个人信息
+     * @param $admin_id
+     * @param $avatar
+     * @param $email
+     * @param $password
+     * @return mixed
+     */
+    public function updateProfile($admin_id,$avatar, $email, $password)
+    {
+        $adminInfo = $this->model->find($admin_id);
+        $adminInfo->avatar = $avatar;
+        $adminInfo->email = $email;
+        if ($password) {
+            $adminInfo->password = getEnctyptPassword(trim($password));
+        }
+        $adminInfo->save();
+        return true;
+    }
 }

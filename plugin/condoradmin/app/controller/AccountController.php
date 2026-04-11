@@ -17,7 +17,7 @@ class AccountController extends Backend
      */
     protected $noNeedLogin = ['captcha', 'login'];
 
-    protected $noNeedRight = ['getUserInfo'];
+    protected $noNeedRight = ['getUserInfo', 'updateProfile'];
 
 
     /**
@@ -83,5 +83,19 @@ class AccountController extends Backend
         $adminInfo['roles'] =  $this->auth->getRuleList($this->auth->id);
         $adminInfo['buttons'] =  $this->auth->getRuleList($this->auth->id, 2);
         return $this->success(trans('condoradmin.ok'), $adminInfo);
+    }
+
+    /**
+     * 更新个人信息
+     * @param Request $request
+     * @return \support\Response
+     */
+    public function updateProfile(Request $request)
+    {
+        $avatar = $request->post('avatar');
+        $email = $request->post('email');
+        $password = $request->post('password');
+        $admin = new SystemAdmin();
+        return $this->success(trans('condoradmin.ok'), $admin->updateProfile($this->auth->id, $avatar, $email, $password));
     }
 }

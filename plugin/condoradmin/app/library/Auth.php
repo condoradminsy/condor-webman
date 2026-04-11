@@ -95,7 +95,7 @@ class Auth
         // 缓存 -> 角色组改变的时候，需要清除缓存，角色状态改变，删除的时候，需要清除缓存
         if (empty($roleGroup)) {
             $roleGroup = Db::table('system_role_group as srg')
-                ->select('srg.uid', 'srg.role_id', 'sr.id', 'sr.pid', 'sr.name', 'sr.rules', 'sr.code')
+                ->select('srg.uid', 'srg.role_id', 'sr.id', 'sr.pid', 'sr.rules', 'sr.code')
                 ->join('system_role as sr', 'srg.role_id', '=', 'sr.id')
                 ->where('srg.uid', '=', $uid)
                 ->where('sr.status', '=', 1)
@@ -338,7 +338,7 @@ class Auth
         }
         $isSuperAdmin = $this->isSuperAdmin();
         // 取出所有分组
-        $groupList = \plugin\condoradmin\app\model\SystemRole::select('id', 'pid', 'name', 'rules')
+        $groupList = \plugin\condoradmin\app\model\SystemRole::select('id', 'pid', 'rules')
             ->where(function ($query) use ($isSuperAdmin) {
                 if (!$isSuperAdmin) {
                     $query->where('status', 1);

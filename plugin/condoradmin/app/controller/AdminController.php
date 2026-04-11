@@ -24,6 +24,8 @@ class AdminController extends Backend
         'status' => ['type' => 'int'],
     ];
 
+    protected $dataLimit = true;
+
     // 模型关联
     protected array $with = ['RoleGroup:id,uid,role_id'];
 
@@ -44,7 +46,7 @@ class AdminController extends Backend
     {
         try {
             //设置过滤方法
-            [$where, $sort, $order, $offset, $limit] = $this->buildparams($request);
+            [$params, $sort, $order, $offset, $limit] = $this->buildparams($request);
             $query = null;
             if ($this->alias) {
                 $tableName = $this->model->getTable();
@@ -60,10 +62,10 @@ class AdminController extends Backend
             if (!empty($this->with)) {
                 $query = $query->with($this->with);
             }
-            $query->where($where);
+            $this->applyWhere($query, $params);
 
             $total = (clone $query)->count();
-
+            
             $list = $query
                 ->orderBy($order, $sort)
                 ->offset($offset)
