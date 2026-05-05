@@ -4,7 +4,7 @@ namespace plugin\condorauth\app\controller;
 
 use support\Request;
 
-class IndexController
+class CommonController
 {
 
     public function index()

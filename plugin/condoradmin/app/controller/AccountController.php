@@ -42,7 +42,7 @@ class AccountController extends Backend
             Log::error('Redis error: ' . $e->getMessage());
         }
         return $this->success(trans('condoradmin.ok'), [
-            'captcha' => Captcha::imageCaptcha('login')
+            'captcha' => Captcha::imageCaptcha('admin:login')
         ]);
     }
 
@@ -58,7 +58,7 @@ class AccountController extends Backend
         if (empty($username) || empty($password) || empty($captcha)) {
             return $this->fail(trans('condoradmin.invalid.parameters'));
         }
-        if (Captcha::checkCaptcha('login', $captcha) === false) {
+        if (Captcha::checkCaptcha('admin:login', $captcha) === false) {
             return $this->fail(trans('condoradmin.incorrect.verification.code'));
         }
         $privateKey = getPrivateKeyValue(config('plugin.condoradmin.condor.private_key'));
@@ -95,6 +95,11 @@ class AccountController extends Backend
         $avatar = $request->post('avatar');
         $email = $request->post('email');
         $password = $request->post('password');
+        $privateKey = getPrivateKeyValue(config('plugin.condoradmin.condor.private_key'));
+        $password = openssl_private_decrypt(base64_decode($password), $decryptedData, $privateKey) ? $decryptedData : '';
+        if (empty($password)) {
+            return $this->fail(trans('condoradmin.incorrect.password.please.try.again'));
+        }
         $admin = new SystemAdmin();
         return $this->success(trans('condoradmin.ok'), $admin->updateProfile($this->auth->id, $avatar, $email, $password));
     }

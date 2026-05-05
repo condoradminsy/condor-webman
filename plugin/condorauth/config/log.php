@@ -7,7 +7,7 @@ return [
                 'class' => Monolog\Handler\RotatingFileHandler::class,
                 'constructor' => [
                     runtime_path() . '/logs/condorauth.log',
-                    7,
+                    14,
                     Monolog\Logger::DEBUG,
                 ],
                 'formatter' => [

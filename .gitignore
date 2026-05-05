@@ -13,4 +13,5 @@ app/command/Test.php
 /plugin/condorshop
 /plugin/condorsms
 /plugin/condorsupport
+/plugin/condorbuyback
 composer.lock
