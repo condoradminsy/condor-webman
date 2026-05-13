@@ -4,6 +4,8 @@ namespace plugin\condorauth\app\controller;
 
 use plugin\condorauth\app\library\Frontend;
 use plugin\condoradmin\app\library\Captcha;
+use plugin\condoradmin\app\library\Email;
+use plugin\condorauth\app\service\SmsService;
 use support\Request;
 use support\Response;
 use support\Redis;
@@ -17,10 +19,10 @@ class AuthController extends Frontend
     /**
      * 不需要登录的方法
      */
-    protected $noNeedLogin = ['captcha', 'register', 'login'];
+    protected $noNeedLogin = ['captcha', 'register', 'login', 'sendSmsCode', 'sendEmailCode'];
 
     /**
-     * 获取验证码
+     * 获取图形验证码
      * @param Request $request
      * @return Response
      * @throws \Throwable
@@ -29,19 +31,16 @@ class AuthController extends Frontend
     {
         $ip = $request->getRealIp();
         $event = $request->post('event', 'login');
-        // 验证码限制,30秒内最多请求5次
         $limitKey = 'condor:auth:captcha:' . $ip;
         try {
             $count = (int)Redis::incr($limitKey);
             if ($count === 1) {
-                // 首次计数，设置过期时间为 30 秒
                 Redis::expire($limitKey, 30);
             }
             if ($count > 5) {
                 return $this->fail(trans('condorauth.too.many.requests.please.try.again.later'));
             }
         } catch (\Throwable $e) {
-            // Redis 出错时降级处理：允许请求，但记录日志以便排查
             Log::error('Redis error: =>', [
                 'message' => $e->getMessage(),
                 'stack' => $e->getTraceAsString()
@@ -50,6 +49,59 @@ class AuthController extends Frontend
         return $this->success(trans('condorauth.ok'), [
             'captcha' => Captcha::imageCaptcha($event)
         ]);
+    }
+
+    /**
+     * 发送短信验证码
+     * @param Request $request
+     * @return Response
+     */
+    public function sendSmsCode(Request $request): Response
+    {
+        try {
+            $params = $request->post();
+            $data = v::input($params, [
+                'mobile' => v::regex('/^1[3-9]\d{9}$/')->setName(trans('condorauth.mobile'))->setTemplate(trans('condorauth.validation.required')),
+            ]);
+            $event = 'sms_login';
+            SmsService::sendCode($data['mobile'], $event);
+        } catch (ValidationException $e) {
+            return $this->fail($e->getMessage());
+        } catch (\RuntimeException $e) {
+            return $this->fail($e->getMessage());
+        }
+        return $this->success(trans('condorauth.sms.code.sent'));
+    }
+
+    /**
+     * 发送邮箱验证码
+     * @param Request $request
+     * @return Response
+     */
+    public function sendEmailCode(Request $request): Response
+    {
+        try {
+            $params = $request->post();
+            $data = v::input($params, [
+                'email' => v::email()->setName(trans('condorauth.email'))->setTemplate(trans('condorauth.validation.required')),
+            ]);
+            $email = $data['email'];
+            $limitKey = 'condor:auth:email_limit:' . $email;
+            if (Redis::get($limitKey)) {
+                return $this->fail(trans('condorauth.send.code.too.frequent'));
+            }
+            $event = 'email_login';
+            $code = Captcha::numberCaptcha($event, 6);
+            $subject = trans('condorauth.email.code.subject');
+            $body = trans('condorauth.email.code.body', ['code' => $code]);
+            Email::send($email, $subject, $body);
+            Redis::set($limitKey, 1, 'EX', 60);
+        } catch (ValidationException $e) {
+            return $this->fail($e->getMessage());
+        } catch (\RuntimeException $e) {
+            return $this->fail($e->getMessage());
+        }
+        return $this->success(trans('condorauth.email.code.sent'));
     }
 
     /**
@@ -68,7 +120,6 @@ class AuthController extends Frontend
                 'captcha' => v::alnum()->length(4, 4)->setName(trans('condorauth.captcha'))->setTemplate(trans('condorauth.validation.required')),
                 'invite_code' => v::optional(v::alnum()->length(4, 4))->setName(trans('condorauth.invite_code')),
             ]);
-            // 验证码
             if(Captcha::checkCaptcha('register', $data['captcha']) === false) {
                 return $this->fail(trans('condorauth.captcha.error'));
             }

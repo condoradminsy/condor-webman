@@ -1,0 +1,6 @@
+# 依赖目录
+vendor/
+runtime/
+
+# .git目录
+.git/
