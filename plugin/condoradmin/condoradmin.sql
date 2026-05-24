@@ -11,7 +11,7 @@
  Target Server Version : 80403 (8.4.3)
  File Encoding         : 65001
 
- Date: 11/04/2026 16:27:42
+ Date: 24/05/2026 09:33:00
 */
 
 SET NAMES utf8mb4;
@@ -70,7 +70,7 @@ CREATE TABLE `con_system_admin_log` (
   `deleted_at` bigint DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `name` (`username`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='后台操作日志';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='后台操作日志';
 
 -- ----------------------------
 -- Records of con_system_admin_log
@@ -177,7 +177,7 @@ CREATE TABLE `con_system_config` (
   `deleted_at` bigint DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `key_group_id_active` (`key`,`group_id`,((case when (`deleted_at` is null) then 1 end)))
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='系统参数配置';
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='系统参数配置';
 
 -- ----------------------------
 -- Records of con_system_config
@@ -195,7 +195,13 @@ INSERT INTO `con_system_config` (`id`, `is_sys`, `key`, `value`, `title`, `group
 INSERT INTO `con_system_config` (`id`, `is_sys`, `key`, `value`, `title`, `group_code`, `group_id`, `tips`, `type`, `is_visible`, `weigh`, `dict_code`, `dict_type`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (10, 1, 'from', 'sa45com', '默认发件人', 'email_config', 2, '默认发件的邮箱地址', 'string', 1, 0, NULL, NULL, 1, 1769854493, 1773413686, NULL);
 INSERT INTO `con_system_config` (`id`, `is_sys`, `key`, `value`, `title`, `group_code`, `group_id`, `tips`, `type`, `is_visible`, `weigh`, `dict_code`, `dict_type`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (11, 1, 'from_name', 'sanrenxing', '默认发件名称', 'email_config', 2, NULL, 'string', 1, 0, NULL, NULL, 1, 1769854533, 1770431683, NULL);
 INSERT INTO `con_system_config` (`id`, `is_sys`, `key`, `value`, `title`, `group_code`, `group_id`, `tips`, `type`, `is_visible`, `weigh`, `dict_code`, `dict_type`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (12, 1, 'char_set', 'UTF-8', '编码', 'email_config', 2, NULL, 'string', 1, 0, NULL, NULL, 1, 1769854577, 1769854602, NULL);
-INSERT INTO `con_system_config` (`id`, `is_sys`, `key`, `value`, `title`, `group_code`, `group_id`, `tips`, `type`, `is_visible`, `weigh`, `dict_code`, `dict_type`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (13, 0, 'test_test', '水电费', '', 'sdfsfdsdf234234', 4, '', 'string', 1, 0, NULL, NULL, 1, 1771409912, 1772342265, NULL);
+INSERT INTO `con_system_config` (`id`, `is_sys`, `key`, `value`, `title`, `group_code`, `group_id`, `tips`, `type`, `is_visible`, `weigh`, `dict_code`, `dict_type`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (13, 0, 'gateways', 'aliyun', '', 'sms_config', 3, '', 'dict', 1, 0, 'sms_gateways', 'select', 1, 1771409912, 1779543115, NULL);
+INSERT INTO `con_system_config` (`id`, `is_sys`, `key`, `value`, `title`, `group_code`, `group_id`, `tips`, `type`, `is_visible`, `weigh`, `dict_code`, `dict_type`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (14, 0, 'access_key_id', '824f0ff2f71cab52936axxxxxxxxxx', '', 'sms_config', 3, '', 'string', 1, 0, NULL, NULL, 1, 1779543619, 1779544668, NULL);
+INSERT INTO `con_system_config` (`id`, `is_sys`, `key`, `value`, `title`, `group_code`, `group_id`, `tips`, `type`, `is_visible`, `weigh`, `dict_code`, `dict_type`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (15, 0, 'access_key_secret', '824f0ff2f71cab52936axff2f71cab52936axxxxxxxxxx', '', 'sms_config', 3, '', 'string', 1, 0, NULL, NULL, 1, 1779543660, 1779544668, NULL);
+INSERT INTO `con_system_config` (`id`, `is_sys`, `key`, `value`, `title`, `group_code`, `group_id`, `tips`, `type`, `is_visible`, `weigh`, `dict_code`, `dict_type`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (16, 0, 'sign_name', 'XX 科技', '', 'sms_config', 3, '', 'string', 1, 0, NULL, NULL, 1, 1779543692, 1779544668, NULL);
+INSERT INTO `con_system_config` (`id`, `is_sys`, `key`, `value`, `title`, `group_code`, `group_id`, `tips`, `type`, `is_visible`, `weigh`, `dict_code`, `dict_type`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (17, 0, 'is_template', '1', '', 'sms_config', 3, '', 'switch', 1, 0, NULL, NULL, 1, 1779544492, 1779544668, NULL);
+INSERT INTO `con_system_config` (`id`, `is_sys`, `key`, `value`, `title`, `group_code`, `group_id`, `tips`, `type`, `is_visible`, `weigh`, `dict_code`, `dict_type`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (18, 0, 'template_code', 'SMS_001', '', 'sms_config', 3, '', 'string', 1, 0, NULL, NULL, 1, 1779544547, 1779544668, NULL);
+INSERT INTO `con_system_config` (`id`, `is_sys`, `key`, `value`, `title`, `group_code`, `group_id`, `tips`, `type`, `is_visible`, `weigh`, `dict_code`, `dict_type`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (19, 0, 'sms_content', '您的验证码为：${code}，该验证码5分钟内有效，请勿泄露给他人【XX科技】', '', 'sms_config', 3, '', 'textarea', 1, 0, NULL, NULL, 1, 1779544573, 1779544668, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -221,7 +227,7 @@ CREATE TABLE `con_system_config_group` (
 BEGIN;
 INSERT INTO `con_system_config_group` (`id`, `is_sys`, `code`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (1, 1, 'base_config', 1, 1, 1766636482, 1766641935, NULL);
 INSERT INTO `con_system_config_group` (`id`, `is_sys`, `code`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (2, 1, 'email_config', 1, NULL, 1766641925, 1766641925, NULL);
-INSERT INTO `con_system_config_group` (`id`, `is_sys`, `code`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (4, 0, 'sdfsfdsdf234234', 1, 1, 1771397627, 1771397823, NULL);
+INSERT INTO `con_system_config_group` (`id`, `is_sys`, `code`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (3, 1, 'sms_config', 1, 1, 1771397627, 1779541762, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -239,7 +245,7 @@ CREATE TABLE `con_system_config_group_translations` (
   `deleted_at` bigint DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `locale_main_id` (`locale`,`main_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='配置分组表语言表';
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='配置分组表语言表';
 
 -- ----------------------------
 -- Records of con_system_config_group_translations
@@ -249,8 +255,8 @@ INSERT INTO `con_system_config_group_translations` (`id`, `main_id`, `locale`, `
 INSERT INTO `con_system_config_group_translations` (`id`, `main_id`, `locale`, `name`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (2, 1, 'en-us', 'Basic Configuration', NULL, 1766636482, 1766636482, NULL);
 INSERT INTO `con_system_config_group_translations` (`id`, `main_id`, `locale`, `name`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (3, 2, 'zh-cn', '邮件配置', NULL, 1766636482, 1766636482, NULL);
 INSERT INTO `con_system_config_group_translations` (`id`, `main_id`, `locale`, `name`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (4, 2, 'en-us', 'Mail Configuration', NULL, 1766636482, 1766636482, NULL);
-INSERT INTO `con_system_config_group_translations` (`id`, `main_id`, `locale`, `name`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (5, 4, 'zh-cn', '测试1', '测试的测试1', 1771397627, 1771397823, NULL);
-INSERT INTO `con_system_config_group_translations` (`id`, `main_id`, `locale`, `name`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (6, 4, 'en-us', 'test1', 'test test1', 1771397627, 1771397823, NULL);
+INSERT INTO `con_system_config_group_translations` (`id`, `main_id`, `locale`, `name`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (5, 3, 'zh-cn', '短信配置', '', 1771397627, 1779541778, NULL);
+INSERT INTO `con_system_config_group_translations` (`id`, `main_id`, `locale`, `name`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (6, 3, 'en-us', 'Sms Configuration', '', 1771397627, 1779541778, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -268,7 +274,7 @@ CREATE TABLE `con_system_config_translations` (
   `deleted_at` bigint DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `locale_main_id` (`main_id`,`locale`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='系统参数配置';
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='系统参数配置';
 
 -- ----------------------------
 -- Records of con_system_config_translations
@@ -298,8 +304,20 @@ INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`
 INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (24, 11, 'en-us', 'Default Sender Name', '', 1769852933, 1769852933, NULL);
 INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (25, 12, 'zh-cn', '编码', '', 1769852933, 1769852933, NULL);
 INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (26, 12, 'en-us', 'Char Set', '', 1769852933, 1769852933, NULL);
-INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (27, 13, 'zh-cn', '测试的 1', '2', 1771409912, 1771409932, NULL);
-INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (28, 13, 'en-us', 'tezst1', '1', 1771409912, 1771409932, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (27, 13, 'zh-cn', '发送网关', '可用的发送网关', 1771409912, 1779543096, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (28, 13, 'en-us', 'Gateways', 'Available Sending Gateways', 1771409912, 1779543096, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (33, 14, 'en-us', 'Access Key', '', 1779543619, 1779543619, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (34, 14, 'zh-cn', 'Access Key', '', 1779543619, 1779543619, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (35, 15, 'en-us', 'Access Secret', '', 1779543660, 1779543660, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (36, 15, 'zh-cn', 'Access Secret', '', 1779543660, 1779543660, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (37, 16, 'en-us', 'Sign Name', '', 1779543692, 1779543699, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (38, 16, 'zh-cn', '短信签名', '', 1779543692, 1779543699, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (41, 17, 'en-us', 'Use a template', '', 1779544492, 1779544492, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (42, 17, 'zh-cn', '是否使用模板', '', 1779544492, 1779544492, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (43, 18, 'en-us', 'Template Code', '', 1779544547, 1779544547, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (44, 18, 'zh-cn', '模板编号', '', 1779544547, 1779544547, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (45, 19, 'en-us', 'Sms Content', '', 1779544573, 1779544573, NULL);
+INSERT INTO `con_system_config_translations` (`id`, `main_id`, `locale`, `title`, `tips`, `createtime`, `updatetime`, `deleted_at`) VALUES (46, 19, 'zh-cn', '短信内容', '', 1779544573, 1779544573, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -391,7 +409,7 @@ CREATE TABLE `con_system_dict_data` (
   `deleted_at` bigint DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `type_id` (`type_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='字典数据表';
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='字典数据表';
 
 -- ----------------------------
 -- Records of con_system_dict_data
@@ -431,6 +449,33 @@ INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, 
 INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (32, 6, '1', NULL, 0, 1, 1, NULL, 1767529393, 1767529393, NULL);
 INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (33, 7, 'ssl', NULL, 0, 1, 1, NULL, 1769854304, 1769854304, NULL);
 INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (34, 7, 'tsl', NULL, 0, 1, 1, NULL, 1769854316, 1769854316, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (35, 8, 'aliyun', NULL, 0, 1, 1, NULL, 1779542030, 1779542030, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (36, 8, 'aliyunrest', NULL, 0, 1, 1, NULL, 1779542069, 1779542069, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (37, 8, 'aliyunintl', NULL, 0, 1, 1, NULL, 1779542119, 1779542119, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (38, 8, 'aliyundypns', NULL, 0, 1, 1, NULL, 1779542156, 1779542156, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (39, 8, 'yunpian', NULL, 0, 1, 1, NULL, 1779542180, 1779542180, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (40, 8, 'submail', NULL, 0, 1, 1, NULL, 1779542218, 1779542218, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (41, 8, 'luosimao', NULL, 0, 1, 1, NULL, 1779542274, 1779542274, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (42, 8, 'yuntongxun', NULL, 0, 1, 1, NULL, 1779542306, 1779542306, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (43, 8, 'huyi', NULL, 0, 1, 1, NULL, 1779542327, 1779542327, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (44, 8, 'juhe', NULL, 0, 1, 1, NULL, 1779542349, 1779542349, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (45, 8, 'sendcloud', NULL, 0, 1, 1, NULL, 1779542370, 1779542370, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (46, 8, 'baidu', NULL, 0, 1, 1, NULL, 1779542390, 1779542390, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (47, 8, 'huaxin', NULL, 0, 1, 1, NULL, 1779542411, 1779542411, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (48, 8, 'chuanglan', NULL, 0, 1, 1, NULL, 1779542445, 1779542445, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (49, 8, 'chuanglanv1', NULL, 0, 1, 1, NULL, 1779542468, 1779542468, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (50, 8, 'rongcloud', NULL, 0, 1, 1, NULL, 1779542493, 1779542493, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (51, 8, 'tianyiwuxian', NULL, 0, 1, 1, NULL, 1779542512, 1779542512, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (52, 8, 'twilio', NULL, 0, 1, 1, NULL, 1779542544, 1779542544, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (53, 8, 'tiniyo', NULL, 0, 1, 1, NULL, 1779542568, 1779542568, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (54, 8, 'qcloud', NULL, 0, 1, 1, NULL, 1779542589, 1779542589, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (55, 8, 'huawei', NULL, 0, 1, 1, NULL, 1779542614, 1779542614, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (56, 8, 'yunxin', NULL, 0, 1, 1, NULL, 1779542633, 1779542633, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (57, 8, 'yunzhixun', NULL, 0, 1, 1, NULL, 1779542651, 1779542651, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (58, 8, 'kingtto', NULL, 0, 1, 1, NULL, 1779542670, 1779542670, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (59, 8, 'qiniu', NULL, 0, 1, 1, NULL, 1779542689, 1779542689, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (60, 8, 'ucloud', NULL, 0, 1, 1, NULL, 1779542708, 1779542708, NULL);
+INSERT INTO `con_system_dict_data` (`id`, `type_id`, `value`, `color`, `weigh`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (61, 8, 'smsbao', NULL, 0, 1, 1, NULL, 1779542729, 1779542729, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -447,7 +492,7 @@ CREATE TABLE `con_system_dict_data_translations` (
   `updatetime` bigint DEFAULT NULL COMMENT '更新时间',
   `deleted_at` bigint DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='字典数据表';
+) ENGINE=InnoDB AUTO_INCREMENT=123 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='字典数据表';
 
 -- ----------------------------
 -- Records of con_system_dict_data_translations
@@ -521,6 +566,60 @@ INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `lab
 INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (66, 33, 'en-us', 'SSL', '', 1769852933, 1769852933, NULL);
 INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (67, 34, 'zh-cn', 'TSL', '', 1769852933, 1769852933, NULL);
 INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (68, 34, 'en-us', 'TSL', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (69, 35, 'en-us', 'Aliyun', '', 1779542030, 1779542030, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (70, 35, 'zh-cn', '阿里云', '', 1779542030, 1779542030, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (71, 36, 'en-us', 'AliyunRest', '', 1779542069, 1779542069, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (72, 36, 'zh-cn', '阿里云Rest', '', 1779542069, 1779542069, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (73, 37, 'en-us', 'Aliyunintl', '', 1779542119, 1779542119, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (74, 37, 'zh-cn', '阿里云国际', '', 1779542119, 1779542119, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (75, 38, 'en-us', 'Aliyundypns', '', 1779542156, 1779542156, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (76, 38, 'zh-cn', '阿里云短信认证', '', 1779542156, 1779542156, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (77, 39, 'en-us', 'Yunpian', '', 1779542180, 1779542180, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (78, 39, 'zh-cn', '云片', '', 1779542180, 1779542180, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (79, 40, 'en-us', 'Submail', '', 1779542218, 1779542218, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (80, 40, 'zh-cn', 'Submail', '', 1779542218, 1779542218, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (81, 41, 'en-us', 'Luosimao', '', 1779542274, 1779542274, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (82, 41, 'zh-cn', '螺丝帽', '', 1779542274, 1779542274, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (83, 42, 'en-us', 'Yuntongxun', '', 1779542306, 1779542306, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (84, 42, 'zh-cn', '容联云通讯', '', 1779542306, 1779542306, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (85, 43, 'en-us', 'Huyi', '', 1779542327, 1779542327, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (86, 43, 'zh-cn', '互亿无线', '', 1779542327, 1779542327, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (87, 44, 'en-us', 'Juhe', '', 1779542349, 1779542349, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (88, 44, 'zh-cn', '聚合数据', '', 1779542349, 1779542349, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (89, 45, 'en-us', 'SendCloud', '', 1779542370, 1779542370, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (90, 45, 'zh-cn', 'SendCloud', '', 1779542370, 1779542370, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (91, 46, 'en-us', 'Baidu', '', 1779542390, 1779542390, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (92, 46, 'zh-cn', '百度云', '', 1779542390, 1779542390, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (93, 47, 'en-us', 'Huaxin', '', 1779542411, 1779542411, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (94, 47, 'zh-cn', '华信短信平台', '', 1779542411, 1779542411, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (95, 48, 'en-us', 'Chuanglan', '', 1779542445, 1779542445, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (96, 48, 'zh-cn', '253云通讯（创蓝）', '', 1779542445, 1779542445, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (97, 49, 'en-us', 'Chuanglanv1', '', 1779542468, 1779542468, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (98, 49, 'zh-cn', '创蓝云智', '', 1779542468, 1779542468, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (99, 50, 'en-us', 'Rongcloud', '', 1779542493, 1779542493, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (100, 50, 'zh-cn', '融云', '', 1779542493, 1779542493, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (101, 51, 'en-us', 'Tianyiwuxian', '', 1779542512, 1779542512, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (102, 51, 'zh-cn', '天毅无线', '', 1779542512, 1779542512, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (103, 52, 'en-us', 'Twilio', '', 1779542544, 1779542544, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (104, 52, 'zh-cn', 'Twilio', '', 1779542544, 1779542544, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (105, 53, 'en-us', 'Tiniyo', '', 1779542568, 1779542568, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (106, 53, 'zh-cn', 'Tiniyo', '', 1779542568, 1779542568, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (107, 54, 'en-us', 'Qcloud', '', 1779542589, 1779542589, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (108, 54, 'zh-cn', '腾讯云 SMS', '', 1779542589, 1779542589, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (109, 55, 'en-us', 'Huawei', '', 1779542614, 1779542614, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (110, 55, 'zh-cn', '华为云 SMS', '', 1779542614, 1779542614, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (111, 56, 'en-us', 'Yunxin', '', 1779542633, 1779542633, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (112, 56, 'zh-cn', '网易云信', '', 1779542633, 1779542633, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (113, 57, 'en-us', 'Yunzhixun', '', 1779542651, 1779542651, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (114, 57, 'zh-cn', '云之讯', '', 1779542651, 1779542651, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (115, 58, 'en-us', 'Kingtto', '', 1779542670, 1779542670, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (116, 58, 'zh-cn', '凯信通', '', 1779542670, 1779542670, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (117, 59, 'en-us', 'Qiniu', '', 1779542689, 1779542689, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (118, 59, 'zh-cn', '七牛云', '', 1779542689, 1779542689, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (119, 60, 'en-us', 'Ucloud', '', 1779542708, 1779542708, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (120, 60, 'zh-cn', 'Ucloud', '', 1779542708, 1779542708, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (121, 61, 'en-us', 'Smsbao', '', 1779542729, 1779542729, NULL);
+INSERT INTO `con_system_dict_data_translations` (`id`, `main_id`, `locale`, `label`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (122, 61, 'zh-cn', '短信宝', '', 1779542729, 1779542729, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -539,7 +638,7 @@ CREATE TABLE `con_system_dict_type` (
   `deleted_at` bigint DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `name` (`name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='字典类型表';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='字典类型表';
 
 -- ----------------------------
 -- Records of con_system_dict_type
@@ -552,6 +651,7 @@ INSERT INTO `con_system_dict_type` (`id`, `name`, `scope`, `status`, `created_by
 INSERT INTO `con_system_dict_type` (`id`, `name`, `scope`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (5, 'dict_scope', 2, 1, 1, 1, 1767522966, 1767523723, NULL);
 INSERT INTO `con_system_dict_type` (`id`, `name`, `scope`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (6, 'crontab_type', 2, 1, 1, NULL, 1767529330, 1767529330, NULL);
 INSERT INTO `con_system_dict_type` (`id`, `name`, `scope`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (7, 'smtp_secure', 2, 1, 1, NULL, 1769854270, 1769854270, NULL);
+INSERT INTO `con_system_dict_type` (`id`, `name`, `scope`, `status`, `created_by`, `updated_by`, `createtime`, `updatetime`, `deleted_at`) VALUES (8, 'sms_gateways', 2, 1, 1, NULL, 1779541962, 1779541962, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -568,7 +668,7 @@ CREATE TABLE `con_system_dict_type_translations` (
   `updatetime` bigint DEFAULT NULL COMMENT '更新时间',
   `deleted_at` bigint DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='字典类型表';
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='字典类型表';
 
 -- ----------------------------
 -- Records of con_system_dict_type_translations
@@ -588,6 +688,8 @@ INSERT INTO `con_system_dict_type_translations` (`id`, `main_id`, `locale`, `tit
 INSERT INTO `con_system_dict_type_translations` (`id`, `main_id`, `locale`, `title`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (12, 6, 'en-us', 'Scheduled Task Type', 'Scheduled Task Type', 1769852933, 1769852933, NULL);
 INSERT INTO `con_system_dict_type_translations` (`id`, `main_id`, `locale`, `title`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (13, 7, 'zh-cn', 'SMTP验证方式', '', 1769852933, 1769852933, NULL);
 INSERT INTO `con_system_dict_type_translations` (`id`, `main_id`, `locale`, `title`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (14, 7, 'en-us', 'SMTP Secure Type', '', 1769852933, 1769852933, NULL);
+INSERT INTO `con_system_dict_type_translations` (`id`, `main_id`, `locale`, `title`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (15, 8, 'en-us', 'SMS Gateway Identifier', 'easy-sms Gateway Identifier', 1779541962, 1779541962, NULL);
+INSERT INTO `con_system_dict_type_translations` (`id`, `main_id`, `locale`, `title`, `remark`, `createtime`, `updatetime`, `deleted_at`) VALUES (16, 8, 'zh-cn', '短信网关标识', 'easy-sms 网关标识', 1779541962, 1779541962, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -610,7 +712,7 @@ CREATE TABLE `con_system_login_log` (
   `deleted_at` bigint DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `username` (`username`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='登录日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='登录日志表';
 
 -- ----------------------------
 -- Records of con_system_login_log
@@ -650,7 +752,7 @@ CREATE TABLE `con_system_menu_rule` (
   UNIQUE KEY `name` (`name`) USING BTREE,
   KEY `pid` (`pid`) USING BTREE,
   KEY `weigh` (`weigh`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=117 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='菜单规则';
+) ENGINE=InnoDB AUTO_INCREMENT=120 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='菜单规则';
 
 -- ----------------------------
 -- Records of con_system_menu_rule
@@ -739,6 +841,9 @@ INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `ic
 INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (114, 1, 18, 'core_crud_config', '获取配置', '', '/core/crud/config', NULL, 'condor.route.get_configuration', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
 INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (115, 1, 18, 'core_crud_fields', '表字段', '', '/core/crud/fields', NULL, 'condor.route.table_fields', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
 INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (116, 1, 18, 'core_crud_create', '创建', '', '/core/crud/create', NULL, 'condor.route.create', '', 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1768722453, 1768722453, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (117, 0, 2, 'system_profile', '个人资料', 'material-symbols:account-box', '/system/profile', 'view.system_profile', 'route.system_profile', '', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, 0, 1, 1775918850, 1775920215, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (118, NULL, 117, 'core_common_update_profile', '更新资料', NULL, '/core/common/updateProfile', NULL, 'condor.route.update_profile', '', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1775927114, 1775927245, NULL);
+INSERT INTO `con_system_menu_rule` (`id`, `is_keep`, `pid`, `name`, `title`, `icon`, `path`, `component`, `i18nkey`, `remark`, `hidden`, `redirect`, `menu_type`, `href`, `active_menu`, `multi_tab`, `fixed_tab_index`, `query`, `weigh`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (119, NULL, 5, 'core_common_getDict', '获取字典', NULL, '/core/common/getDict', NULL, 'condor.route.get_dict', '', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, 1775927413, 1775927413, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -765,7 +870,7 @@ CREATE TABLE `con_system_role` (
 BEGIN;
 INSERT INTO `con_system_role` (`id`, `is_sys`, `admin_id`, `pid`, `code`, `rules`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (1, 1, 1, 0, 'superadmin', '', 1, 1762870065, 1762870065, NULL);
 INSERT INTO `con_system_role` (`id`, `is_sys`, `admin_id`, `pid`, `code`, `rules`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (2, 0, 1, 0, 'superadmin', NULL, 1, 1766417865, 1766487550, NULL);
-INSERT INTO `con_system_role` (`id`, `is_sys`, `admin_id`, `pid`, `code`, `rules`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (3, 0, 1, 2, 'test', '1', 1, 1766546252, 1772641237, NULL);
+INSERT INTO `con_system_role` (`id`, `is_sys`, `admin_id`, `pid`, `code`, `rules`, `status`, `createtime`, `updatetime`, `deleted_at`) VALUES (3, 0, 1, 2, 'test', '1,2,5,72,73,74,75,76,77,78,79,80,81,82,83,6,11,12,13,14,15,26,90,91,92,93,94,8,95,96,97,98,99,100,101,102,10,103,104,105,106,107,108,109,18,114,115,116,9,3,60,61,62,63,64,65,4,66,67,68,69,70,71,7,84,85,86,87,88,89,16,110,111,17,112,113,19,20,21,22,23,24,25', 1, 1766546252, 1775899666, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -804,7 +909,7 @@ CREATE TABLE `con_system_role_translations` (
   `updatetime` bigint DEFAULT NULL COMMENT '更新时间',
   `deleted_at` bigint DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='角色语言表';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='角色语言表';
 
 -- ----------------------------
 -- Records of con_system_role_translations
@@ -816,6 +921,8 @@ INSERT INTO `con_system_role_translations` (`id`, `main_id`, `locale`, `name`, `
 INSERT INTO `con_system_role_translations` (`id`, `main_id`, `locale`, `name`, `createtime`, `updatetime`, `deleted_at`) VALUES (4, 2, 'en-us', 'super admin', 1762870065, 1762870065, NULL);
 INSERT INTO `con_system_role_translations` (`id`, `main_id`, `locale`, `name`, `createtime`, `updatetime`, `deleted_at`) VALUES (5, 3, 'zh-cn', '测试', 1762870065, 1772641255, NULL);
 INSERT INTO `con_system_role_translations` (`id`, `main_id`, `locale`, `name`, `createtime`, `updatetime`, `deleted_at`) VALUES (6, 3, 'en-us', 'test', 1762870065, 1772641255, NULL);
+INSERT INTO `con_system_role_translations` (`id`, `main_id`, `locale`, `name`, `createtime`, `updatetime`, `deleted_at`) VALUES (7, 3, 'en-us', 'test', 1775899666, 1775899666, NULL);
+INSERT INTO `con_system_role_translations` (`id`, `main_id`, `locale`, `name`, `createtime`, `updatetime`, `deleted_at`) VALUES (8, 3, 'zh-cn', '测试', 1775899666, 1775899666, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -840,6 +947,7 @@ CREATE TABLE `con_system_test` (
 BEGIN;
 INSERT INTO `con_system_test` (`id`, `price`, `views`, `activitytime`, `refreshtime`, `createtime`, `updatetime`, `deleted_at`) VALUES (1, 5.00, 4, 1772090868000, 1769758065000, 1769930702, 1771002436, 1771002436);
 INSERT INTO `con_system_test` (`id`, `price`, `views`, `activitytime`, `refreshtime`, `createtime`, `updatetime`, `deleted_at`) VALUES (2, 3.13, 4, 1770968843000, 1770968844000, 1770971546, 1771002273, NULL);
+INSERT INTO `con_system_test` (`id`, `price`, `views`, `activitytime`, `refreshtime`, `createtime`, `updatetime`, `deleted_at`) VALUES (3, 3.13, 4, 1770968843000, 1770968844000, 1770971546, 1771002273, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -873,7 +981,6 @@ INSERT INTO `con_system_test_translations` (`id`, `main_id`, `locale`, `name`, `
 INSERT INTO `con_system_test_translations` (`id`, `main_id`, `locale`, `name`, `target`, `title`, `content`, `image`, `images`, `attachfile`, `keywords`, `description`, `createtime`, `updatetime`) VALUES (6, 2, 'en-us', 'werwer12', 'sghstwert12', 'ersdgertweg12', '<p>sdfgwertdfg12</p>', '/uploads/20260201/20260201152336_697eff78cdcdd.png', '/uploads/20260201/20260201152346_697eff827d6cf.png', '/uploads/20260201/20260201152415_697eff9f2c1db.jpg', 'ergsdf12', 'ergsdfgsd12', 1771002273, 1771002273);
 COMMIT;
 
-
 -- ----------------------------
 -- Table structure for con_system_third_user
 -- ----------------------------
@@ -893,6 +1000,12 @@ CREATE TABLE `con_system_third_user` (
   KEY `idx_user_id` (`user_id`) USING BTREE,
   KEY `idx_union_id` (`union_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='第三方平台授权用户信息';
+
+-- ----------------------------
+-- Records of con_system_third_user
+-- ----------------------------
+BEGIN;
+COMMIT;
 
 -- ----------------------------
 -- Table structure for con_system_user
@@ -928,5 +1041,11 @@ CREATE TABLE `con_system_user` (
   KEY `mobile` (`mobile`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='会员表';
 
-SET FOREIGN_KEY_CHECKS = 1;
+-- ----------------------------
+-- Records of con_system_user
+-- ----------------------------
+BEGIN;
+INSERT INTO `con_system_user` (`id`, `pid`, `vip_id`, `username`, `nickname`, `password`, `email`, `mobile`, `avatar`, `level`, `gender`, `money`, `score`, `invite_code`, `consecutive_login_days`, `logintime`, `loginip`, `loginfailure`, `register_ip`, `createtime`, `updatetime`, `status`, `deleted_at`) VALUES (1, 0, 0, 'test', '', '$2y$10$tKV6FTt9SOSPWDw/ru1i8.yqGVzIpbQp2NqQZybBbuPtuIzcND9cS', '', '', '', 0, 0, 0.0000, 0, 'B64235', 1, NULL, '', 0, '127.0.0.1', 1776501745, 1776501745, 1, NULL);
+COMMIT;
 
+SET FOREIGN_KEY_CHECKS = 1;
