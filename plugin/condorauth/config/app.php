@@ -6,5 +6,6 @@ return [
     'debug' => true,
     'controller_suffix' => 'Controller',
     'controller_reuse' => false,
-    'version' => '1.0.0'
+    'version' => '1.0.0',
+    'auth_token_expected_app' => 'condorauth',
 ];

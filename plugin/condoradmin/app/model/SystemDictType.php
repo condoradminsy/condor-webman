@@ -43,9 +43,9 @@ class SystemDictType extends Model
     public function rules()
     {
         return [
-            'scope' => v::in([0, 1, 2])->setName(trans('fields.type.scope', [], 'dict'))->setTemplate(trans('condoradmin.validation.in')),
+            'scope' => v::in([0, 1, 2])->setName(trans('fields.type.scope', [], 'dict'))->setTemplate(trans('common.validation.in')),
             'name' => v::optional(v::alnum('_')->noWhitespace())->setName(trans('fields.type.name', [], 'dict')),
-            'status' => v::in([1, 2])->setName(trans('fields.type.status', [], 'dict'))->setTemplate(trans('condoradmin.validation.in')),
+            'status' => v::in([1, 2])->setName(trans('fields.type.status', [], 'dict'))->setTemplate(trans('common.validation.in')),
         ];
     }
 

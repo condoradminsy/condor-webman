@@ -30,7 +30,7 @@ class Auth
     {
         $tokenInfo = getCurrentInfo();
         if ($tokenInfo === false) {
-            throw new ApiException(trans('condoradmin.invalid.token'), 401);
+            throw new ApiException(trans('common.invalid.token'), 401);
         }
         $adminInfo = SystemAdmin::select(
             'id',

@@ -55,11 +55,11 @@ class TranslatableBackend extends Backend
         $this->supportedLocales = array_column(config('plugin.condoradmin.translation.languages'), 'key');
         // 设置多语言字段
         if (empty($this->translationLocaleKey)) {
-            return $this->fail(trans('condoradmin.system.translation_locale_key_empty'));
+            throw new \InvalidArgumentException(trans('common.system.translation_locale_key_empty'));
         }
         // 设置翻译关联主键字段
         if (empty($this->translationForeignKey)) {
-            return $this->fail(trans('condoradmin.system.translation_foreign_key_empty'));
+            throw new \InvalidArgumentException(trans('common.system.translation_foreign_key_empty'));
         }
     }
 
@@ -150,28 +150,31 @@ class TranslatableBackend extends Backend
         if (!is_array($list)) {
             $list = $list->toArray();
         }
-        // 多语言字段处理
+
+        // 多语言字段处理（性能优化：减少循环嵌套）
         foreach ($list as &$item) {
+            // 先按 locale 分组（一次遍历）
+            $translations = $item[$this->translationForeignMethod] ?? [];
+            $translationsByLocale = [];
+            foreach ($translations as $row) {
+                $translationsByLocale[$row[$this->translationLocaleKey]] = $row;
+            }
+
+            // 然后填充所有字段（一次遍历）
             foreach ($this->multilingualFields as $field) {
-                $rows = $item[$this->translationForeignMethod];
-                $item[$field] =  [];
-                foreach ($rows as $row) {
-                    $item[$field][$row[$this->translationLocaleKey]] = $row[$field] ?? '';
+                $item[$field] = [];
+                foreach ($translationsByLocale as $locale => $row) {
+                    $item[$field][$locale] = $row[$field] ?? '';
                 }
                 if (empty($item[$field])) {
-                    $item[$field] =  null;
-                }
-            }
-            // 隐藏字段
-            if (!empty($this->hidden)) {
-                foreach ($this->hidden as $field) {
-                    unset($item[$field]);
+                    $item[$field] = null;
                 }
             }
             unset($item[$this->translationForeignMethod]);
         }
         unset($item);
-        return $list;
+
+        return $this->formatList($list);
     }
 
     /**
@@ -189,17 +192,16 @@ class TranslatableBackend extends Backend
             if ($ids) {
                 $idArray = is_array($ids) ? $ids : explode(',', $ids);
             }
-            if ($this->alias) {
-                $tableName = $this->model->getTable();
-                $this->model->setTable("{$tableName} as {$this->alias}");
-            }
+
             // 字段处理
             $selectpageFields = $this->selectpageFields;
             if ($this->alias && $selectpageFields === '*') {
                 $selectpageFields = $this->alias . '.' . $selectpageFields;
             }
-            // 构建主查询
-            $query = $this->model->select($selectpageFields)->whereRaw('1=1');
+
+            // 使用独立查询构建器，不修改模型状态
+            $query = $this->getQueryBuilder()->select($selectpageFields)->whereRaw('1=1');
+
             $translateWithStr = '';
             if (!empty($this->translationForeignMethod)) {
                 $translateWithStr = $this->translationForeignMethod . ':' . $this->translationLocaleKey . ',' . $this->translationForeignKey;
@@ -241,6 +243,7 @@ class TranslatableBackend extends Backend
                 ->limit($limit)
                 ->get()
                 ->toArray();
+
             // 多语言字段处理
             foreach ($list as &$item) {
                 foreach ($this->multilingualFields as $field) {
@@ -255,13 +258,13 @@ class TranslatableBackend extends Backend
                 }
                 unset($item[$this->translationForeignMethod]);
             }
-            return $this->success(trans('condoradmin.ok'), [
+            return $this->success(trans('common.ok'), [
                 'total' => $total,
                 'list' => $list
             ]);
         } catch (\Exception $e) {
             Log::error('selectpage', ['error' => $e->getMessage()]);
-            return $this->fail(config('app.debug') ? $e->getMessage() : trans('condoradmin.system.error'));
+            return $this->fail(config('app.debug') ? $e->getMessage() : trans('common.system.error'));
         }
     }
 
@@ -277,17 +280,15 @@ class TranslatableBackend extends Backend
         try {
             //设置过滤方法
             [$params, $sort, $order, $offset, $limit] = $this->buildparams($request);
-            $query = null;
-            if ($this->alias) {
-                $tableName = $this->model->getTable();
-                $this->model->setTable("{$tableName} as {$this->alias}");
-            }
+
             //字段处理
             $selectFields = $this->selectFields;
             if ($this->alias && $selectFields === '*') {
                 $selectFields = $this->alias . '.' . $selectFields;
             }
-            $query = $this->model->select($selectFields);
+
+            // 使用独立查询构建器，不修改模型状态
+            $query = $this->getQueryBuilder()->select($selectFields);
 
             $translateWithStr = '';
             if (!empty($this->translationForeignMethod)) {
@@ -319,13 +320,13 @@ class TranslatableBackend extends Backend
                 ->get()
                 ->toArray();
 
-            return $this->success(trans('condoradmin.ok'), [
+            return $this->success(trans('common.ok'), [
                 'total' => $total,
                 'list' => $this->renderTranslations($list)
             ]);
         } catch (\Exception $e) {
             Log::error('index', ['error' => $e->getMessage()]);
-            return $this->fail(config('app.debug') ? $e->getMessage() : trans('condoradmin.system.error'));
+            return $this->fail(config('app.debug') ? $e->getMessage() : trans('common.system.error'));
         }
     }
 
@@ -339,33 +340,62 @@ class TranslatableBackend extends Backend
     {
         //设置过滤方法
         if (false === $request->isAjax()) {
-            return $this->fail(trans('condoradmin.request.method.incorrect'));
+            return $this->fail(trans('common.request.method.incorrect'));
         }
         try {
             [$params, $sort, $order, $offset, $limit] = $this->buildparams($request);
-            $query = null;
-            if ($this->alias) {
-                $tableName = $this->model->getTable();
-                $this->model->setTable("{$tableName} as {$this->alias}");
-            }
+
             //字段处理
             $selectFields = $this->selectFields;
             if ($this->alias && $selectFields === '*') {
                 $selectFields = $this->alias . '.' . $selectFields;
             }
-            $query = $this->model->select($selectFields);
+
+            // 使用独立查询构建器，查询软删除数据
+            $query = $this->getQueryBuilder()->select($selectFields)->onlyTrashed();
+
+            // 添加多语言关联
+            $translateWithStr = '';
+            if (!empty($this->translationForeignMethod)) {
+                $translateWithStr = $this->translationForeignMethod . ':' . $this->translationLocaleKey . ',' . $this->translationForeignKey;
+                if (!empty($this->multilingualFields)) {
+                    $translateWithStr .= ',' . implode(',', $this->multilingualFields);
+                }
+            }
+
+            if (!empty($this->with)) {
+                if (!empty($translateWithStr)) {
+                    $query = $query->with(array_merge($this->with, [$translateWithStr]));
+                } else {
+                    $query = $query->with($this->with);
+                }
+            } else {
+                if (!empty($translateWithStr)) {
+                    $query = $query->with($translateWithStr);
+                }
+            }
+
             $this->applyWhere($query, $params);
-            $total = $query->count();
-            $list = $this->model
-                ->orderBy($sort, $order)
+
+            // 克隆查询以保留条件
+            $total = (clone $query)->count();
+
+            // 使用同一个查询对象
+            $list = $query
+                ->orderBy($order, $sort)
                 ->offset($offset)
                 ->limit($limit)
-                ->get();
+                ->get()
+                ->toArray();
 
-            return $this->success(trans('condoradmin.ok'), ['total' => $total, 'rows' => $list]);
+            // 渲染多语言数据
+            return $this->success(trans('common.ok'), [
+                'total' => $total,
+                'list' => $this->renderTranslations($list)
+            ]);
         } catch (\Exception $e) {
             Log::error('recyclebin', ['error' => $e->getMessage()]);
-            return $this->fail(config('app.debug') ? $e->getMessage() : trans('condoradmin.system.error'));
+            return $this->fail(config('app.debug') ? $e->getMessage() : trans('common.system.error'));
         }
     }
 
@@ -378,11 +408,11 @@ class TranslatableBackend extends Backend
     public function add(Request $request)
     {
         if (false === $request->isPost()) {
-            return $this->fail(trans('condoradmin.request.method.incorrect'));
+            return $this->fail(trans('common.request.method.incorrect'));
         }
         $params = $request->post();
         if (empty($params)) {
-            return $this->fail(trans('condoradmin.parameter.can.not.be.empty'));
+            return $this->fail(trans('common.parameter.can.not.be.empty'));
         }
         try {
             // 提取多语言数据
@@ -427,13 +457,13 @@ class TranslatableBackend extends Backend
             }
             Db::commit();
             if (!$row) {
-                return $this->fail(trans('condoradmin.no.rows.were.inserted'));
+                return $this->fail(trans('common.no.rows.were.inserted'));
             }
         } catch (\Throwable $e) {
             Db::rollBack();
-            return $this->fail(config('app.debug') ? $e->getMessage() : trans('condoradmin.system.error'));
+            return $this->fail(config('app.debug') ? $e->getMessage() : trans('common.system.error'));
         }
-        return $this->success(trans('condoradmin.ok'), ['id' => $row->getKey()]);
+        return $this->success(trans('common.ok'), ['id' => $row->getKey()]);
     }
 
     /**
@@ -446,25 +476,25 @@ class TranslatableBackend extends Backend
     public function edit(Request $request)
     {
         if (false === $request->isPost()) {
-            return $this->fail(trans('condoradmin.request.method.incorrect'));
+            return $this->fail(trans('common.request.method.incorrect'));
         }
         $id = $request->post('id');
         if (empty($id)) {
-            return $this->fail(trans('condoradmin.parameter.can.not.be.empty'));
+            return $this->fail(trans('common.parameter.can.not.be.empty'));
         }
         $row = $this->model->find($id);
         if (empty($row)) {
-            return $this->fail(trans('condoradmin.no.results.were.found'));
+            return $this->fail(trans('common.no.results.were.found'));
         }
         if ($this->dataLimit && $this->dataLimitField !== '') {
             $adminIds = $this->getDataLimitAdminIds();
             if (!empty($adminIds) && !in_array($row[$this->dataLimitField], $adminIds)) {
-                return $this->fail(trans('condoradmin.you.have.no.permission'));
+                return $this->fail(trans('common.you.have.no.permission'));
             }
         }
         $params = $request->post();
         if (empty($params)) {
-            return $this->fail(trans('condoradmin.parameter.can.not.be.empty'));
+            return $this->fail(trans('common.parameter.can.not.be.empty'));
         }
         try {
             // 提取多语言数据
@@ -509,7 +539,9 @@ class TranslatableBackend extends Backend
             }
             // translationModel 定义了唯一索引 [main_id, locale]
             if (!empty($translationData)) {
-                $this->translationModel->upsert(
+                // 使用类名静态调用 upsert
+                $modelClass = get_class($this->translationModel);
+                $modelClass::upsert(
                     $translationData,
                     [$this->translationForeignKey, $this->translationLocaleKey], // 约束字段
                     $this->multilingualFields // 更新字段
@@ -517,13 +549,13 @@ class TranslatableBackend extends Backend
             }
             Db::commit();
             if (false === $result) {
-                return $this->fail(trans('condoradmin.no.rows.were.updated'));
+                return $this->fail(trans('common.no.rows.were.updated'));
             }
         } catch (\Throwable $e) {
             Db::rollback();
-            return $this->fail(config('app.debug') ? $e->getMessage() : trans('condoradmin.system.error'));
+            return $this->fail(config('app.debug') ? $e->getMessage() : trans('common.system.error'));
         }
-        return $this->success(trans('condoradmin.ok'), ['id' => $id]);
+        return $this->success(trans('common.ok'), ['id' => $id]);
     }
 
     /**
@@ -535,11 +567,11 @@ class TranslatableBackend extends Backend
     public function del(Request $request)
     {
         if (false === $request->isPost()) {
-            return $this->fail(trans('condoradmin.request.method.incorrect'));
+            return $this->fail(trans('common.request.method.incorrect'));
         }
         $ids = $request->post("ids") ?: $request->post("id");
         if (empty($ids)) {
-            return $this->fail(trans('condoradmin.parameter.can.not.be.empty'));
+            return $this->fail(trans('common.parameter.can.not.be.empty'));
         }
         $pk = $this->model->getKeyName();
         if (!is_array($ids)) {
@@ -569,12 +601,12 @@ class TranslatableBackend extends Backend
             Db::commit();
         } catch (\Throwable $e) {
             Db::rollback();
-            return $this->fail(config('app.debug') ? $e->getMessage() : trans('condoradmin.delete.failed'));
+            return $this->fail(config('app.debug') ? $e->getMessage() : trans('common.delete.failed'));
         }
         if ($count) {
             return $this->success();
         }
-        return $this->fail(trans('condoradmin.no.rows.were.deleted'));
+        return $this->fail(trans('common.no.rows.were.deleted'));
     }
 
     /**
@@ -590,7 +622,7 @@ class TranslatableBackend extends Backend
         }
         $ids = $request->post('ids') ?: $request->post('id');
         if (empty($ids)) {
-            return $this->fail(trans('condoradmin.parameter.can.not.be.empty'));
+            return $this->fail(trans('common.parameter.can.not.be.empty'));
         }
         if (!is_array($ids)) {
             // 是否有,号
@@ -620,12 +652,12 @@ class TranslatableBackend extends Backend
             Db::commit();
         } catch (\Throwable $e) {
             Db::rollback();
-            return $this->fail(config('app.debug') ? $e->getMessage() : trans('condoradmin.delete.failed'));
+            return $this->fail(config('app.debug') ? $e->getMessage() : trans('common.delete.failed'));
         }
         if ($count) {
             return $this->success();
         }
-        return $this->fail(trans('condoradmin.no.rows.were.deleted'));
+        return $this->fail(trans('common.no.rows.were.deleted'));
     }
 
     /**
@@ -637,11 +669,11 @@ class TranslatableBackend extends Backend
     public function restore(Request $request, $ids = null)
     {
         if (false === $request->isPost()) {
-            return $this->fail(trans('condoradmin.invalid.parameters'));
+            return $this->fail(trans('common.invalid.parameters'));
         }
         $ids = $request->post('ids') ?: $request->post('id');
         if (empty($ids)) {
-            return $this->fail(trans('condoradmin.parameter.can.not.be.empty'));
+            return $this->fail(trans('common.parameter.can.not.be.empty'));
         }
         if (!is_array($ids)) {
             // 是否有,号
@@ -671,12 +703,12 @@ class TranslatableBackend extends Backend
             Db::commit();
         } catch (\Throwable $e) {
             Db::rollback();
-            return $this->fail(config('app.debug') ? $e->getMessage() : trans('condoradmin.restore.failed'));
+            return $this->fail(config('app.debug') ? $e->getMessage() : trans('common.restore.failed'));
         }
         if ($count) {
             return $this->success();
         }
-        return $this->fail(trans('condoradmin.no.rows.were.updated'));
+        return $this->fail(trans('common.no.rows.were.updated'));
     }
 
     /**
@@ -688,11 +720,11 @@ class TranslatableBackend extends Backend
     public function multi(Request $request)
     {
         if (false === $request->isPost()) {
-            return $this->fail(trans('condoradmin.invalid.parameters'));
+            return $this->fail(trans('common.invalid.parameters'));
         }
         $ids = $request->post('ids') ?: $request->post('id');
         if (empty($ids)) {
-            return $this->fail(trans('condoradmin.parameter.can.not.be.empty'));
+            return $this->fail(trans('common.parameter.can.not.be.empty'));
         }
         if (!is_array($ids)) {
             // 是否有,号
@@ -708,14 +740,14 @@ class TranslatableBackend extends Backend
         if (!empty($field)) {
             $values = [$field => $value];
         } elseif (empty($values)) {
-            return $this->fail(trans('condoradmin.parameter.can.not.be.empty'));
+            return $this->fail(trans('common.parameter.can.not.be.empty'));
         }
         if (!is_array($values)) {
-            return $this->fail(trans('condoradmin.parameter.type.error'));
+            return $this->fail(trans('common.parameter.type.error'));
         }
         $values = $this->auth->isSuperAdmin() ? $values : array_intersect_key($values, array_flip(is_array($this->multiFields) ? $this->multiFields : explode(',', $this->multiFields)));
         if (empty($values)) {
-            return $this->fail(trans('condoradmin.you.have.no.permission'));
+            return $this->fail(trans('common.you.have.no.permission'));
         }
         $query = $this->model->whereIn($this->model->getKeyName(), $ids);
         if ($this->dataLimit && $this->dataLimitField !== '') {
@@ -737,11 +769,11 @@ class TranslatableBackend extends Backend
             Db::commit();
         } catch (\Throwable $e) {
             Db::rollback();
-            return $this->fail(config('app.debug') ? $e->getMessage() : trans('condoradmin.update.failed'));
+            return $this->fail(config('app.debug') ? $e->getMessage() : trans('common.update.failed'));
         }
         if ($count) {
-            return $this->success(trans('condoradmin.ok'));
+            return $this->success(trans('common.ok'));
         }
-        return $this->fail(trans('condoradmin.no.rows.were.updated'));
+        return $this->fail(trans('common.no.rows.were.updated'));
     }
 }

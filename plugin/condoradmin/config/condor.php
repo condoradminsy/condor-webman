@@ -7,6 +7,7 @@ return [
     'sse' => [
         'max_connections_per_user' => 10,
     ],
+    'auth_token_expected_app' => 'condoradmin',
     'crud' => [
         // 排除的数据表
         'exclude_tables' => [

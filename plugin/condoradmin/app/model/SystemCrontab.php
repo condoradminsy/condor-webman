@@ -43,13 +43,13 @@ class SystemCrontab extends Model
     public function rules()
     {
         return [
-            'name' => v::NotEmpty()->setName(trans('fields.name', [], 'crontab'))->setTemplate(trans('condoradmin.validation.required')),
+            'name' => v::NotEmpty()->setName(trans('fields.name', [], 'crontab'))->setTemplate(trans('common.validation.required')),
             'target' => v::optional(v::notEmpty())->setName(trans('fields.target', [], 'crontab')),
             'params' => v::optional(v::notEmpty())->setName(trans('fields.params', [], 'crontab')),
-            'cron_value' => v::notEmpty()->setName(trans('fields.cron_value', [], 'crontab'))->setTemplate(trans('condoradmin.validation.required')),
-            'type' => v::NotEmpty()->number()->setName(trans('fields.type', [], 'crontab'))->setTemplate(trans('condoradmin.validation.required')),
+            'cron_value' => v::notEmpty()->setName(trans('fields.cron_value', [], 'crontab'))->setTemplate(trans('common.validation.required')),
+            'type' => v::NotEmpty()->number()->setName(trans('fields.type', [], 'crontab'))->setTemplate(trans('common.validation.required')),
             'remark' => v::optional(v::NotEmpty())->setName(trans('fields.remark', [], 'crontab')),
-            'status' => v::in([1, 2])->setName(trans('fields.status', [], 'crontab'))->setTemplate(trans('condoradmin.validation.in')),
+            'status' => v::in([1, 2])->setName(trans('fields.status', [], 'crontab'))->setTemplate(trans('common.validation.in')),
         ];
     }
 

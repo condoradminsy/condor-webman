@@ -44,10 +44,10 @@ class SystemDictData extends Model
     {
         return [
             'value' => v::optional(v::anyOf(v::equals(0), v::equals('0'), v::notEmpty()))->setName(trans('fields.value', [], 'dict')),
-            'type_id' => v::NotEmpty()->number()->setName(trans('fields.type_id', [], 'dict'))->setTemplate(trans('condoradmin.validation.required')),
+            'type_id' => v::NotEmpty()->number()->setName(trans('fields.type_id', [], 'dict'))->setTemplate(trans('common.validation.required')),
             'color' => v::optional(v::NotEmpty())->setName(trans('fields.color', [], 'dict')),
             'weigh' => v::optional(v::number())->setName(trans('fields.weigh', [], 'dict')),
-            'status' => v::in([1, 2])->setName(trans('fields.status', [], 'dict'))->setTemplate(trans('condoradmin.validation.in')),
+            'status' => v::in([1, 2])->setName(trans('fields.status', [], 'dict'))->setTemplate(trans('common.validation.in')),
         ];
     }
 

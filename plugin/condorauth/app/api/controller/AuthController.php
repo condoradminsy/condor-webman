@@ -1,6 +1,6 @@
 <?php
 
-namespace plugin\condorauth\app\controller;
+namespace plugin\condorauth\app\api\controller;
 
 use plugin\condorauth\app\library\Frontend;
 use plugin\condoradmin\app\library\Captcha;

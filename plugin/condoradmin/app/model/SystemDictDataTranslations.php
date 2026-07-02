@@ -44,7 +44,7 @@ class SystemDictDataTranslations extends Model
     public function rules()
     {
         return [
-            'label' => v::NotEmpty()->setName(trans('fields.label', [], 'dict'))->setTemplate(trans('condoradmin.validation.required')),
+            'label' => v::NotEmpty()->setName(trans('fields.label', [], 'dict'))->setTemplate(trans('common.validation.required')),
             'remark' => v::optional(v::NotEmpty())->setName(trans('fields.remark', [], 'dict')),
         ];
     }

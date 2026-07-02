@@ -43,7 +43,7 @@ class SystemConfigGroupTranslations extends Model
     public function rules()
     {
         return [
-            'name' => v::NotEmpty()->setName(trans('fields.name', [], 'config'))->setTemplate(trans('condoradmin.validation.required')),
+            'name' => v::NotEmpty()->setName(trans('fields.name', [], 'config'))->setTemplate(trans('common.validation.required')),
             'remark' => v::optional(v::NotEmpty())->setName(trans('fields.remark', [], 'config')),
         ];
     }

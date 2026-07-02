@@ -47,7 +47,7 @@ class SystemRole extends Model
             'pid' => v::optional(v::number())->setName(trans('fields.pid', [], 'role')),
             // 字母、数字、下划线
             'code' => v::optional(v::alnum('_')->noWhitespace())->setName(trans('fields.code', [], 'role')),
-            'status' => v::in([1, 2])->setName(trans('fields.status', [], 'role'))->setTemplate(trans('condoradmin.validation.in')),
+            'status' => v::in([1, 2])->setName(trans('fields.status', [], 'role'))->setTemplate(trans('common.validation.in')),
         ];
     }
 

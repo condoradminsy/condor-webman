@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace plugin\condoradmin\app\model;
 
+use plugin\condoradmin\app\library\StorageService;
 use Respect\Validation\Validator as v;
 use support\Model;
 use support\Log;
@@ -117,49 +120,14 @@ class SystemAttachment extends Model
     }
 
     /**
-     * 上传文件
-     * @param [type] $file
+     * 上传文件（委托给 StorageService，保留供历史调用兼容）
+     * @param \Webman\Http\UploadFile $file
      * @param array $params
-     * @return void
+     * @return array
      */
     public function upload($file, $params = [])
     {
-        $mimetype = strtolower($file->getUploadMimeType());
-        $mimetypeList = $this->getAllowedMimeType();
-        $extension = $mimetypeList[$mimetype];
-        $publicPath = public_path();
-        $filename = date('YmdHis') . '_' . uniqid() . '.' . $extension;
-        $directory = '/uploads/' . date('Ymd');
-        if (!is_dir($publicPath . $directory)) {
-            mkdir($publicPath . $directory, 0777, true);
-        }
-        $filesize = $file->getSize();
-        $orignFileName = $file->getUploadName();
-        $sha1 = hash_file('sha1', $file->getRealPath());
-        $file->move($publicPath . $directory . '/' . $filename);
-        $url =  $directory . '/' . $filename;
-        // 存库，默认本地
-        $attachment = new SystemAttachment();
-        $attachment->url = $url;
-        $attachment->storage = 'local';
-        $attachment->filename = $orignFileName;
-        $attachment->filesize = $filesize;
-        $attachment->admin_id = $params['admin_id'] ?? 0;
-        $attachment->user_id = $params['user_id'] ?? 0;
-        $attachment->type_id = $params['type_id'] ?? 0;
-        $attachment->extparam = json_encode($params['extparam'] ?? []);
-        $attachment->mimetype = $mimetype;
-        $attachment->sha1 = $sha1;
-        $attachment->type = $this->getFileType($mimetype);
-        $attachment->save();
-
-        return [
-            'id' => $attachment->id,
-            'url' => $url,
-            'filename' => $orignFileName,
-            'filesize' => $filesize,
-            'full_url' => '//' . request()->host() . $url,
-        ];
+        return StorageService::upload($file, $params);
     }
 
     public function AttachmentType()

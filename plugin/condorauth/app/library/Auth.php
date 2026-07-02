@@ -23,7 +23,7 @@ class Auth
     {
         $tokenInfo = getCurrentInfo();
         if ($tokenInfo === false) {
-            throw new ApiException(trans('condorauth.invalid.token'), 401);
+            throw new ApiException(trans('common.invalid.token'), 401);
         }
         $userinfo = SystemUser::select(
             'id',

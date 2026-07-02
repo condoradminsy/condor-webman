@@ -44,7 +44,7 @@ class SystemRoleTranslations extends Model
     public function rules()
     {
         return [
-            'name' => v::NotEmpty()->setName(trans('fields.name', [], 'role'))->setTemplate(trans('condoradmin.validation.required')),
+            'name' => v::NotEmpty()->setName(trans('fields.name', [], 'role'))->setTemplate(trans('common.validation.required')),
         ];
     }
 }

@@ -37,7 +37,7 @@ class AuthToken implements MiddlewareInterface
         $tokenInfo = getCurrentInfo();
         if ($tokenInfo === false) {
             $code = 401;
-            $msg = trans('condorauth.please.log.in.first');
+            $msg = trans('common.please.log.in.first');
             if ($request->expectsJson()) {
                 $response = json(['code' => $code, 'msg' => $msg, 'data' => []]);
             } else {
@@ -45,15 +45,16 @@ class AuthToken implements MiddlewareInterface
             }
             return $response;
         } else {
-            if (!isset($tokenInfo['app']) || $request->plugin !== $tokenInfo['app']) {
-                return json(['code' => 403, 'msg' => trans('condorauth.access.denied'), 'data' => []]);
+            $expectedApp = config('plugin.condorauth.app.auth_token_expected_app', 'condorauth');
+            if (!isset($tokenInfo['app']) || $expectedApp !== $tokenInfo['app']) {
+                return json(['code' => 403, 'msg' => trans('common.access.denied'), 'data' => []]);
             }
             $token = $request->header('authorization');
             $token = str_replace('Bearer ', '', $token);
             // 验证token是否有效，可操作token 失效
             $user_id = Redis::get('auth:token:' . $token);
             if (!$user_id) {
-                return json(['code' => 401, 'msg' => trans('condorauth.invalid.token'), 'data' => []]);
+                return json(['code' => 401, 'msg' => trans('common.invalid.token'), 'data' => []]);
             }
             // 获取当前请求的auth        
             $auth = new \plugin\condorauth\app\library\Auth();

@@ -73,6 +73,7 @@ HTTP 请求
 ### 数据模型
 
 模型使用 Eloquent ORM（`illuminate/database`），数据库连接池配置在 `config/database.php` 中。支持国际化的实体遵循以下模式：主表模型（如 `SystemConfig`）通过 `translations()` 关联到翻译表模型（如 `SystemConfigTranslations`），以 `main_id` 和 `locale` 作为关联键。
+`createtime` bigint 创建时间，`updatetime` bigint 更新时间，`deleted_at` bigint 软删除时间。
 
 ### 配置
 

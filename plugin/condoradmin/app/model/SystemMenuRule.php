@@ -43,11 +43,11 @@ class SystemMenuRule extends Model
     public function rules()
     {
         return [
-            'title' => v::NotEmpty()->setName(trans('fields.title', [], 'menu'))->setTemplate(trans('condoradmin.validation.required')),
-            'name' => v::NotEmpty()->alnum('_-')->noWhitespace()->setName(trans('fields.name', [], 'menu'))->setTemplate(trans('condoradmin.validation.required')),
-            'path' => v::NotEmpty()->setName(trans('fields.path', [], 'menu'))->setTemplate(trans('condoradmin.validation.required')),
-            'hidden' => v::optional(v::in([0, 1]))->setName(trans('fields.hidden', [], 'menu'))->setTemplate(trans('condoradmin.validation.in')),
-            'menu_type' => v::optional(v::in([0, 1, 2]))->setName(trans('fields.menu.type', [], 'menu'))->setTemplate(trans('condoradmin.validation.in')),
+            'title' => v::NotEmpty()->setName(trans('fields.title', [], 'menu'))->setTemplate(trans('common.validation.required')),
+            'name' => v::NotEmpty()->alnum('_-')->noWhitespace()->setName(trans('fields.name', [], 'menu'))->setTemplate(trans('common.validation.required')),
+            'path' => v::NotEmpty()->setName(trans('fields.path', [], 'menu'))->setTemplate(trans('common.validation.required')),
+            'hidden' => v::optional(v::in([0, 1]))->setName(trans('fields.hidden', [], 'menu'))->setTemplate(trans('common.validation.in')),
+            'menu_type' => v::optional(v::in([0, 1, 2]))->setName(trans('fields.menu.type', [], 'menu'))->setTemplate(trans('common.validation.in')),
             'active_menu' => v::optional(v::NotEmpty())->setName(trans('fields.active.menu', [], 'menu')),
             'component' => v::optional(v::NotEmpty())->setName(trans('fields.component', [], 'menu')),
             'i18nkey' => v::optional(v::NotEmpty())->setName(trans('fields.i18nkey', [], 'menu')),
@@ -56,7 +56,7 @@ class SystemMenuRule extends Model
             'pid' => v::optional(v::number())->setName(trans('fields.pid', [], 'menu')),
             'weigh' => v::optional(v::number())->setName(trans('fields.weigh', [], 'menu')),
             'redirect' => v::optional(v::NotEmpty())->setName(trans('fields.redirect', [], 'menu')),
-            'status' => v::in([1, 2])->setName(trans('fields.status', [], 'menu'))->setTemplate(trans('condoradmin.validation.in')),
+            'status' => v::in([1, 2])->setName(trans('fields.status', [], 'menu'))->setTemplate(trans('common.validation.in')),
         ];
     }
 

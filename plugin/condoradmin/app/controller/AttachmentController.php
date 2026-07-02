@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace plugin\condoradmin\app\controller;
 
 use support\Request;
 use plugin\condoradmin\app\library\Backend;
+use plugin\condoradmin\app\library\StorageService;
 use plugin\condoradmin\app\model\SystemAttachment;
 
 class AttachmentController extends Backend
@@ -47,26 +50,25 @@ class AttachmentController extends Backend
 
     /**
      * 上传文件
-     * @param Request $request
-     * @return \support\Response
      */
-    public function upload(Request $request)
+    public function upload(Request $request): \support\Response
     {
         $file = $request->file('file');
         if (empty($file)) {
             return $this->fail(trans('condoradmin.no.file.uploaded'));
         }
         $file = is_array($file) ? $file[0] : $file;
-        if (!$file->isValid()) {
-            return $this->fail(trans('condoradmin.invalid.file'));
+
+        try {
+            $row = StorageService::upload($file, [
+                'admin_id' => $this->auth->id,
+                'type_id'  => (int) $request->post('type_id', 0),
+                'disk'     => $request->post('disk') ?: null,
+            ]);
+        } catch (\RuntimeException $e) {
+            return $this->fail($e->getMessage());
         }
-        if (!$this->model->validFileMimeType($file->getUploadMimeType())) {
-            return $this->fail(trans('condoradmin.invalid.file.type.uploaded'));
-        }
-        $row = $this->model->upload($file, [
-            'admin_id' => $this->auth->id,
-            'type_id' => $request->post('type_id', 0),
-        ]);
+
         return $this->success(trans('condoradmin.ok'), $row);
     }
 }

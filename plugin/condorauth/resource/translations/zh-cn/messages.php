@@ -1,9 +1,6 @@
 <?php
 
 return [
-    'condorauth.please.log.in.first' => '请先登录',
-    'condorauth.access.denied' => '访问被拒绝',
-    'condorauth.invalid.token' => '无效的令牌',
     'condorauth.user.does.not.exist' => '用户不存在',
     'condorauth.user.is.disabled' => '用户已禁用',
     'condorauth.too.many.requests.please.try.again.later' => '请求次数过多，请稍后再试',

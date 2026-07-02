@@ -45,14 +45,14 @@ class SystemConfig extends Model
         return [
             'key' => v::regex('/^[a-zA-Z0-9_]+$/')->setName(trans('fields.key', [], 'config'))->setTemplate(trans('fields.code.regex', [], 'config')),
             'value' => v::optional(v::NotEmpty())->setName(trans('fields.value', [], 'config')),
-            'group_code' => v::NotEmpty()->setName(trans('fields.group.code', [], 'config'))->setTemplate(trans('condoradmin.validation.required')),
+            'group_code' => v::NotEmpty()->setName(trans('fields.group.code', [], 'config'))->setTemplate(trans('common.validation.required')),
             'group_id' => v::number()->setName(trans('fields.group.id', [], 'config')),
             'type' => v::in(['number', 'string', 'textarea', 'switch', 'array', 'editor', 'date', 'image', 'images', 'datetime', 'daterange', 'dict'])->setName(trans('fields.type', [], 'config')),
-            'is_visible' => v::in([0, 1])->setName(trans('fields.is.visible', [], 'config'))->setTemplate(trans('condoradmin.validation.in')),
+            'is_visible' => v::in([0, 1])->setName(trans('fields.is.visible', [], 'config'))->setTemplate(trans('common.validation.in')),
             'weigh' => v::optional(v::number())->setName(trans('fields.weigh', [], 'config')),
             'dict_code' => v::optional(v::NotEmpty())->setName(trans('fields.dict.code', [], 'config')),
             'dict_type' => v::optional(v::NotEmpty())->setName(trans('fields.dict.type', [], 'config')),
-            'status' => v::in([0, 1])->setName(trans('fields.status', [], 'config'))->setTemplate(trans('condoradmin.validation.in')),
+            'status' => v::in([0, 1])->setName(trans('fields.status', [], 'config'))->setTemplate(trans('common.validation.in')),
         ];
     }
 
